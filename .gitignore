@@ -1,0 +1,11 @@
+.env
+*.env
+__pycache__/
+*.pyc
+venv/
+*.db
+*.log
+logs/
+memory/api_usage.json
+memory/approval_queue.json
+memory/action_history.json

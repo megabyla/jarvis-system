@@ -1,0 +1,138 @@
+2026-02-15 02:07:55 [INFO] ============================================================
+2026-02-15 02:07:55 [INFO] JARVIS STARTING UP
+2026-02-15 02:07:55 [INFO] ============================================================
+2026-02-15 02:07:55 [INFO] Synced sharbel files to repo
+2026-02-15 02:07:55 [INFO] Synced hybrid files to repo
+2026-02-15 02:07:55 [INFO] Committed: startup sync
+2026-02-15 02:07:56 [INFO] Pushed to origin/main
+2026-02-15 02:07:56 [INFO] All modules initialized
+2026-02-15 02:07:56 [INFO] Monitoring: sharbel, hybrid
+2026-02-15 02:07:56 [INFO] Main loop starting
+2026-02-15 02:07:56 [INFO] Dashboard on port 6000
+2026-02-15 02:07:56 [ERROR] Stats error: no such column: settled
+2026-02-15 02:07:56 [ERROR] Stats error: no such column: settled
+2026-02-15 02:07:56 [ERROR] Trade fetch error: no such column: side
+2026-02-15 02:07:56 [ERROR] Stats error: no such column: settled
+2026-02-15 02:08:12 [INFO] API call: 3476in/1367out = $0.0026
+2026-02-15 02:08:12 [WARNING] Could not parse Haiku JSON response, storing raw
+2026-02-15 02:08:42 [INFO] ============================================================
+2026-02-15 02:08:42 [INFO] JARVIS STARTING UP
+2026-02-15 02:08:42 [INFO] ============================================================
+2026-02-15 02:08:42 [INFO] Synced sharbel files to repo
+2026-02-15 02:08:42 [INFO] Synced hybrid files to repo
+2026-02-15 02:08:42 [INFO] No changes to commit
+2026-02-15 02:08:42 [INFO] All modules initialized
+2026-02-15 02:08:42 [INFO] Monitoring: sharbel, hybrid
+2026-02-15 02:08:42 [INFO] Main loop starting
+2026-02-15 02:08:43 [INFO] Dashboard on port 6001
+2026-02-15 02:08:43 [ERROR] Stats error: no such column: settled
+2026-02-15 02:08:43 [ERROR] Stats error: no such column: settled
+2026-02-15 02:08:43 [ERROR] Trade fetch error: no such column: side
+2026-02-15 02:08:43 [ERROR] Stats error: no such column: settled
+2026-02-15 02:08:58 [INFO] API call: 3476in/1312out = $0.0025
+2026-02-15 02:08:58 [WARNING] Could not parse Haiku JSON response, storing raw
+2026-02-15 02:13:43 [ERROR] Stats error: no such column: settled
+2026-02-15 02:18:44 [ERROR] Stats error: no such column: settled
+2026-02-15 02:23:05 [INFO] ============================================================
+2026-02-15 02:23:05 [INFO] JARVIS STARTING UP
+2026-02-15 02:23:05 [INFO] ============================================================
+2026-02-15 02:23:05 [INFO] Synced sharbel files to repo
+2026-02-15 02:23:05 [INFO] Synced hybrid files to repo
+2026-02-15 02:23:05 [INFO] No changes to commit
+2026-02-15 02:23:05 [INFO] All modules initialized
+2026-02-15 02:23:05 [INFO] Monitoring: sharbel, hybrid
+2026-02-15 02:23:05 [INFO] Main loop starting
+2026-02-15 02:23:05 [INFO] Dashboard on port 6001
+2026-02-15 02:23:05 [ERROR] Stats error: no such column: settled
+2026-02-15 02:23:05 [ERROR] Stats error: no such column: settled
+2026-02-15 02:23:05 [ERROR] Trade fetch error: no such column: side
+2026-02-15 02:23:05 [ERROR] Stats error: no such column: settled
+2026-02-15 02:23:23 [INFO] API call: 3467in/1525out = $0.0028
+2026-02-15 02:23:23 [INFO] Memory updated: CRITICAL: Stake sizing is the real problem, not win rate. 86% win rate with $10 ...
+2026-02-15 02:23:23 [INFO] Memory updated: Confirmed: 80-90% entry range has best win rate, but within that range, entries ...
+2026-02-15 02:23:23 [INFO] Memory updated: New pattern: High-conviction entries (0.85+) are winning at 80%+ rate but losing...
+2026-02-15 02:23:23 [INFO] Memory updated: Hybrid bot status: Zero trades in paper mode. Needs verification that scout/big-...
+2026-02-15 02:23:23 [INFO] Memory updated: Loss pause rule: Current 3-loss threshold is too loose. With $10 stakes, recomme...
+2026-02-15 02:23:23 [INFO] Analysis complete: Sharbel is performing well with 86% win rate over 50 trades, but recent stake increases (5x jump fro
+2026-02-15 02:23:23 [INFO] Queued for approval: Revert all stakes to $2 baseline. Recent $10 stakes are creating outsized losses that overwhelm the 86% win rate
+2026-02-15 02:23:23 [INFO] Queued for approval: Restrict entries to 80-87% range instead of current 75-92% range
+2026-02-15 02:23:23 [INFO] Queued for approval: Implement automatic 30-minute pause after 2 consecutive losses (not 3)
+2026-02-15 02:23:23 [INFO] Queued for approval: Verify Hybrid bot is operational — zero trades suggests it may not be triggering
+2026-02-15 02:24:39 [INFO] API call: 133in/94out = $0.0002
+2026-02-15 02:28:08 [ERROR] Stats error: no such column: settled
+2026-02-15 02:33:09 [ERROR] Stats error: no such column: settled
+2026-02-15 02:38:09 [ERROR] Stats error: no such column: settled
+2026-02-15 02:43:10 [ERROR] Stats error: no such column: settled
+2026-02-15 02:48:10 [ERROR] Stats error: no such column: settled
+2026-02-15 02:50:38 [INFO] API call: 149in/98out = $0.0002
+2026-02-15 02:53:11 [ERROR] Stats error: no such column: settled
+2026-02-15 02:58:11 [ERROR] Stats error: no such column: settled
+2026-02-15 03:03:12 [ERROR] Stats error: no such column: settled
+2026-02-15 03:08:12 [ERROR] Stats error: no such column: settled
+2026-02-15 03:11:26 [INFO] ============================================================
+2026-02-15 03:11:26 [INFO] JARVIS STARTING UP
+2026-02-15 03:11:26 [INFO] ============================================================
+2026-02-15 03:11:26 [INFO] Synced sharbel files to repo
+2026-02-15 03:11:26 [INFO] Synced hybrid files to repo
+2026-02-15 03:11:26 [INFO] Committed: startup sync
+2026-02-15 03:11:27 [INFO] Pushed to origin/main
+2026-02-15 03:11:27 [INFO] All modules initialized
+2026-02-15 03:11:27 [INFO] Monitoring: sharbel, hybrid
+2026-02-15 03:11:27 [INFO] Main loop starting
+2026-02-15 03:11:27 [INFO] Dashboard on port 6001
+2026-02-15 03:11:27 [ERROR] Stats error: no such column: settled
+2026-02-15 03:11:27 [ERROR] Stats error: no such column: settled
+2026-02-15 03:11:27 [ERROR] Trade fetch error: no such column: side
+2026-02-15 03:11:27 [ERROR] Stats error: no such column: settled
+2026-02-15 03:11:46 [INFO] API call: 3767in/1497out = $0.0028
+2026-02-15 03:11:46 [INFO] Memory updated: CONFIRMED: 86% win rate with $10 stakes = -$16.61 P&L (50 trades). Stake size is...
+2026-02-15 03:11:46 [INFO] Memory updated: ALERT: Stake creep detected again. $5-$10 stakes reappeared in trades 56-74 desp...
+2026-02-15 03:11:46 [INFO] Memory updated: Hybrid status: Zero trades in paper mode as of 2/15 02:59 UTC. Blocker for live ...
+2026-02-15 03:11:46 [INFO] Memory updated: Movement filter validation: All 50 recent trades respect 0.2% minimum. Filter is...
+2026-02-15 03:11:46 [INFO] Memory updated: Entry range validation: 43 wins across 75-91% range. No entries >92%. Discipline...
+2026-02-15 03:11:46 [INFO] Analysis complete: Sharbel is operating within expected parameters with 86% win rate, but stake creep has returned and 
+2026-02-15 03:11:46 [INFO] Queued for approval: Immediately set Sharbel stake back to $2.00 across all assets (BTC, ETH, SOL)
+2026-02-15 03:11:46 [INFO] Queued for approval: Debug why Hybrid bot has zero trades over the observation window. Check: (1) scout trigger logic at 13:10/13:30/13:45, (2) big-bet logic at 14:00, (3) market availability during those times, (4) conviction thresholds.
+2026-02-15 03:11:46 [INFO] Queued for approval: Add a rule to memory: 'Stake changes require explicit log entry with timestamp and reason. Auto-flag any deviation from baseline within 24 hours.'
+2026-02-15 03:14:36 [INFO] ============================================================
+2026-02-15 03:14:36 [INFO] JARVIS STARTING UP
+2026-02-15 03:14:36 [INFO] ============================================================
+2026-02-15 03:14:36 [INFO] Synced sharbel files to repo
+2026-02-15 03:14:36 [INFO] Synced hybrid files to repo
+2026-02-15 03:14:36 [INFO] No changes to commit
+2026-02-15 03:14:36 [INFO] All modules initialized
+2026-02-15 03:14:36 [INFO] Monitoring: sharbel, hybrid
+2026-02-15 03:14:36 [INFO] Main loop starting
+2026-02-15 03:14:36 [INFO] Dashboard on port 6001
+2026-02-15 03:14:36 [ERROR] Stats error: no such column: settled
+2026-02-15 03:14:36 [ERROR] Stats error: no such column: settled
+2026-02-15 03:14:36 [ERROR] Trade fetch error: no such column: side
+2026-02-15 03:14:36 [ERROR] Stats error: no such column: settled
+2026-02-15 03:14:54 [INFO] API call: 4012in/1584out = $0.0030
+2026-02-15 03:14:54 [INFO] Memory updated: CRITICAL ALERT 2/15 02:14 UTC: Stake creep detected AGAIN. Trades 71-75 all $5 s...
+2026-02-15 03:14:54 [INFO] Memory updated: CONFIRMED: $5 stakes are the problem, not conviction or movement filter. 86% win...
+2026-02-15 03:14:54 [INFO] Memory updated: Hybrid bot status unchanged: Zero trades in paper mode. Blocker for live deploym...
+2026-02-15 03:14:54 [INFO] Memory updated: Movement filter validation holds: All 50 recent trades respect 0.2% minimum. No ...
+2026-02-15 03:14:54 [INFO] Memory updated: Entry range discipline holds: 43 wins across 75-91% range. No entries >92%. Swee...
+2026-02-15 03:14:54 [INFO] Analysis complete: CRITICAL: Stake creep has returned despite 2/14 10:11PM reversion order. Sharbel is trading $5 stake
+2026-02-15 03:14:54 [INFO] Queued for approval: Immediately revert all Sharbel stakes from $5 to $2 baseline. Lock this parameter against future changes without explicit approval.
+2026-02-15 03:14:54 [INFO] Queued for approval: Add a hard constraint that prevents stakes >$2 without explicit manual approval in code. Log all stake changes with timestamp and reason.
+2026-02-15 03:14:54 [INFO] Queued for approval: Investigate why Hybrid bot has zero trades in paper mode. Verify scout trigger logic (13:10, 13:30, 13:45) and big-bet logic (14:00) are executing correctly. Check for order placement failures or timing issues.
+2026-02-15 03:14:54 [INFO] Queued for approval: Reduce upper entry bound from 90% to 87%. Trade 75 (0.905 entry) is above the sweet spot and represents the kind of high-conviction, low-reward trade that fails at current stake levels.
+2026-02-15 03:16:02 [INFO] User rejected: Revert all stakes to $2 baseline. Recent $10 stakes are creating outsized losses that overwhelm the 86% win rate
+2026-02-15 03:18:52 [INFO] User rejected: Immediately set Sharbel stake back to $2.00 across all assets (BTC, ETH, SOL)
+2026-02-15 03:18:55 [INFO] User rejected: Debug why Hybrid bot has zero trades over the observation window. Check: (1) scout trigger logic at 13:10/13:30/13:45, (2) big-bet logic at 14:00, (3) market availability during those times, (4) conviction thresholds.
+2026-02-15 03:19:05 [INFO] User rejected: Investigate why Hybrid bot has zero trades in paper mode. Verify scout trigger logic (13:10, 13:30, 13:45) and big-bet logic (14:00) are executing correctly. Check for order placement failures or timing issues.
+2026-02-15 03:19:09 [INFO] User rejected: Immediately revert all Sharbel stakes from $5 to $2 baseline. Lock this parameter against future changes without explicit approval.
+2026-02-15 03:19:20 [INFO] User rejected: Restrict entries to 80-87% range instead of current 75-92% range
+2026-02-15 03:19:39 [ERROR] Stats error: no such column: settled
+2026-02-15 03:19:56 [INFO] API call: 133in/94out = $0.0002
+2026-02-15 03:20:28 [INFO] API call: 129in/92out = $0.0001
+2026-02-15 03:23:39 [INFO] User rejected: Implement automatic 30-minute pause after 2 consecutive losses (not 3)
+2026-02-15 03:24:40 [ERROR] Stats error: no such column: settled
+2026-02-15 03:29:40 [ERROR] Stats error: no such column: settled
+2026-02-15 03:34:41 [ERROR] Stats error: no such column: settled
+2026-02-15 03:37:06 [INFO] User rejected: Verify Hybrid bot is operational — zero trades suggests it may not be triggering
+2026-02-15 03:39:41 [ERROR] Stats error: no such column: settled
+2026-02-15 03:44:42 [ERROR] Stats error: no such column: settled
+2026-02-15 03:49:42 [ERROR] Stats error: no such column: settled

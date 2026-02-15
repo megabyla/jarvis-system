@@ -1,0 +1,72 @@
+{
+  "calls": [
+    {
+      "timestamp": "2026-02-15T02:08:12.738419+00:00",
+      "input_tokens": 3476,
+      "output_tokens": 1367,
+      "cost": 0.002578
+    },
+    {
+      "timestamp": "2026-02-15T02:08:58.439083+00:00",
+      "input_tokens": 3476,
+      "output_tokens": 1312,
+      "cost": 0.002509
+    },
+    {
+      "timestamp": "2026-02-15T02:23:23.391581+00:00",
+      "input_tokens": 3467,
+      "output_tokens": 1525,
+      "cost": 0.002773
+    },
+    {
+      "timestamp": "2026-02-15T02:24:39.765768+00:00",
+      "input_tokens": 133,
+      "output_tokens": 94,
+      "cost": 0.000151
+    },
+    {
+      "timestamp": "2026-02-15T02:50:38.239059+00:00",
+      "input_tokens": 149,
+      "output_tokens": 98,
+      "cost": 0.00016
+    },
+    {
+      "timestamp": "2026-02-15T03:11:46.101710+00:00",
+      "input_tokens": 3767,
+      "output_tokens": 1497,
+      "cost": 0.002813
+    },
+    {
+      "timestamp": "2026-02-15T03:14:54.147779+00:00",
+      "input_tokens": 4012,
+      "output_tokens": 1584,
+      "cost": 0.002983
+    },
+    {
+      "timestamp": "2026-02-15T03:19:56.950028+00:00",
+      "input_tokens": 133,
+      "output_tokens": 94,
+      "cost": 0.000151
+    },
+    {
+      "timestamp": "2026-02-15T03:20:28.638087+00:00",
+      "input_tokens": 129,
+      "output_tokens": 92,
+      "cost": 0.000147
+    }
+  ],
+  "daily_totals": {
+    "2026-02-15": {
+      "calls": 9,
+      "cost": 0.014264999999999998,
+      "tokens": 26405
+    }
+  },
+  "monthly_totals": {
+    "2026-02": {
+      "calls": 9,
+      "cost": 0.014264999999999998,
+      "tokens": 26405
+    }
+  }
+}

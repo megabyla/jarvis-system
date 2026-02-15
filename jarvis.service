@@ -1,0 +1,15 @@
+[Unit]
+Description=Jarvis Trading Bot Manager
+After=network.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/root/jarvis
+ExecStart=/root/jarvis/venv/bin/python3 /root/jarvis/jarvis.py
+Restart=always
+RestartSec=10
+Environment=PYTHONUNBUFFERED=1
+
+[Install]
+WantedBy=multi-user.target

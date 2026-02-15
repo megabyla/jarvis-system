@@ -1,0 +1,154 @@
+[
+  {
+    "id": "action_1771122203396",
+    "type": "standardize_stakes",
+    "description": "Revert all stakes to $2 baseline. Recent $10 stakes are creating outsized losses that overwhelm the 86% win rate",
+    "reason": "With 86% win rate, a $2 stake yields ~$0.17 avg profit per win but -$2 per loss. At $10 stakes, losses become -$10. Last 7 losses cost -$60 total; at $2 stakes would have cost -$14. The math doesn't work at higher stakes until win rate reaches ~92%+",
+    "bot": null,
+    "params": {
+      "action": "standardize_stakes",
+      "description": "Revert all stakes to $2 baseline. Recent $10 stakes are creating outsized losses that overwhelm the 86% win rate",
+      "reason": "With 86% win rate, a $2 stake yields ~$0.17 avg profit per win but -$2 per loss. At $10 stakes, losses become -$10. Last 7 losses cost -$60 total; at $2 stakes would have cost -$14. The math doesn't work at higher stakes until win rate reaches ~92%+",
+      "priority": "high",
+      "requires_approval": true
+    },
+    "tier": "approval",
+    "status": "rejected",
+    "submitted_at": "2026-02-14T21:23:23.396599-05:00",
+    "resolved_at": "2026-02-14T22:16:02.336431-05:00",
+    "resolved_by": "user"
+  },
+  {
+    "id": "action_1771125106107",
+    "type": "revert_stake_to_baseline",
+    "description": "Immediately set Sharbel stake back to $2.00 across all assets (BTC, ETH, SOL)",
+    "reason": "Memory log from 2/14 9:23PM explicitly flagged stake creep as the root cause of negative P&L despite 86% win rate. Current $5-$10 stakes are amplifying losses. At $2 baseline, same 86% win rate would yield +$15-20 P&L instead of -$16.61. This is not a hypothesis\u2014it's confirmed math from prior analysis.",
+    "bot": null,
+    "params": {
+      "action": "revert_stake_to_baseline",
+      "description": "Immediately set Sharbel stake back to $2.00 across all assets (BTC, ETH, SOL)",
+      "reason": "Memory log from 2/14 9:23PM explicitly flagged stake creep as the root cause of negative P&L despite 86% win rate. Current $5-$10 stakes are amplifying losses. At $2 baseline, same 86% win rate would yield +$15-20 P&L instead of -$16.61. This is not a hypothesis\u2014it's confirmed math from prior analysis.",
+      "priority": "critical",
+      "requires_approval": true
+    },
+    "tier": "approval",
+    "status": "rejected",
+    "submitted_at": "2026-02-14T22:11:46.107220-05:00",
+    "resolved_at": "2026-02-14T22:18:52.781461-05:00",
+    "resolved_by": "user"
+  },
+  {
+    "id": "action_1771125106108",
+    "type": "verify_hybrid_paper_mode",
+    "description": "Debug why Hybrid bot has zero trades over the observation window. Check: (1) scout trigger logic at 13:10/13:30/13:45, (2) big-bet logic at 14:00, (3) market availability during those times, (4) conviction thresholds.",
+    "reason": "Memory log from 2/14 9:23PM flagged this as a blocker: 'Zero trades in paper mode. Needs verification that scout/big-bet logic is triggering correctly before live deployment.' No progress since then. Cannot deploy live without confidence in execution logic.",
+    "bot": null,
+    "params": {
+      "action": "verify_hybrid_paper_mode",
+      "description": "Debug why Hybrid bot has zero trades over the observation window. Check: (1) scout trigger logic at 13:10/13:30/13:45, (2) big-bet logic at 14:00, (3) market availability during those times, (4) conviction thresholds.",
+      "reason": "Memory log from 2/14 9:23PM flagged this as a blocker: 'Zero trades in paper mode. Needs verification that scout/big-bet logic is triggering correctly before live deployment.' No progress since then. Cannot deploy live without confidence in execution logic.",
+      "priority": "critical",
+      "requires_approval": false
+    },
+    "tier": "approval",
+    "status": "rejected",
+    "submitted_at": "2026-02-14T22:11:46.108036-05:00",
+    "resolved_at": "2026-02-14T22:18:55.630856-05:00",
+    "resolved_by": "user"
+  },
+  {
+    "id": "action_1771125294154",
+    "type": "debug_hybrid_bot",
+    "description": "Investigate why Hybrid bot has zero trades in paper mode. Verify scout trigger logic (13:10, 13:30, 13:45) and big-bet logic (14:00) are executing correctly. Check for order placement failures or timing issues.",
+    "reason": "Hybrid has been in paper mode with zero trades. Cannot deploy to live without confirming the bot is actually trading. This is a blocker.",
+    "bot": null,
+    "params": {
+      "action": "debug_hybrid_bot",
+      "description": "Investigate why Hybrid bot has zero trades in paper mode. Verify scout trigger logic (13:10, 13:30, 13:45) and big-bet logic (14:00) are executing correctly. Check for order placement failures or timing issues.",
+      "reason": "Hybrid has been in paper mode with zero trades. Cannot deploy to live without confirming the bot is actually trading. This is a blocker.",
+      "priority": "high",
+      "requires_approval": false
+    },
+    "tier": "approval",
+    "status": "rejected",
+    "submitted_at": "2026-02-14T22:14:54.154478-05:00",
+    "resolved_at": "2026-02-14T22:19:05.333485-05:00",
+    "resolved_by": "user"
+  },
+  {
+    "id": "action_1771125294152",
+    "type": "revert_stakes_to_2_dollars",
+    "description": "Immediately revert all Sharbel stakes from $5 to $2 baseline. Lock this parameter against future changes without explicit approval.",
+    "reason": "Trades 71-75 violate the 2/14 10:11PM reversion order. $5 stakes are destroying P&L: -$16.61 on 86% win rate vs. expected +$15-20 at $2. This is the second stake creep incident in 24 hours.",
+    "bot": null,
+    "params": {
+      "action": "revert_stakes_to_2_dollars",
+      "description": "Immediately revert all Sharbel stakes from $5 to $2 baseline. Lock this parameter against future changes without explicit approval.",
+      "reason": "Trades 71-75 violate the 2/14 10:11PM reversion order. $5 stakes are destroying P&L: -$16.61 on 86% win rate vs. expected +$15-20 at $2. This is the second stake creep incident in 24 hours.",
+      "priority": "critical",
+      "requires_approval": true
+    },
+    "tier": "approval",
+    "status": "rejected",
+    "submitted_at": "2026-02-14T22:14:54.152838-05:00",
+    "resolved_at": "2026-02-14T22:19:09.759994-05:00",
+    "resolved_by": "user"
+  },
+  {
+    "id": "action_1771122203397",
+    "type": "tighten_entry_range",
+    "description": "Restrict entries to 80-87% range instead of current 75-92% range",
+    "reason": "Memory shows 80-90% is sweet spot, but recent data shows losses clustering at 0.81-0.91 entries with high stakes. Narrowing to 80-87% removes the highest-conviction entries where risk/reward is worst (80% win rate but negative P&L per memory). 5 of 7 recent losses were at entries \u22650.81",
+    "bot": null,
+    "params": {
+      "action": "tighten_entry_range",
+      "description": "Restrict entries to 80-87% range instead of current 75-92% range",
+      "reason": "Memory shows 80-90% is sweet spot, but recent data shows losses clustering at 0.81-0.91 entries with high stakes. Narrowing to 80-87% removes the highest-conviction entries where risk/reward is worst (80% win rate but negative P&L per memory). 5 of 7 recent losses were at entries \u22650.81",
+      "priority": "medium",
+      "requires_approval": true
+    },
+    "tier": "approval",
+    "status": "rejected",
+    "submitted_at": "2026-02-14T21:23:23.397034-05:00",
+    "resolved_at": "2026-02-14T22:19:20.521319-05:00",
+    "resolved_by": "user"
+  },
+  {
+    "id": "action_1771122203397",
+    "type": "activate_loss_pause",
+    "description": "Implement automatic 30-minute pause after 2 consecutive losses (not 3)",
+    "reason": "Current rule is 3 losses. With $10 stakes, 3 losses = -$30 damage. Lowering threshold to 2 losses provides circuit-breaker protection while data is being collected on the new entry range",
+    "bot": null,
+    "params": {
+      "action": "activate_loss_pause",
+      "description": "Implement automatic 30-minute pause after 2 consecutive losses (not 3)",
+      "reason": "Current rule is 3 losses. With $10 stakes, 3 losses = -$30 damage. Lowering threshold to 2 losses provides circuit-breaker protection while data is being collected on the new entry range",
+      "priority": "medium",
+      "requires_approval": true
+    },
+    "tier": "approval",
+    "status": "rejected",
+    "submitted_at": "2026-02-14T21:23:23.397438-05:00",
+    "resolved_at": "2026-02-14T22:23:39.709145-05:00",
+    "resolved_by": "user"
+  },
+  {
+    "id": "action_1771122203397",
+    "type": "monitor_hybrid_activation",
+    "description": "Verify Hybrid bot is operational \u2014 zero trades suggests it may not be triggering",
+    "reason": "Hybrid is in paper mode with defined scout times (13:10, 13:30, 13:45) and big bet at 14:00. No trades recorded suggests either: (a) market conditions haven't met entry criteria, or (b) bot has a technical issue. Needs verification before live deployment",
+    "bot": null,
+    "params": {
+      "action": "monitor_hybrid_activation",
+      "description": "Verify Hybrid bot is operational \u2014 zero trades suggests it may not be triggering",
+      "reason": "Hybrid is in paper mode with defined scout times (13:10, 13:30, 13:45) and big bet at 14:00. No trades recorded suggests either: (a) market conditions haven't met entry criteria, or (b) bot has a technical issue. Needs verification before live deployment",
+      "priority": "low",
+      "requires_approval": false
+    },
+    "tier": "approval",
+    "status": "rejected",
+    "submitted_at": "2026-02-14T21:23:23.397948-05:00",
+    "resolved_at": "2026-02-14T22:37:06.390183-05:00",
+    "resolved_by": "user"
+  }
+]

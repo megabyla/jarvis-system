@@ -1,0 +1,102 @@
+# ============================================================================
+# JARVIS CONFIGURATION
+# ============================================================================
+
+# --- General ---
+jarvis_port: 6001
+log_level: INFO
+timezone: America/New_York
+
+# --- Monitored Bots ---
+bots:
+  sharbel:
+    name: "Sharbel Bot"
+    directory: "/root/sharbel-bot"
+    main_file: "sharbel_bot.py"
+    db_path: "/root/sharbel-bot/sharbel_trades.db"
+    dashboard_port: 5000
+    screen_name: "sharbel_bot"
+    venv_path: "/root/sharbel-bot/venv"
+    enabled: true
+
+  hybrid:
+    name: "Hybrid Bot"
+    directory: "/root/hybrid-bot"
+    main_file: "FINAL_HYBRID_BOT.py"
+    db_path: "/root/hybrid-bot/hybrid_bot_trades.db"
+    dashboard_port: 5555
+    screen_name: "hybrid_bot"
+    venv_path: "/root/hybrid-bot/venv"
+    enabled: true
+
+# --- Watchdog ---
+watchdog:
+  heartbeat_interval: 30        # seconds between health checks
+  process_check_interval: 30    # seconds between process alive checks
+  settlement_check_interval: 60 # seconds between settlement checks
+  stats_interval: 300           # seconds between rolling stats calculation (5 min)
+  stale_threshold: 600          # seconds before a bot is considered stale (10 min)
+  max_restart_attempts: 3       # max restarts before alerting user
+  restart_cooldown: 300         # seconds between restart attempts (5 min)
+
+# --- Haiku Brain ---
+haiku:
+  model: "claude-haiku-4-5-20251001"
+  analysis_interval: 21600      # seconds between scheduled analyses (6 hours)
+  max_tokens: 2048
+  temperature: 0.3
+  triggered_analysis: true      # also analyze on anomalies (loss streaks, etc)
+
+# --- Budget ---
+budget:
+  daily_limit: 2.00             # max $ per day on API calls
+  monthly_limit: 30.00          # max $ per month
+  max_calls_per_day: 12         # hard cap on API calls per day
+  cost_per_1k_input: 0.00025   # Haiku input cost per 1K tokens
+  cost_per_1k_output: 0.00125  # Haiku output cost per 1K tokens
+  fallback_on_limit: true       # fall back to rule-based when budget hit
+
+# --- Permissions (tiered approval system) ---
+permissions:
+  auto_approve:
+    - "restart_crashed_bot"
+    - "redeem_settlements"
+    - "pause_on_loss_streak"
+    - "resume_after_cooldown"
+    - "log_observation"
+
+  require_approval:
+    - "change_movement_filter"
+    - "change_stake_size"
+    - "change_entry_timing"
+    - "enable_disable_rsi"
+    - "change_conviction_range"
+    - "switch_paper_to_live"
+
+  never_touch:
+    - "modify_api_keys"
+    - "change_wallet"
+    - "delete_database"
+    - "modify_core_strategy"
+
+# --- Safety Rails ---
+safety:
+  max_consecutive_losses: 3     # pause bot after N consecutive losses
+  loss_streak_cooldown: 1800    # seconds to pause after loss streak (30 min)
+  max_daily_loss: 20.00         # pause trading if daily loss exceeds this
+  min_balance_threshold: 10.00  # alert if balance drops below this
+
+# --- Git ---
+git:
+  enabled: true
+  repo_path: "/root/jarvis-trading-system"
+  remote: "origin"
+  branch: "main"
+  auto_push: true
+  commit_prefix: "jarvis:"
+
+# --- Telegram (optional, for future) ---
+telegram:
+  enabled: false
+  bot_token: ""
+  chat_id: ""

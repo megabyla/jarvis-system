@@ -1,0 +1,59 @@
+[
+  {
+    "id": "action_1771125106108",
+    "type": "document_stake_change_process",
+    "description": "Add a rule to memory: 'Stake changes require explicit log entry with timestamp and reason. Auto-flag any deviation from baseline within 24 hours.'",
+    "reason": "Stake has drifted twice now (2/14 and again by 2/15). Need accountability mechanism to prevent silent creep. This is a process issue, not a trading issue.",
+    "bot": null,
+    "params": {
+      "action": "document_stake_change_process",
+      "description": "Add a rule to memory: 'Stake changes require explicit log entry with timestamp and reason. Auto-flag any deviation from baseline within 24 hours.'",
+      "reason": "Stake has drifted twice now (2/14 and again by 2/15). Need accountability mechanism to prevent silent creep. This is a process issue, not a trading issue.",
+      "priority": "medium",
+      "requires_approval": false
+    },
+    "tier": "approval",
+    "status": "pending",
+    "submitted_at": "2026-02-14T22:11:46.108695-05:00",
+    "resolved_at": null,
+    "resolved_by": null
+  },
+  {
+    "id": "action_1771125294153",
+    "type": "implement_stake_lock",
+    "description": "Add a hard constraint that prevents stakes >$2 without explicit manual approval in code. Log all stake changes with timestamp and reason.",
+    "reason": "Stake creep has occurred twice (2/14 9:23PM and 2/14 21:29PM). Soft rules are not holding. Need technical enforcement.",
+    "bot": null,
+    "params": {
+      "action": "implement_stake_lock",
+      "description": "Add a hard constraint that prevents stakes >$2 without explicit manual approval in code. Log all stake changes with timestamp and reason.",
+      "reason": "Stake creep has occurred twice (2/14 9:23PM and 2/14 21:29PM). Soft rules are not holding. Need technical enforcement.",
+      "priority": "critical",
+      "requires_approval": true
+    },
+    "tier": "approval",
+    "status": "pending",
+    "submitted_at": "2026-02-14T22:14:54.153532-05:00",
+    "resolved_at": null,
+    "resolved_by": null
+  },
+  {
+    "id": "action_1771125294155",
+    "type": "tighten_entry_range_upper_bound",
+    "description": "Reduce upper entry bound from 90% to 87%. Trade 75 (0.905 entry) is above the sweet spot and represents the kind of high-conviction, low-reward trade that fails at current stake levels.",
+    "reason": "Memory log shows entries >0.85 have worse risk/reward at current stake levels. While 80-90% is the sweet spot, tightening to 80-87% would filter out marginal high-conviction entries.",
+    "bot": null,
+    "params": {
+      "action": "tighten_entry_range_upper_bound",
+      "description": "Reduce upper entry bound from 90% to 87%. Trade 75 (0.905 entry) is above the sweet spot and represents the kind of high-conviction, low-reward trade that fails at current stake levels.",
+      "reason": "Memory log shows entries >0.85 have worse risk/reward at current stake levels. While 80-90% is the sweet spot, tightening to 80-87% would filter out marginal high-conviction entries.",
+      "priority": "low",
+      "requires_approval": true
+    },
+    "tier": "approval",
+    "status": "pending",
+    "submitted_at": "2026-02-14T22:14:54.155311-05:00",
+    "resolved_at": null,
+    "resolved_by": null
+  }
+]
