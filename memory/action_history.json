@@ -221,5 +221,94 @@
     "submitted_at": "2026-02-15T23:02:24.446442-05:00",
     "resolved_at": "2026-02-15T23:02:24.446442-05:00",
     "resolved_by": "jarvis"
+  },
+  {
+    "id": "action_1771228514844",
+    "type": "restart_crashed_bot",
+    "description": "Restart sharbel - process not found",
+    "reason": "Screen session not detected",
+    "bot": "sharbel",
+    "params": {},
+    "tier": "auto",
+    "status": "auto_approved",
+    "submitted_at": "2026-02-16T02:55:14.844191-05:00",
+    "resolved_at": "2026-02-16T02:55:14.844191-05:00",
+    "resolved_by": "jarvis"
+  },
+  {
+    "id": "action_1771228539914",
+    "type": "investigate_duplicate_trades",
+    "description": "Debug trade execution pipeline for race conditions. Trades 96-97 (BTC DOWN, entry 0.835) and 98-99 (ETH UP, entry 0.795) are identical duplicates with timestamps 306ms apart. Verify: (1) Are these duplicate executions or data logging errors? (2) Is the order submission system creating race conditions? (3) Should duplicates be auto-rejected or merged?",
+    "reason": "Duplicate trades inflate win counts and P&L artificially. If this is a systematic bug, it could mask real performance degradation. If it's a logging error, it corrupts the trade history used for analysis.",
+    "bot": null,
+    "params": {
+      "action": "investigate_duplicate_trades",
+      "description": "Debug trade execution pipeline for race conditions. Trades 96-97 (BTC DOWN, entry 0.835) and 98-99 (ETH UP, entry 0.795) are identical duplicates with timestamps 306ms apart. Verify: (1) Are these duplicate executions or data logging errors? (2) Is the order submission system creating race conditions? (3) Should duplicates be auto-rejected or merged?",
+      "reason": "Duplicate trades inflate win counts and P&L artificially. If this is a systematic bug, it could mask real performance degradation. If it's a logging error, it corrupts the trade history used for analysis.",
+      "priority": "critical",
+      "requires_approval": true
+    },
+    "tier": "approval",
+    "status": "approved",
+    "submitted_at": "2026-02-16T02:55:39.914569-05:00",
+    "resolved_at": "2026-02-16T02:57:55.405192-05:00",
+    "resolved_by": "user"
+  },
+  {
+    "id": "action_1771211710321",
+    "type": "debug_hybrid_bot",
+    "description": "Hybrid bot has zero trades in paper mode since 2/15 10:15AM. Scout/big-bet trigger logic is not firing. Debug before any live deployment consideration.",
+    "reason": "Paper mode should be generating scout trades at 13:10, 13:30, 13:45 and big bets at 14:00. Zero activity indicates logic failure, not market absence.",
+    "bot": null,
+    "params": {
+      "action": "debug_hybrid_bot",
+      "description": "Hybrid bot has zero trades in paper mode since 2/15 10:15AM. Scout/big-bet trigger logic is not firing. Debug before any live deployment consideration.",
+      "reason": "Paper mode should be generating scout trades at 13:10, 13:30, 13:45 and big bets at 14:00. Zero activity indicates logic failure, not market absence.",
+      "priority": "medium",
+      "requires_approval": false
+    },
+    "tier": "approval",
+    "status": "rejected",
+    "submitted_at": "2026-02-15T22:15:10.321080-05:00",
+    "resolved_at": "2026-02-16T02:58:23.016513-05:00",
+    "resolved_by": "user"
+  },
+  {
+    "id": "action_1771211710319",
+    "type": "no_change_movement_filter",
+    "description": "Movement filter at 0.2% minimum is working correctly. All 50 recent trades respect threshold.",
+    "reason": "Lowest movement in dataset = 0.212% (trade 90). No weak-signal losses. Filter eliminates chop-period losses as designed.",
+    "bot": null,
+    "params": {
+      "action": "no_change_movement_filter",
+      "description": "Movement filter at 0.2% minimum is working correctly. All 50 recent trades respect threshold.",
+      "reason": "Lowest movement in dataset = 0.212% (trade 90). No weak-signal losses. Filter eliminates chop-period losses as designed.",
+      "priority": "low",
+      "requires_approval": false
+    },
+    "tier": "approval",
+    "status": "approved",
+    "submitted_at": "2026-02-15T22:15:10.319448-05:00",
+    "resolved_at": "2026-02-16T02:58:28.256988-05:00",
+    "resolved_by": "user"
+  },
+  {
+    "id": "action_1771190104824",
+    "type": "pause_trading_sharbel",
+    "description": "Halt Sharbel trading immediately until hard stake lock is deployed and verified in test environment.",
+    "reason": "Continuing to trade at $5 stakes while losing money is unacceptable. Each 50-trade cycle at current settings destroys $34-40 in P&L. Hard lock deployment should take <30 minutes.",
+    "bot": null,
+    "params": {
+      "action": "pause_trading_sharbel",
+      "description": "Halt Sharbel trading immediately until hard stake lock is deployed and verified in test environment.",
+      "reason": "Continuing to trade at $5 stakes while losing money is unacceptable. Each 50-trade cycle at current settings destroys $34-40 in P&L. Hard lock deployment should take <30 minutes.",
+      "priority": "critical",
+      "requires_approval": true
+    },
+    "tier": "approval",
+    "status": "rejected",
+    "submitted_at": "2026-02-15T16:15:04.824120-05:00",
+    "resolved_at": "2026-02-16T02:58:37.219186-05:00",
+    "resolved_by": "user"
   }
 ]

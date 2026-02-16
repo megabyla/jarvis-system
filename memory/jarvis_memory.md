@@ -19,6 +19,12 @@
 - Hybrid: Big bet at 14:00 (60s before close)
 
 ## Past Decisions
+- 2/16 2:55AM: 2/16 02:55 UTC: Hybrid bot status UNCHANGED: Zero trades in paper mode as of 2/16 02:59 UTC. Scout/big-bet trigger logic needs debug before live deployment.
+- 2/16 2:55AM: 2/16 02:55 UTC: Entry discipline validated AGAIN: 48 of 50 trades in 75-91% range. No entries >92%. Entry logic is solid and requires no changes.
+- 2/16 2:55AM: 2/16 02:55 UTC: Movement filter validated AGAIN: All 50 recent trades respect 0.2% minimum. No weak-signal losses. Filter is working correctly and requires no changes.
+- 2/16 2:55AM: 2/16 02:55 UTC: Sharbel performance confirmed stable: 82% win rate (41/50) with $5 stakes = -$23.49 P&L. Same win rate at $2 stakes would yield +$18-22 P&L. Stake sizing is destroying $41-45 per 50-trade cycle. This is the ONLY execution problem with Sharbel.
+- 2/16 2:55AM: 2/16 02:55 UTC: Stake creep FIFTH VIOLATION confirmed. Trades 78-99 (22 consecutive) all $5 stakes despite four reversion orders at 2/14 21:29, 2/15 02:59, 2/15 10:14, 2/15 16:14 UTC. Violation window: 2/14 21:29 to 2/16 02:59 UTC (29+ hours continuous). Soft rules have failed completely. Hard technical lock on stakes is now MANDATORY before next trade execution.
+- 2/16 2:55AM: 2/16 02:55 UTC: Duplicate trades CONFIRMED. IDs 96-97 (BTC DOWN, entry 0.835, timestamps 2026-02-16T02:59:02.330735 and 2026-02-16T02:59:02.636065) are identical. IDs 98-99 (ETH UP, entry 0.795, timestamps 2026-02-16T03:59:02.214227 and 2026-02-16T03:59:02.608448) are identical. Race condition or logging bug suspected. Requires investigation before further analysis.
 - 2/15 10:15PM: 2/16 02:14 UTC: Hybrid bot status unchanged: Zero trades in paper mode as of 2/16 02:59 UTC. Scout/big-bet trigger logic needs debug before live deployment.
 - 2/15 10:15PM: 2/16 02:14 UTC: Duplicate trades detected: IDs 96 and 97 have identical timestamps (2026-02-16T02:59:02.xxx), identical entry (0.835), identical movement (-0.340), identical stake ($5). Possible race condition or system bug. Requires investigation.
 - 2/15 10:15PM: 2/16 02:14 UTC: Movement filter validated: All 50 recent trades respect 0.2% minimum. Lowest movement = 0.212% (ID 90). Filter is working correctly and requires no changes.

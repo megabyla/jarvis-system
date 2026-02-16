@@ -535,3 +535,49 @@
 2026-02-16 07:42:56 [ERROR] Stats error: no such column: settled
 2026-02-16 07:47:57 [ERROR] Stats error: no such column: settled
 2026-02-16 07:52:57 [ERROR] Stats error: no such column: settled
+2026-02-16 07:55:14 [INFO] ============================================================
+2026-02-16 07:55:14 [INFO] JARVIS STARTING UP
+2026-02-16 07:55:14 [INFO] ============================================================
+2026-02-16 07:55:14 [INFO] Futures database initialized
+2026-02-16 07:55:14 [INFO] FuturesMonitor initialized: ES
+2026-02-16 07:55:14 [INFO] Futures monitor enabled
+2026-02-16 07:55:14 [INFO] Synced sharbel files to repo
+2026-02-16 07:55:14 [INFO] Synced hybrid files to repo
+2026-02-16 07:55:14 [INFO] Committed: startup sync
+2026-02-16 07:55:14 [WARNING] Push failed: To https://github.com/megabyla/jarvis-system.git
+ ! [rejected]        main -> main (fetch first)
+error: failed to push some refs to 'https://github.com/megabyla/jarvis-system.git'
+hint: Updates were rejected because the remote contains work that you do not
+hint: have locally. This is usually caused by another repository pushing to
+hint: the same ref. If you want to integrate the remote changes, use
+hint: 'git pull' before pushing again.
+hint: See the 'Note about fast-forwards' in 'git push --help' for details.
+2026-02-16 07:55:14 [INFO] All modules initialized
+2026-02-16 07:55:14 [INFO] Monitoring: sharbel, hybrid
+2026-02-16 07:55:14 [INFO] Main loop starting
+2026-02-16 07:55:14 [INFO] Dashboard on port 6001
+2026-02-16 07:55:14 [INFO] Auto-approved: Restart sharbel - process not found
+2026-02-16 07:55:18 [INFO] ✅ Successfully restarted sharbel
+2026-02-16 07:55:18 [ERROR] Stats error: no such column: settled
+2026-02-16 07:55:18 [ERROR] Stats error: no such column: settled
+2026-02-16 07:55:18 [ERROR] Trade fetch error: no such column: side
+2026-02-16 07:55:18 [ERROR] Stats error: no such column: settled
+2026-02-16 07:55:39 [INFO] API call: 5977in/2048out = $0.0041
+2026-02-16 07:55:39 [INFO] Memory updated: 2/16 02:55 UTC: Duplicate trades CONFIRMED. IDs 96-97 (BTC DOWN, entry 0.835, ti...
+2026-02-16 07:55:39 [INFO] Memory updated: 2/16 02:55 UTC: Stake creep FIFTH VIOLATION confirmed. Trades 78-99 (22 consecut...
+2026-02-16 07:55:39 [INFO] Memory updated: 2/16 02:55 UTC: Sharbel performance confirmed stable: 82% win rate (41/50) with ...
+2026-02-16 07:55:39 [INFO] Memory updated: 2/16 02:55 UTC: Movement filter validated AGAIN: All 50 recent trades respect 0....
+2026-02-16 07:55:39 [INFO] Memory updated: 2/16 02:55 UTC: Entry discipline validated AGAIN: 48 of 50 trades in 75-91% rang...
+2026-02-16 07:55:39 [INFO] Memory updated: 2/16 02:55 UTC: Hybrid bot status UNCHANGED: Zero trades in paper mode as of 2/1...
+2026-02-16 07:55:39 [INFO] Analysis complete: Sharbel is operationally sound (82% win rate, all filters validated) but remains unprofitable due to
+2026-02-16 07:55:39 [INFO] Queued for approval: Deploy technical hard lock on stake parameter. Set maximum allowed stake to $2.00 in code. Disable all soft reversion rules and replace with immutable code constraint.
+2026-02-16 07:55:39 [INFO] Queued for approval: Debug trade execution pipeline for race conditions. Trades 96-97 (BTC DOWN, entry 0.835) and 98-99 (ETH UP, entry 0.795) are identical duplicates with timestamps 306ms apart. Verify: (1) Are these duplicate executions or data logging errors? (2) Is the order submission system creating race conditions? (3) Should duplicates be auto-rejected or merged?
+2026-02-16 07:55:39 [INFO] Queued for approval: Once hard stake lock is deployed, execute immediate reversion to $2 baseline stakes. This will convert the current 82% win rate into +$18-22 P&L per 50-trade cycle (vs. current -$23.49).
+2026-02-16 07:55:39 [INFO] Queued for approval: Hybrid bot has executed zero trades in paper mode despite 48+ hours of operation. Verify: (1) Are scout triggers firing at 13:10, 13:30, 13:45? (2) Is big-bet trigger firing at 14:00? (3) Are fill assumptions (85% paper, 60-70% live) realistic? (4) Is the BTC-only asset filter too restrictive?
+2026-02-16 07:57:55 [INFO] User approved: Debug trade execution pipeline for race conditions. Trades 96-97 (BTC DOWN, entry 0.835) and 98-99 (ETH UP, entry 0.795) are identical duplicates with timestamps 306ms apart. Verify: (1) Are these duplicate executions or data logging errors? (2) Is the order submission system creating race conditions? (3) Should duplicates be auto-rejected or merged?
+2026-02-16 07:57:55 [WARNING] No handler for action: investigate_duplicate_trades
+2026-02-16 07:58:09 [INFO] API call: 118in/87out = $0.0001
+2026-02-16 07:58:23 [INFO] User rejected: Hybrid bot has zero trades in paper mode since 2/15 10:15AM. Scout/big-bet trigger logic is not firing. Debug before any live deployment consideration.
+2026-02-16 07:58:28 [INFO] User approved: Movement filter at 0.2% minimum is working correctly. All 50 recent trades respect threshold.
+2026-02-16 07:58:28 [WARNING] No handler for action: no_change_movement_filter
+2026-02-16 07:58:37 [INFO] User rejected: Halt Sharbel trading immediately until hard stake lock is deployed and verified in test environment.

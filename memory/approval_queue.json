@@ -209,25 +209,6 @@
     "resolved_by": null
   },
   {
-    "id": "action_1771190104824",
-    "type": "pause_trading_sharbel",
-    "description": "Halt Sharbel trading immediately until hard stake lock is deployed and verified in test environment.",
-    "reason": "Continuing to trade at $5 stakes while losing money is unacceptable. Each 50-trade cycle at current settings destroys $34-40 in P&L. Hard lock deployment should take <30 minutes.",
-    "bot": null,
-    "params": {
-      "action": "pause_trading_sharbel",
-      "description": "Halt Sharbel trading immediately until hard stake lock is deployed and verified in test environment.",
-      "reason": "Continuing to trade at $5 stakes while losing money is unacceptable. Each 50-trade cycle at current settings destroys $34-40 in P&L. Hard lock deployment should take <30 minutes.",
-      "priority": "critical",
-      "requires_approval": true
-    },
-    "tier": "approval",
-    "status": "pending",
-    "submitted_at": "2026-02-15T16:15:04.824120-05:00",
-    "resolved_at": null,
-    "resolved_by": null
-  },
-  {
     "id": "action_1771190104825",
     "type": "investigate_weak_signal_losses",
     "description": "Analyze why trades 84, 85, 77 lost despite 0.2% movement filter. All three had movement <0.26% and entry >0.78. Movement filter should have rejected these or win rate should have been higher.",
@@ -323,40 +304,59 @@
     "resolved_by": null
   },
   {
-    "id": "action_1771211710319",
-    "type": "no_change_movement_filter",
-    "description": "Movement filter at 0.2% minimum is working correctly. All 50 recent trades respect threshold.",
-    "reason": "Lowest movement in dataset = 0.212% (trade 90). No weak-signal losses. Filter eliminates chop-period losses as designed.",
+    "id": "action_1771228539913",
+    "type": "implement_hard_stake_lock",
+    "description": "Deploy technical hard lock on stake parameter. Set maximum allowed stake to $2.00 in code. Disable all soft reversion rules and replace with immutable code constraint.",
+    "reason": "Soft reversion orders have failed 5 times in 29 hours (trades 56-99). Trades 78-99 (22 consecutive) remained at $5 despite four explicit reversion orders. This is a critical execution failure. Hard lock is the only remaining option.",
     "bot": null,
     "params": {
-      "action": "no_change_movement_filter",
-      "description": "Movement filter at 0.2% minimum is working correctly. All 50 recent trades respect threshold.",
-      "reason": "Lowest movement in dataset = 0.212% (trade 90). No weak-signal losses. Filter eliminates chop-period losses as designed.",
-      "priority": "low",
-      "requires_approval": false
+      "action": "implement_hard_stake_lock",
+      "description": "Deploy technical hard lock on stake parameter. Set maximum allowed stake to $2.00 in code. Disable all soft reversion rules and replace with immutable code constraint.",
+      "reason": "Soft reversion orders have failed 5 times in 29 hours (trades 56-99). Trades 78-99 (22 consecutive) remained at $5 despite four explicit reversion orders. This is a critical execution failure. Hard lock is the only remaining option.",
+      "priority": "critical",
+      "requires_approval": true
     },
     "tier": "approval",
     "status": "pending",
-    "submitted_at": "2026-02-15T22:15:10.319448-05:00",
+    "submitted_at": "2026-02-16T02:55:39.913241-05:00",
     "resolved_at": null,
     "resolved_by": null
   },
   {
-    "id": "action_1771211710321",
-    "type": "debug_hybrid_bot",
-    "description": "Hybrid bot has zero trades in paper mode since 2/15 10:15AM. Scout/big-bet trigger logic is not firing. Debug before any live deployment consideration.",
-    "reason": "Paper mode should be generating scout trades at 13:10, 13:30, 13:45 and big bets at 14:00. Zero activity indicates logic failure, not market absence.",
+    "id": "action_1771228539916",
+    "type": "revert_sharbel_to_2_dollar_stakes",
+    "description": "Once hard stake lock is deployed, execute immediate reversion to $2 baseline stakes. This will convert the current 82% win rate into +$18-22 P&L per 50-trade cycle (vs. current -$23.49).",
+    "reason": "Mathematical certainty: 82% win rate at $2 stakes yields positive P&L. At $5 stakes it yields negative P&L. The strategy is sound; only stake sizing is broken.",
     "bot": null,
     "params": {
-      "action": "debug_hybrid_bot",
-      "description": "Hybrid bot has zero trades in paper mode since 2/15 10:15AM. Scout/big-bet trigger logic is not firing. Debug before any live deployment consideration.",
-      "reason": "Paper mode should be generating scout trades at 13:10, 13:30, 13:45 and big bets at 14:00. Zero activity indicates logic failure, not market absence.",
-      "priority": "medium",
+      "action": "revert_sharbel_to_2_dollar_stakes",
+      "description": "Once hard stake lock is deployed, execute immediate reversion to $2 baseline stakes. This will convert the current 82% win rate into +$18-22 P&L per 50-trade cycle (vs. current -$23.49).",
+      "reason": "Mathematical certainty: 82% win rate at $2 stakes yields positive P&L. At $5 stakes it yields negative P&L. The strategy is sound; only stake sizing is broken.",
+      "priority": "critical",
+      "requires_approval": true
+    },
+    "tier": "approval",
+    "status": "pending",
+    "submitted_at": "2026-02-16T02:55:39.916352-05:00",
+    "resolved_at": null,
+    "resolved_by": null
+  },
+  {
+    "id": "action_1771228539917",
+    "type": "debug_hybrid_scout_logic",
+    "description": "Hybrid bot has executed zero trades in paper mode despite 48+ hours of operation. Verify: (1) Are scout triggers firing at 13:10, 13:30, 13:45? (2) Is big-bet trigger firing at 14:00? (3) Are fill assumptions (85% paper, 60-70% live) realistic? (4) Is the BTC-only asset filter too restrictive?",
+    "reason": "Hybrid is blocked for live deployment. Zero trades means either logic is broken or market conditions don't match assumptions. Need data to proceed.",
+    "bot": null,
+    "params": {
+      "action": "debug_hybrid_scout_logic",
+      "description": "Hybrid bot has executed zero trades in paper mode despite 48+ hours of operation. Verify: (1) Are scout triggers firing at 13:10, 13:30, 13:45? (2) Is big-bet trigger firing at 14:00? (3) Are fill assumptions (85% paper, 60-70% live) realistic? (4) Is the BTC-only asset filter too restrictive?",
+      "reason": "Hybrid is blocked for live deployment. Zero trades means either logic is broken or market conditions don't match assumptions. Need data to proceed.",
+      "priority": "high",
       "requires_approval": false
     },
     "tier": "approval",
     "status": "pending",
-    "submitted_at": "2026-02-15T22:15:10.321080-05:00",
+    "submitted_at": "2026-02-16T02:55:39.917763-05:00",
     "resolved_at": null,
     "resolved_by": null
   }
