@@ -19,25 +19,6 @@
     "resolved_by": null
   },
   {
-    "id": "action_1771125294153",
-    "type": "implement_stake_lock",
-    "description": "Add a hard constraint that prevents stakes >$2 without explicit manual approval in code. Log all stake changes with timestamp and reason.",
-    "reason": "Stake creep has occurred twice (2/14 9:23PM and 2/14 21:29PM). Soft rules are not holding. Need technical enforcement.",
-    "bot": null,
-    "params": {
-      "action": "implement_stake_lock",
-      "description": "Add a hard constraint that prevents stakes >$2 without explicit manual approval in code. Log all stake changes with timestamp and reason.",
-      "reason": "Stake creep has occurred twice (2/14 9:23PM and 2/14 21:29PM). Soft rules are not holding. Need technical enforcement.",
-      "priority": "critical",
-      "requires_approval": true
-    },
-    "tier": "approval",
-    "status": "pending",
-    "submitted_at": "2026-02-14T22:14:54.153532-05:00",
-    "resolved_at": null,
-    "resolved_by": null
-  },
-  {
     "id": "action_1771125294155",
     "type": "tighten_entry_range_upper_bound",
     "description": "Reduce upper entry bound from 90% to 87%. Trade 75 (0.905 entry) is above the sweet spot and represents the kind of high-conviction, low-reward trade that fails at current stake levels.",
@@ -53,6 +34,329 @@
     "tier": "approval",
     "status": "pending",
     "submitted_at": "2026-02-14T22:14:54.155311-05:00",
+    "resolved_at": null,
+    "resolved_by": null
+  },
+  {
+    "id": "action_1771146902193",
+    "type": "implement_hard_stake_lock",
+    "description": "Add technical enforcement: stakes must equal $2.00 exactly. Remove all soft rule overrides. Lock at code level, not config.",
+    "reason": "Soft rules have failed 3 times in 36 hours (2/14 9:23PM, 2/14 10:11PM, 2/15 02:59 UTC, and now 2/15 04:14 UTC). Trades 71-80 prove the reversion order was ignored or bypassed. This is a control failure, not a data problem. Hard lock is the only solution.",
+    "bot": null,
+    "params": {
+      "action": "implement_hard_stake_lock",
+      "description": "Add technical enforcement: stakes must equal $2.00 exactly. Remove all soft rule overrides. Lock at code level, not config.",
+      "reason": "Soft rules have failed 3 times in 36 hours (2/14 9:23PM, 2/14 10:11PM, 2/15 02:59 UTC, and now 2/15 04:14 UTC). Trades 71-80 prove the reversion order was ignored or bypassed. This is a control failure, not a data problem. Hard lock is the only solution.",
+      "priority": "critical",
+      "requires_approval": true
+    },
+    "tier": "approval",
+    "status": "pending",
+    "submitted_at": "2026-02-15T04:15:02.193823-05:00",
+    "resolved_at": null,
+    "resolved_by": null
+  },
+  {
+    "id": "action_1771146902194",
+    "type": "revert_stakes_immediately",
+    "description": "Manually reset all $5 and $10 stakes to $2.00 for trades 71-80. Recalculate P&L impact.",
+    "reason": "Trades 71-80 are live violations. If these can be reissued at $2 stakes, estimated P&L swing is +$15-20 (from -$19.57 to +$0-5 range).",
+    "bot": null,
+    "params": {
+      "action": "revert_stakes_immediately",
+      "description": "Manually reset all $5 and $10 stakes to $2.00 for trades 71-80. Recalculate P&L impact.",
+      "reason": "Trades 71-80 are live violations. If these can be reissued at $2 stakes, estimated P&L swing is +$15-20 (from -$19.57 to +$0-5 range).",
+      "priority": "critical",
+      "requires_approval": true
+    },
+    "tier": "approval",
+    "status": "pending",
+    "submitted_at": "2026-02-15T04:15:02.194418-05:00",
+    "resolved_at": null,
+    "resolved_by": null
+  },
+  {
+    "id": "action_1771146902195",
+    "type": "audit_stake_override_mechanism",
+    "description": "Review code that allows stakes to deviate from $2.00. Identify what triggered the override in trades 71-80. Was it manual intervention, a bug, or a config reload?",
+    "reason": "Three violations in 36 hours suggests a systematic issue, not random drift. Need root cause before hard lock will stick.",
+    "bot": null,
+    "params": {
+      "action": "audit_stake_override_mechanism",
+      "description": "Review code that allows stakes to deviate from $2.00. Identify what triggered the override in trades 71-80. Was it manual intervention, a bug, or a config reload?",
+      "reason": "Three violations in 36 hours suggests a systematic issue, not random drift. Need root cause before hard lock will stick.",
+      "priority": "critical",
+      "requires_approval": false
+    },
+    "tier": "approval",
+    "status": "pending",
+    "submitted_at": "2026-02-15T04:15:02.195052-05:00",
+    "resolved_at": null,
+    "resolved_by": null
+  },
+  {
+    "id": "action_1771146902195",
+    "type": "no_change_entry_range",
+    "description": "Keep 80-90% sweet spot active. Entry discipline is working. Trade 77 at 78.5% lost as expected (below range).",
+    "reason": "43 of 50 trades in range. Win rate within range is 85%+. No signal to adjust.",
+    "bot": null,
+    "params": {
+      "action": "no_change_entry_range",
+      "description": "Keep 80-90% sweet spot active. Entry discipline is working. Trade 77 at 78.5% lost as expected (below range).",
+      "reason": "43 of 50 trades in range. Win rate within range is 85%+. No signal to adjust.",
+      "priority": "low",
+      "requires_approval": false
+    },
+    "tier": "approval",
+    "status": "pending",
+    "submitted_at": "2026-02-15T04:15:02.195538-05:00",
+    "resolved_at": null,
+    "resolved_by": null
+  },
+  {
+    "id": "action_1771146902196",
+    "type": "debug_hybrid_scout_logic",
+    "description": "Hybrid bot has zero trades in paper mode. Verify scout trigger times (13:10, 13:30, 13:45) and big-bet logic (14:00) are firing. Check logs for missed signals.",
+    "reason": "Paper mode should have generated 5-10 trades by now if scout/big-bet logic is working. Zero trades = blocker for live deployment.",
+    "bot": null,
+    "params": {
+      "action": "debug_hybrid_scout_logic",
+      "description": "Hybrid bot has zero trades in paper mode. Verify scout trigger times (13:10, 13:30, 13:45) and big-bet logic (14:00) are firing. Check logs for missed signals.",
+      "reason": "Paper mode should have generated 5-10 trades by now if scout/big-bet logic is working. Zero trades = blocker for live deployment.",
+      "priority": "medium",
+      "requires_approval": false
+    },
+    "tier": "approval",
+    "status": "pending",
+    "submitted_at": "2026-02-15T04:15:02.196129-05:00",
+    "resolved_at": null,
+    "resolved_by": null
+  },
+  {
+    "id": "action_1771168502390",
+    "type": "implement_hard_technical_lock_on_stakes",
+    "description": "Deploy code-level constraint that prevents ANY trade with stake > $2.00. Remove all soft rules and manual reversion options. Make this a hard circuit breaker in the execution layer.",
+    "reason": "Soft rules have failed THREE TIMES in 36 hours (2/14 21:29, 2/15 02:14, 2/15 04:14). Trades 71-82 are all $5 despite documented reversion orders. This is a systemic execution failure, not a parameter drift. Hard lock is mandatory before any further trading.",
+    "bot": null,
+    "params": {
+      "action": "implement_hard_technical_lock_on_stakes",
+      "description": "Deploy code-level constraint that prevents ANY trade with stake > $2.00. Remove all soft rules and manual reversion options. Make this a hard circuit breaker in the execution layer.",
+      "reason": "Soft rules have failed THREE TIMES in 36 hours (2/14 21:29, 2/15 02:14, 2/15 04:14). Trades 71-82 are all $5 despite documented reversion orders. This is a systemic execution failure, not a parameter drift. Hard lock is mandatory before any further trading.",
+      "priority": "CRITICAL",
+      "requires_approval": true
+    },
+    "tier": "approval",
+    "status": "pending",
+    "submitted_at": "2026-02-15T10:15:02.390265-05:00",
+    "resolved_at": null,
+    "resolved_by": null
+  },
+  {
+    "id": "action_1771168502390",
+    "type": "pause_sharbel_until_hard_lock_deployed",
+    "description": "Halt all Sharbel trading immediately. Do not resume until hard stake lock is verified in code and tested with 5+ live trades at $2 baseline.",
+    "reason": "Current trajectory: 84% win rate \u00d7 $5 stakes = -$18.20 P&L per 50 trades. Each additional 50-trade cycle at $5 stakes costs ~$36 in lost profit. Hard lock deployment is the only fix.",
+    "bot": null,
+    "params": {
+      "action": "pause_sharbel_until_hard_lock_deployed",
+      "description": "Halt all Sharbel trading immediately. Do not resume until hard stake lock is verified in code and tested with 5+ live trades at $2 baseline.",
+      "reason": "Current trajectory: 84% win rate \u00d7 $5 stakes = -$18.20 P&L per 50 trades. Each additional 50-trade cycle at $5 stakes costs ~$36 in lost profit. Hard lock deployment is the only fix.",
+      "priority": "CRITICAL",
+      "requires_approval": true
+    },
+    "tier": "approval",
+    "status": "pending",
+    "submitted_at": "2026-02-15T10:15:02.390940-05:00",
+    "resolved_at": null,
+    "resolved_by": null
+  },
+  {
+    "id": "action_1771168502391",
+    "type": "debug_hybrid_scout_trigger_logic",
+    "description": "Investigate why Hybrid bot has zero trades in paper mode despite running for 24+ hours. Verify that scout times (13:10, 13:30, 13:45) and big-bet logic (14:00) are firing correctly. Check logs for trigger conditions and order placement.",
+    "reason": "Hybrid is blocked for live deployment. Zero trades suggests either: (a) trigger logic is broken, (b) market conditions never met thresholds, or (c) order placement is failing silently. Need diagnosis before proceeding.",
+    "bot": null,
+    "params": {
+      "action": "debug_hybrid_scout_trigger_logic",
+      "description": "Investigate why Hybrid bot has zero trades in paper mode despite running for 24+ hours. Verify that scout times (13:10, 13:30, 13:45) and big-bet logic (14:00) are firing correctly. Check logs for trigger conditions and order placement.",
+      "reason": "Hybrid is blocked for live deployment. Zero trades suggests either: (a) trigger logic is broken, (b) market conditions never met thresholds, or (c) order placement is failing silently. Need diagnosis before proceeding.",
+      "priority": "high",
+      "requires_approval": false
+    },
+    "tier": "approval",
+    "status": "pending",
+    "submitted_at": "2026-02-15T10:15:02.391828-05:00",
+    "resolved_at": null,
+    "resolved_by": null
+  },
+  {
+    "id": "action_1771190104823",
+    "type": "implement_hard_stake_lock",
+    "description": "Deploy technical hard lock on Sharbel stakes at $2.00 maximum. Remove all soft rule enforcement. Make $2 the only allowed stake value in code.",
+    "reason": "Soft rules have failed three times in 36 hours (2/14 10:11PM, 2/14 9:23PM, 2/15 4:15AM). All 20 recent trades violate the reversion order. This is a control failure, not a parameter tuning issue. Hard lock is the only solution.",
+    "bot": null,
+    "params": {
+      "action": "implement_hard_stake_lock",
+      "description": "Deploy technical hard lock on Sharbel stakes at $2.00 maximum. Remove all soft rule enforcement. Make $2 the only allowed stake value in code.",
+      "reason": "Soft rules have failed three times in 36 hours (2/14 10:11PM, 2/14 9:23PM, 2/15 4:15AM). All 20 recent trades violate the reversion order. This is a control failure, not a parameter tuning issue. Hard lock is the only solution.",
+      "priority": "critical",
+      "requires_approval": true
+    },
+    "tier": "approval",
+    "status": "pending",
+    "submitted_at": "2026-02-15T16:15:04.823311-05:00",
+    "resolved_at": null,
+    "resolved_by": null
+  },
+  {
+    "id": "action_1771190104824",
+    "type": "pause_trading_sharbel",
+    "description": "Halt Sharbel trading immediately until hard stake lock is deployed and verified in test environment.",
+    "reason": "Continuing to trade at $5 stakes while losing money is unacceptable. Each 50-trade cycle at current settings destroys $34-40 in P&L. Hard lock deployment should take <30 minutes.",
+    "bot": null,
+    "params": {
+      "action": "pause_trading_sharbel",
+      "description": "Halt Sharbel trading immediately until hard stake lock is deployed and verified in test environment.",
+      "reason": "Continuing to trade at $5 stakes while losing money is unacceptable. Each 50-trade cycle at current settings destroys $34-40 in P&L. Hard lock deployment should take <30 minutes.",
+      "priority": "critical",
+      "requires_approval": true
+    },
+    "tier": "approval",
+    "status": "pending",
+    "submitted_at": "2026-02-15T16:15:04.824120-05:00",
+    "resolved_at": null,
+    "resolved_by": null
+  },
+  {
+    "id": "action_1771190104825",
+    "type": "investigate_weak_signal_losses",
+    "description": "Analyze why trades 84, 85, 77 lost despite 0.2% movement filter. All three had movement <0.26% and entry >0.78. Movement filter should have rejected these or win rate should have been higher.",
+    "reason": "IDs 84 (0.219% movement), 85 (0.254% movement), 77 (0.223% movement) are borderline cases. If these are false positives from the filter, we may need to raise threshold to 0.25% or add secondary confirmation.",
+    "bot": null,
+    "params": {
+      "action": "investigate_weak_signal_losses",
+      "description": "Analyze why trades 84, 85, 77 lost despite 0.2% movement filter. All three had movement <0.26% and entry >0.78. Movement filter should have rejected these or win rate should have been higher.",
+      "reason": "IDs 84 (0.219% movement), 85 (0.254% movement), 77 (0.223% movement) are borderline cases. If these are false positives from the filter, we may need to raise threshold to 0.25% or add secondary confirmation.",
+      "priority": "medium",
+      "requires_approval": false
+    },
+    "tier": "approval",
+    "status": "pending",
+    "submitted_at": "2026-02-15T16:15:04.825036-05:00",
+    "resolved_at": null,
+    "resolved_by": null
+  },
+  {
+    "id": "action_1771190104826",
+    "type": "debug_hybrid_scout_logic",
+    "description": "Verify that Hybrid bot's scout trigger logic is executing at scheduled times (13:10, 13:30, 13:45 UTC). Add logging to confirm trigger fires and big-bet logic at 14:00.",
+    "reason": "Zero trades in paper mode indicates scout/big-bet logic is not firing. This is a blocker for live deployment. Needs root cause analysis before proceeding.",
+    "bot": null,
+    "params": {
+      "action": "debug_hybrid_scout_logic",
+      "description": "Verify that Hybrid bot's scout trigger logic is executing at scheduled times (13:10, 13:30, 13:45 UTC). Add logging to confirm trigger fires and big-bet logic at 14:00.",
+      "reason": "Zero trades in paper mode indicates scout/big-bet logic is not firing. This is a blocker for live deployment. Needs root cause analysis before proceeding.",
+      "priority": "high",
+      "requires_approval": false
+    },
+    "tier": "approval",
+    "status": "pending",
+    "submitted_at": "2026-02-15T16:15:04.825999-05:00",
+    "resolved_at": null,
+    "resolved_by": null
+  },
+  {
+    "id": "action_1771211710315",
+    "type": "hard_lock_stakes_immediately",
+    "description": "Implement hard technical lock on stakes at $2.00 maximum. Block any trade execution if stake > $2.00. This must execute BEFORE next trade.",
+    "reason": "Soft reversion orders have failed 4 times in 29 hours (2/14 21:29 to 2/16 02:59 UTC). Trades 71-97 all violated $2 baseline. Manual intervention has proven ineffective. Hard lock is the only remaining control.",
+    "bot": null,
+    "params": {
+      "action": "hard_lock_stakes_immediately",
+      "description": "Implement hard technical lock on stakes at $2.00 maximum. Block any trade execution if stake > $2.00. This must execute BEFORE next trade.",
+      "reason": "Soft reversion orders have failed 4 times in 29 hours (2/14 21:29 to 2/16 02:59 UTC). Trades 71-97 all violated $2 baseline. Manual intervention has proven ineffective. Hard lock is the only remaining control.",
+      "priority": "CRITICAL",
+      "requires_approval": true
+    },
+    "tier": "approval",
+    "status": "pending",
+    "submitted_at": "2026-02-15T22:15:10.315156-05:00",
+    "resolved_at": null,
+    "resolved_by": null
+  },
+  {
+    "id": "action_1771211710316",
+    "type": "investigate_duplicate_trades",
+    "description": "Review trades 96 and 97 (both timestamp 2026-02-16T02:59:02.xxx, identical entry/movement/stake). Determine if this is a system bug or intentional retry logic.",
+    "reason": "Duplicate trades at identical microsecond timestamps suggest race condition or unintended double-execution. Could indicate broader execution reliability issue.",
+    "bot": null,
+    "params": {
+      "action": "investigate_duplicate_trades",
+      "description": "Review trades 96 and 97 (both timestamp 2026-02-16T02:59:02.xxx, identical entry/movement/stake). Determine if this is a system bug or intentional retry logic.",
+      "reason": "Duplicate trades at identical microsecond timestamps suggest race condition or unintended double-execution. Could indicate broader execution reliability issue.",
+      "priority": "high",
+      "requires_approval": false
+    },
+    "tier": "approval",
+    "status": "pending",
+    "submitted_at": "2026-02-15T22:15:10.316518-05:00",
+    "resolved_at": null,
+    "resolved_by": null
+  },
+  {
+    "id": "action_1771211710318",
+    "type": "no_change_entry_discipline",
+    "description": "Entry range logic is performing correctly. Keep conviction range at 75-92% with sweet spot 80-90%.",
+    "reason": "48 of 50 recent trades in target range. Win rate 82% validates entry selection. No signal of degradation.",
+    "bot": null,
+    "params": {
+      "action": "no_change_entry_discipline",
+      "description": "Entry range logic is performing correctly. Keep conviction range at 75-92% with sweet spot 80-90%.",
+      "reason": "48 of 50 recent trades in target range. Win rate 82% validates entry selection. No signal of degradation.",
+      "priority": "low",
+      "requires_approval": false
+    },
+    "tier": "approval",
+    "status": "pending",
+    "submitted_at": "2026-02-15T22:15:10.318054-05:00",
+    "resolved_at": null,
+    "resolved_by": null
+  },
+  {
+    "id": "action_1771211710319",
+    "type": "no_change_movement_filter",
+    "description": "Movement filter at 0.2% minimum is working correctly. All 50 recent trades respect threshold.",
+    "reason": "Lowest movement in dataset = 0.212% (trade 90). No weak-signal losses. Filter eliminates chop-period losses as designed.",
+    "bot": null,
+    "params": {
+      "action": "no_change_movement_filter",
+      "description": "Movement filter at 0.2% minimum is working correctly. All 50 recent trades respect threshold.",
+      "reason": "Lowest movement in dataset = 0.212% (trade 90). No weak-signal losses. Filter eliminates chop-period losses as designed.",
+      "priority": "low",
+      "requires_approval": false
+    },
+    "tier": "approval",
+    "status": "pending",
+    "submitted_at": "2026-02-15T22:15:10.319448-05:00",
+    "resolved_at": null,
+    "resolved_by": null
+  },
+  {
+    "id": "action_1771211710321",
+    "type": "debug_hybrid_bot",
+    "description": "Hybrid bot has zero trades in paper mode since 2/15 10:15AM. Scout/big-bet trigger logic is not firing. Debug before any live deployment consideration.",
+    "reason": "Paper mode should be generating scout trades at 13:10, 13:30, 13:45 and big bets at 14:00. Zero activity indicates logic failure, not market absence.",
+    "bot": null,
+    "params": {
+      "action": "debug_hybrid_bot",
+      "description": "Hybrid bot has zero trades in paper mode since 2/15 10:15AM. Scout/big-bet trigger logic is not firing. Debug before any live deployment consideration.",
+      "reason": "Paper mode should be generating scout trades at 13:10, 13:30, 13:45 and big bets at 14:00. Zero activity indicates logic failure, not market absence.",
+      "priority": "medium",
+      "requires_approval": false
+    },
+    "tier": "approval",
+    "status": "pending",
+    "submitted_at": "2026-02-15T22:15:10.321080-05:00",
     "resolved_at": null,
     "resolved_by": null
   }

@@ -53,20 +53,49 @@
       "input_tokens": 129,
       "output_tokens": 92,
       "cost": 0.000147
+    },
+    {
+      "timestamp": "2026-02-15T09:15:02.188460+00:00",
+      "input_tokens": 4343,
+      "output_tokens": 2006,
+      "cost": 0.003593
+    },
+    {
+      "timestamp": "2026-02-15T15:15:02.385120+00:00",
+      "input_tokens": 4682,
+      "output_tokens": 1633,
+      "cost": 0.003212
+    },
+    {
+      "timestamp": "2026-02-15T21:15:04.818352+00:00",
+      "input_tokens": 5051,
+      "output_tokens": 1890,
+      "cost": 0.003625
+    },
+    {
+      "timestamp": "2026-02-16T03:15:10.307486+00:00",
+      "input_tokens": 5443,
+      "output_tokens": 1971,
+      "cost": 0.003825
     }
   ],
   "daily_totals": {
     "2026-02-15": {
-      "calls": 9,
-      "cost": 0.014264999999999998,
-      "tokens": 26405
+      "calls": 12,
+      "cost": 0.024694999999999998,
+      "tokens": 46010
+    },
+    "2026-02-16": {
+      "calls": 1,
+      "cost": 0.003825,
+      "tokens": 7414
     }
   },
   "monthly_totals": {
     "2026-02": {
-      "calls": 9,
-      "cost": 0.014264999999999998,
-      "tokens": 26405
+      "calls": 13,
+      "cost": 0.028519999999999997,
+      "tokens": 53424
     }
   }
 }

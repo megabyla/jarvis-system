@@ -34,6 +34,7 @@ from modules.budget_tracker import BudgetTracker
 from modules.approvals import ApprovalSystem
 from modules.git_manager import GitManager
 from modules.executor import ActionExecutor
+from modules.futures_monitor import FuturesMonitor
 
 from dotenv import load_dotenv
 load_dotenv()
@@ -79,6 +80,13 @@ class Jarvis:
         self.git = GitManager(self.config, self.logger)
         self.executor = ActionExecutor(self.config, self.logger, self.git)
 
+        # Futures module
+        if self.config.get('futures', {}).get('enabled', False):
+            self.futures = FuturesMonitor(self.config, self.logger, self.analyst)
+            self.logger.info('Futures monitor enabled')
+        else:
+            self.futures = None
+
         # State
         self.running = True
         self.last_analysis_time = 0
@@ -89,6 +97,7 @@ class Jarvis:
         self.bot_stats = {}
         self.chat_log = []
         self.last_stale_alert = {}  # bot_name -> timestamp (prevent spam)
+        self.last_futures_check = 0
 
         # Initialize git repo
         self.git.init_repo()
@@ -257,6 +266,50 @@ class Jarvis:
                 result = self.executor.execute_action(action)
                 self._log_chat("jarvis", f"✅ Executed: {action['description']}", "success")
 
+    def _run_futures_checks(self, now):
+        """Run futures-related checks based on time of day."""
+        from datetime import time as dt_time
+        et_now = datetime.now(timezone(timedelta(hours=-5)))
+        current_time = et_now.time()
+
+        ft_config = self.config.get("futures", {})
+        premarket = dt_time(9, 0)
+        session_start = dt_time(9, 30)
+        session_end = dt_time(11, 0)
+        postsession = dt_time(11, 15)
+        monitor_interval = ft_config.get("monitor_interval", 300)
+
+        # Pre-market brief (9:00 AM ET)
+        if current_time >= premarket and current_time < session_start:
+            brief = self.futures.run_premarket()
+            if brief:
+                self._log_chat("futures", brief["message"], "info")
+
+        # Live session monitoring (9:30-11:00, every 5 min)
+        if current_time >= session_start and current_time <= session_end:
+            if now - self.last_futures_check >= monitor_interval:
+                signal = self.futures.check_eq_rejection()
+                if signal:
+                    self._log_chat("futures", signal["message"], "success")
+
+                    # Submit to approval queue if configured
+                    self.approvals.submit_action(
+                        "eq_rejection_signal",
+                        f"EQ Rejection {signal['direction']} @ {signal['entry']:.2f}",
+                        signal["bias_confirms"],
+                        params=signal
+                    )
+                self.last_futures_check = now
+
+        # Post-session (11:15 AM ET)
+        if current_time >= postsession and current_time < dt_time(11, 30):
+            summary = self.futures.run_postsession()
+            if summary:
+                fired = "Signal fired" if summary["signal_fired"] else "No signal"
+                self._log_chat("futures",
+                    f"📋 Session complete: {summary['sequence']} | {summary['bias']} | {fired}",
+                    "info")
+
     def get_dashboard_state(self):
         return {
             "health": self.bot_health,
@@ -265,6 +318,7 @@ class Jarvis:
             "approvals": self.approvals.get_dashboard_data(),
             "chat_log": self.chat_log[-50:],
             "git_commits": self.git.get_recent_commits(10),
+            "futures": self.futures.get_dashboard_data() if self.futures else None,
             "config": {
                 "bots": {k: {
                     "name": v["name"],
@@ -303,6 +357,27 @@ class Jarvis:
             d, m = data["daily"], data["monthly"]
             self._log_chat("jarvis",
                 f"Today: ${d['cost']:.4f}/{d['limit']} ({d['calls']} calls) | Month: ${m['cost']:.4f}/{m['limit']}", "info")
+        elif cmd in ("futures", "premarket", "bias"):
+            if self.futures:
+                brief = self.futures.run_premarket()
+                if brief:
+                    self._log_chat("futures", brief["message"], "info")
+                else:
+                    data = self.futures.get_dashboard_data()
+                    seq = data.get("sequence", "unknown")
+                    bias = data.get("bias", "unknown")
+                    self._log_chat("futures", f"Current: {seq} → {bias}", "info")
+            else:
+                self._log_chat("jarvis", "Futures module not enabled", "warning")
+        elif cmd == "futures stats":
+            if self.futures:
+                stats = self.futures.get_stats()
+                self._log_chat("futures", json.dumps(stats, indent=2, default=str), "info")
+        elif cmd == "weekly":
+            if self.futures:
+                summary = self.futures.get_weekly_summary()
+                if summary:
+                    self._log_chat("futures", summary, "info")
         else:
             if self.budget.can_make_call():
                 self._log_chat("jarvis", "Asking Haiku...", "info")
@@ -359,6 +434,10 @@ class Jarvis:
                 if now - self.last_analysis_time >= self.config["haiku"]["analysis_interval"]:
                     self.run_scheduled_analysis()
                     self.last_analysis_time = now
+
+                # Futures monitoring
+                if self.futures and self.futures.enabled:
+                    self._run_futures_checks(now)
 
                 self.process_approved_actions()
                 time.sleep(5)

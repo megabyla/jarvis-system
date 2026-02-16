@@ -19,6 +19,27 @@
 - Hybrid: Big bet at 14:00 (60s before close)
 
 ## Past Decisions
+- 2/15 10:15PM: 2/16 02:14 UTC: Hybrid bot status unchanged: Zero trades in paper mode as of 2/16 02:59 UTC. Scout/big-bet trigger logic needs debug before live deployment.
+- 2/15 10:15PM: 2/16 02:14 UTC: Duplicate trades detected: IDs 96 and 97 have identical timestamps (2026-02-16T02:59:02.xxx), identical entry (0.835), identical movement (-0.340), identical stake ($5). Possible race condition or system bug. Requires investigation.
+- 2/15 10:15PM: 2/16 02:14 UTC: Movement filter validated: All 50 recent trades respect 0.2% minimum. Lowest movement = 0.212% (ID 90). Filter is working correctly and requires no changes.
+- 2/15 10:15PM: 2/16 02:14 UTC: Entry discipline validated: 48 of 50 trades in 75-91% range. No entries >92%. Entry logic is solid and requires no changes.
+- 2/15 10:15PM: 2/16 02:14 UTC: Confirmed AGAIN: 82% win rate (41/50) with $5 stakes = -$21.92 P&L. Same win rate at $2 stakes would yield +$15-20 P&L. Stake sizing is destroying $37-42 per 50-trade cycle. This is the ONLY execution problem with Sharbel.
+- 2/15 10:15PM: 2/16 02:14 UTC: Stake creep FOURTH VIOLATION confirmed. Trades 78-97 (20 consecutive trades) all $5 stakes despite reversion orders at 2/14 21:29, 2/15 02:59, 2/15 10:14, 2/15 16:14 UTC. Violation window: 2/14 21:29 to 2/16 02:59 UTC (29+ hours continuous). Soft rules have failed completely. Hard technical lock on stakes is MANDATORY before next trade execution.
+- 2/15 4:15PM: 2/15 16:14 UTC: Investigating: Trades 84, 85, 77 lost with movement 0.219-0.254%. These are borderline cases at filter threshold. May need to raise movement filter to 0.25% or add secondary confirmation.
+- 2/15 4:15PM: 2/15 16:14 UTC: Entry discipline validated: 19 of 20 recent trades in 75-91% range. No entries >92%. Entry logic is solid.
+- 2/15 4:15PM: 2/15 16:14 UTC: Movement filter validated: All 20 recent trades respect 0.2% minimum. Lowest movement = 0.212% (ID 90). Filter is working correctly.
+- 2/15 4:15PM: 2/15 16:14 UTC: Confirmed AGAIN: 82% win rate (41/50) with $5 stakes = -$24.51 P&L. Same win rate at $2 stakes would yield +$10-15 P&L. Stake sizing is destroying $34-40 per 50-trade cycle. This is the ONLY problem with Sharbel's execution.
+- 2/15 4:15PM: 2/15 16:14 UTC: CRITICAL ALERT - Stake creep THIRD VIOLATION. All 20 trades (IDs 71-90) remain at $5 despite three reversion orders. Violation window: 2/14 21:29 to 2/15 20:44 UTC (23+ hours). Soft rules have failed completely. Hard technical lock on stakes is now MANDATORY before any further trading.
+- 2/15 10:15AM: Hybrid bot status unchanged: Zero trades in paper mode as of 2/15 10:14 UTC. Scout/big-bet trigger logic needs debug before live deployment.
+- 2/15 10:15AM: Movement filter validated: All 50 recent trades respect 0.2% minimum. No weak-signal losses. Filter is working correctly and requires no changes.
+- 2/15 10:15AM: Entry discipline validated: 48 of 50 trades in 75-91% range. Trade 77 at 78.5% lost as expected. No entries >92%. Entry logic is solid and requires no changes.
+- 2/15 10:15AM: Confirmed: 84% win rate (42/50) with $5 stakes = -$18.20 P&L. Same win rate at $2 stakes would yield +$15-20 P&L. Stake sizing is destroying $33-38 per 50-trade cycle. This is the ONLY problem with Sharbel's execution.
+- 2/15 10:15AM: CRITICAL ALERT 2/15 10:14 UTC: Stake creep detected THIRD TIME. Trades 71-82 all $5 stakes despite 2/15 04:14 reversion order. Violation window: 2/14 21:29 to 2/15 10:29 UTC (continuous). Soft rules have failed 3 times in 36 hours. Hard technical lock on stakes is now MANDATORY before any further trading.
+- 2/15 4:15AM: Hybrid bot status UNCHANGED: Zero trades in paper mode as of 2/15 04:14 UTC. Scout/big-bet trigger logic needs debug before live deployment.
+- 2/15 4:15AM: Movement filter VALIDATED: All 50 trades respect 0.2% minimum. No weak-signal losses. Filter is working correctly.
+- 2/15 4:15AM: Entry range discipline HOLDING: 43 of 50 trades in 80-90% sweet spot. Trade 77 at 78.5% lost as expected. No entries >92%. Entry logic is solid.
+- 2/15 4:15AM: Confirmed: 84% win rate with $5 stakes = -$19.57 P&L (50 trades). Same win rate at $2 stakes would yield +$15-20 P&L. Stake sizing is destroying profitability. Hard lock required.
+- 2/15 4:15AM: CRITICAL ALERT 2/15 04:14 UTC: Stake creep detected THIRD TIME. Trades 71-80 all $5 stakes despite 2/14 10:11PM reversion order. Violation window: 2/14 21:29 to 2/15 04:14 UTC. Soft rules have failed 3 times in 36 hours. Hard technical lock on stakes is now mandatory.
 - 2/14 10:14PM: Entry range discipline holds: 43 wins across 75-91% range. No entries >92%. Sweet spot (80-90%) performing as expected.
 - 2/14 10:14PM: Movement filter validation holds: All 50 recent trades respect 0.2% minimum. No weak-signal losses. Filter is working correctly.
 - 2/14 10:14PM: Hybrid bot status unchanged: Zero trades in paper mode. Blocker for live deployment. Needs debug of scout/big-bet trigger logic before proceeding.

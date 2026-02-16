@@ -150,5 +150,76 @@
     "submitted_at": "2026-02-14T21:23:23.397948-05:00",
     "resolved_at": "2026-02-14T22:37:06.390183-05:00",
     "resolved_by": "user"
+  },
+  {
+    "id": "action_1771125294153",
+    "type": "implement_stake_lock",
+    "description": "Add a hard constraint that prevents stakes >$2 without explicit manual approval in code. Log all stake changes with timestamp and reason.",
+    "reason": "Stake creep has occurred twice (2/14 9:23PM and 2/14 21:29PM). Soft rules are not holding. Need technical enforcement.",
+    "bot": null,
+    "params": {
+      "action": "implement_stake_lock",
+      "description": "Add a hard constraint that prevents stakes >$2 without explicit manual approval in code. Log all stake changes with timestamp and reason.",
+      "reason": "Stake creep has occurred twice (2/14 9:23PM and 2/14 21:29PM). Soft rules are not holding. Need technical enforcement.",
+      "priority": "critical",
+      "requires_approval": true
+    },
+    "tier": "approval",
+    "status": "rejected",
+    "submitted_at": "2026-02-14T22:14:54.153532-05:00",
+    "resolved_at": "2026-02-15T00:41:37.564717-05:00",
+    "resolved_by": "user"
+  },
+  {
+    "id": "action_1771208682483",
+    "type": "restart_crashed_bot",
+    "description": "Restart sharbel - process not found",
+    "reason": "Screen session not detected",
+    "bot": "sharbel",
+    "params": {},
+    "tier": "auto",
+    "status": "auto_approved",
+    "submitted_at": "2026-02-15T21:24:42.483598-05:00",
+    "resolved_at": "2026-02-15T21:24:42.483598-05:00",
+    "resolved_by": "jarvis"
+  },
+  {
+    "id": "action_1771210970550",
+    "type": "restart_crashed_bot",
+    "description": "Restart sharbel - process not found",
+    "reason": "Screen session not detected",
+    "bot": "sharbel",
+    "params": {},
+    "tier": "auto",
+    "status": "auto_approved",
+    "submitted_at": "2026-02-15T22:02:50.550547-05:00",
+    "resolved_at": "2026-02-15T22:02:50.550547-05:00",
+    "resolved_by": "jarvis"
+  },
+  {
+    "id": "action_1771214480324",
+    "type": "restart_crashed_bot",
+    "description": "Restart sharbel - process not found",
+    "reason": "Screen session not detected",
+    "bot": "sharbel",
+    "params": {},
+    "tier": "auto",
+    "status": "auto_approved",
+    "submitted_at": "2026-02-15T23:01:20.324837-05:00",
+    "resolved_at": "2026-02-15T23:01:20.324837-05:00",
+    "resolved_by": "jarvis"
+  },
+  {
+    "id": "action_1771214544446",
+    "type": "restart_crashed_bot",
+    "description": "Restart sharbel - process not found",
+    "reason": "Screen session not detected",
+    "bot": "sharbel",
+    "params": {},
+    "tier": "auto",
+    "status": "auto_approved",
+    "submitted_at": "2026-02-15T23:02:24.446442-05:00",
+    "resolved_at": "2026-02-15T23:02:24.446442-05:00",
+    "resolved_by": "jarvis"
   }
 ]
