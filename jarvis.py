@@ -281,7 +281,7 @@ class Jarvis:
 
         # Pre-market brief (9:00 AM ET)
         if current_time >= premarket and current_time < session_start:
-            brief = self.futures.run_premarket()
+            brief = self.futures.run_premarket(force=True)
             if brief:
                 self._log_chat("futures", brief["message"], "info")
 
@@ -359,7 +359,7 @@ class Jarvis:
                 f"Today: ${d['cost']:.4f}/{d['limit']} ({d['calls']} calls) | Month: ${m['cost']:.4f}/{m['limit']}", "info")
         elif cmd in ("futures", "premarket", "bias"):
             if self.futures:
-                brief = self.futures.run_premarket()
+                brief = self.futures.run_premarket(force=True)
                 if brief:
                     self._log_chat("futures", brief["message"], "info")
                 else:

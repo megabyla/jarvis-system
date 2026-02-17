@@ -8,9 +8,10 @@ bots:
     main_file: sharbel_bot.py
     db_path: /root/sharbel-bot/sharbel_trades.db
     dashboard_port: 5000
-    screen_name: sharbel_bot
+    screen_name: sharbel
     venv_path: /root/sharbel-bot/venv
     enabled: true
+    auto_restart: false
   hybrid:
     name: Hybrid Bot
     directory: /root/hybrid-bot
@@ -20,6 +21,7 @@ bots:
     screen_name: hybrid_bot
     venv_path: /root/hybrid-bot/venv
     enabled: true
+    auto_restart: true
 watchdog:
   heartbeat_interval: 30
   process_check_interval: 30

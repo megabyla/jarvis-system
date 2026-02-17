@@ -581,3 +581,563 @@ hint: See the 'Note about fast-forwards' in 'git push --help' for details.
 2026-02-16 07:58:28 [INFO] User approved: Movement filter at 0.2% minimum is working correctly. All 50 recent trades respect threshold.
 2026-02-16 07:58:28 [WARNING] No handler for action: no_change_movement_filter
 2026-02-16 07:58:37 [INFO] User rejected: Halt Sharbel trading immediately until hard stake lock is deployed and verified in test environment.
+2026-02-16 07:59:51 [INFO] ============================================================
+2026-02-16 07:59:51 [INFO] JARVIS STARTING UP
+2026-02-16 07:59:51 [INFO] ============================================================
+2026-02-16 07:59:51 [INFO] Futures database initialized
+2026-02-16 07:59:51 [INFO] FuturesMonitor initialized: ES
+2026-02-16 07:59:51 [INFO] Futures monitor enabled
+2026-02-16 07:59:51 [INFO] Synced sharbel files to repo
+2026-02-16 07:59:51 [INFO] Synced hybrid files to repo
+2026-02-16 07:59:51 [INFO] No changes to commit
+2026-02-16 07:59:51 [INFO] All modules initialized
+2026-02-16 07:59:51 [INFO] Monitoring: sharbel, hybrid
+2026-02-16 07:59:51 [INFO] Main loop starting
+2026-02-16 07:59:51 [INFO] Dashboard on port 6001
+2026-02-16 07:59:51 [INFO] Auto-approved: Restart sharbel - process not found
+2026-02-16 07:59:55 [INFO] ✅ Successfully restarted sharbel
+2026-02-16 07:59:55 [ERROR] Stats error: no such column: settled
+2026-02-16 07:59:55 [ERROR] Stats error: no such column: settled
+2026-02-16 07:59:55 [ERROR] Trade fetch error: no such column: side
+2026-02-16 07:59:55 [ERROR] Stats error: no such column: settled
+2026-02-16 08:00:16 [INFO] API call: 6564in/2048out = $0.0042
+2026-02-16 08:00:16 [INFO] Memory updated: 2/16 02:59 UTC: CRITICAL - Duplicate trades CONFIRMED AGAIN. IDs 96-97 (BTC DOWN...
+2026-02-16 08:00:16 [INFO] Memory updated: 2/16 02:59 UTC: Stake creep SIXTH VIOLATION. Trades 78-99 (22 consecutive) all $...
+2026-02-16 08:00:16 [INFO] Memory updated: 2/16 02:59 UTC: Win rate stable at 82% (41/50). Entry discipline holding: 48 of ...
+2026-02-16 08:00:16 [INFO] Memory updated: 2/16 02:59 UTC: P&L math confirmed: 82% win rate with $5 stakes = -$23.49 over 5...
+2026-02-16 08:00:16 [INFO] Memory updated: 2/16 02:59 UTC: Config update mechanism may be broken. 5 reversion orders issued...
+2026-02-16 08:00:16 [INFO] Memory updated: 2/16 02:59 UTC: Hybrid status unchanged: zero trades in paper mode. Scout/big-be...
+2026-02-16 08:00:16 [INFO] Analysis complete: Sharbel is operationally sound (82% win rate, all filters validated) but financially crippled by $5 
+2026-02-16 08:00:16 [INFO] Queued for approval: Implement database-level constraint: stakes table has CHECK constraint (stake = 2.00 ONLY). No application logic, no soft rules. Hard constraint at storage layer.
+2026-02-16 08:00:16 [INFO] Queued for approval: Debug race condition causing duplicate trade records. IDs 96-97 and 98-99 have identical timestamps (millisecond precision), identical entry prices, identical movements, identical stakes. Check: (1) concurrent write locks in trade execution, (2) logging pipeline for duplicates, (3) webhook retry logic.
+2026-02-16 08:00:16 [INFO] Queued for approval: Test that bot is reading latest configuration on startup. Run: (1) change stakes to $2 in config file, (2) restart bot, (3) verify next trade uses $2, (4) check logs for config load timestamp. If bot is reading stale config, this explains all 6 violations.
+2026-02-16 08:00:16 [INFO] Queued for approval: Halt Sharbel live trading until hard stake lock is deployed and verified. Paper mode only until fixes are confirmed.
+2026-02-16 08:00:16 [INFO] Queued for approval: Hybrid has zero trades in paper mode as of 2/16 02:59 UTC. Scout times are 13:10, 13:30, 13:45 into window; big bet at 14:00. Check: (1) are scout triggers firing? (2) are fill assumptions (85% paper vs 60-70% live) correct? (3) is big-bet logic executing?
+2026-02-16 08:00:42 [INFO] User approved: Add a rule to memory: 'Stake changes require explicit log entry with timestamp and reason. Auto-flag any deviation from baseline within 24 hours.'
+2026-02-16 08:00:42 [WARNING] No handler for action: document_stake_change_process
+2026-02-16 08:00:59 [INFO] User rejected: Reduce upper entry bound from 90% to 87%. Trade 75 (0.905 entry) is above the sweet spot and represents the kind of high-conviction, low-reward trade that fails at current stake levels.
+2026-02-16 08:01:03 [INFO] User approved: Add technical enforcement: stakes must equal $2.00 exactly. Remove all soft rule overrides. Lock at code level, not config.
+2026-02-16 08:01:03 [WARNING] No handler for action: implement_hard_stake_lock
+2026-02-16 08:01:08 [INFO] User rejected: Manually reset all $5 and $10 stakes to $2.00 for trades 71-80. Recalculate P&L impact.
+2026-02-16 08:01:11 [INFO] User rejected: Review code that allows stakes to deviate from $2.00. Identify what triggered the override in trades 71-80. Was it manual intervention, a bug, or a config reload?
+2026-02-16 08:01:15 [INFO] User rejected: Keep 80-90% sweet spot active. Entry discipline is working. Trade 77 at 78.5% lost as expected (below range).
+2026-02-16 08:01:21 [INFO] User rejected: Hybrid bot has zero trades in paper mode. Verify scout trigger times (13:10, 13:30, 13:45) and big-bet logic (14:00) are firing. Check logs for missed signals.
+2026-02-16 08:01:23 [INFO] User approved: Deploy code-level constraint that prevents ANY trade with stake > $2.00. Remove all soft rules and manual reversion options. Make this a hard circuit breaker in the execution layer.
+2026-02-16 08:01:23 [WARNING] No handler for action: implement_hard_technical_lock_on_stakes
+2026-02-16 08:01:26 [INFO] User rejected: Halt all Sharbel trading immediately. Do not resume until hard stake lock is verified in code and tested with 5+ live trades at $2 baseline.
+2026-02-16 08:01:29 [INFO] User rejected: Investigate why Hybrid bot has zero trades in paper mode despite running for 24+ hours. Verify that scout times (13:10, 13:30, 13:45) and big-bet logic (14:00) are firing correctly. Check logs for trigger conditions and order placement.
+2026-02-16 08:01:31 [INFO] User rejected: Deploy technical hard lock on Sharbel stakes at $2.00 maximum. Remove all soft rule enforcement. Make $2 the only allowed stake value in code.
+2026-02-16 08:01:34 [INFO] User approved: Analyze why trades 84, 85, 77 lost despite 0.2% movement filter. All three had movement <0.26% and entry >0.78. Movement filter should have rejected these or win rate should have been higher.
+2026-02-16 08:01:34 [WARNING] No handler for action: investigate_weak_signal_losses
+2026-02-16 08:01:40 [INFO] User rejected: Verify that Hybrid bot's scout trigger logic is executing at scheduled times (13:10, 13:30, 13:45 UTC). Add logging to confirm trigger fires and big-bet logic at 14:00.
+2026-02-16 08:01:42 [INFO] User rejected: Implement hard technical lock on stakes at $2.00 maximum. Block any trade execution if stake > $2.00. This must execute BEFORE next trade.
+2026-02-16 08:01:44 [INFO] User approved: Review trades 96 and 97 (both timestamp 2026-02-16T02:59:02.xxx, identical entry/movement/stake). Determine if this is a system bug or intentional retry logic.
+2026-02-16 08:01:44 [WARNING] No handler for action: investigate_duplicate_trades
+2026-02-16 08:01:47 [INFO] User approved: Entry range logic is performing correctly. Keep conviction range at 75-92% with sweet spot 80-90%.
+2026-02-16 08:01:47 [WARNING] No handler for action: no_change_entry_discipline
+2026-02-16 08:01:52 [INFO] User rejected: Deploy technical hard lock on stake parameter. Set maximum allowed stake to $2.00 in code. Disable all soft reversion rules and replace with immutable code constraint.
+2026-02-16 08:01:59 [INFO] User rejected: Once hard stake lock is deployed, execute immediate reversion to $2 baseline stakes. This will convert the current 82% win rate into +$18-22 P&L per 50-trade cycle (vs. current -$23.49).
+2026-02-16 08:02:03 [INFO] User rejected: Hybrid bot has executed zero trades in paper mode despite 48+ hours of operation. Verify: (1) Are scout triggers firing at 13:10, 13:30, 13:45? (2) Is big-bet trigger firing at 14:00? (3) Are fill assumptions (85% paper, 60-70% live) realistic? (4) Is the BTC-only asset filter too restrictive?
+2026-02-16 08:02:10 [INFO] User rejected: Implement database-level constraint: stakes table has CHECK constraint (stake = 2.00 ONLY). No application logic, no soft rules. Hard constraint at storage layer.
+2026-02-16 08:02:12 [INFO] User approved: Debug race condition causing duplicate trade records. IDs 96-97 and 98-99 have identical timestamps (millisecond precision), identical entry prices, identical movements, identical stakes. Check: (1) concurrent write locks in trade execution, (2) logging pipeline for duplicates, (3) webhook retry logic.
+2026-02-16 08:02:12 [WARNING] No handler for action: investigate_duplicate_trades
+2026-02-16 08:02:18 [INFO] User rejected: Test that bot is reading latest configuration on startup. Run: (1) change stakes to $2 in config file, (2) restart bot, (3) verify next trade uses $2, (4) check logs for config load timestamp. If bot is reading stale config, this explains all 6 violations.
+2026-02-16 08:02:22 [INFO] User rejected: Halt Sharbel live trading until hard stake lock is deployed and verified. Paper mode only until fixes are confirmed.
+2026-02-16 08:02:24 [INFO] User rejected: Hybrid has zero trades in paper mode as of 2/16 02:59 UTC. Scout times are 13:10, 13:30, 13:45 into window; big bet at 14:00. Check: (1) are scout triggers firing? (2) are fill assumptions (85% paper vs 60-70% live) correct? (3) is big-bet logic executing?
+2026-02-16 08:04:56 [ERROR] Stats error: no such column: settled
+2026-02-16 08:09:57 [ERROR] Stats error: no such column: settled
+2026-02-16 08:14:57 [ERROR] Stats error: no such column: settled
+2026-02-16 08:19:58 [ERROR] Stats error: no such column: settled
+2026-02-16 08:24:59 [ERROR] Stats error: no such column: settled
+2026-02-16 08:29:59 [ERROR] Stats error: no such column: settled
+2026-02-16 08:35:00 [ERROR] Stats error: no such column: settled
+2026-02-16 08:40:00 [ERROR] Stats error: no such column: settled
+2026-02-16 08:45:01 [ERROR] Stats error: no such column: settled
+2026-02-16 08:50:01 [ERROR] Stats error: no such column: settled
+2026-02-16 08:55:02 [ERROR] Stats error: no such column: settled
+2026-02-16 09:00:02 [ERROR] Stats error: no such column: settled
+2026-02-16 09:05:03 [ERROR] Stats error: no such column: settled
+2026-02-16 09:10:03 [ERROR] Stats error: no such column: settled
+2026-02-16 09:15:04 [ERROR] Stats error: no such column: settled
+2026-02-16 09:20:04 [ERROR] Stats error: no such column: settled
+2026-02-16 09:25:05 [ERROR] Stats error: no such column: settled
+2026-02-16 09:30:05 [ERROR] Stats error: no such column: settled
+2026-02-16 09:35:06 [ERROR] Stats error: no such column: settled
+2026-02-16 09:40:06 [ERROR] Stats error: no such column: settled
+2026-02-16 09:45:07 [ERROR] Stats error: no such column: settled
+2026-02-16 09:50:08 [ERROR] Stats error: no such column: settled
+2026-02-16 09:55:08 [ERROR] Stats error: no such column: settled
+2026-02-16 10:00:09 [ERROR] Stats error: no such column: settled
+2026-02-16 10:05:09 [ERROR] Stats error: no such column: settled
+2026-02-16 10:10:10 [ERROR] Stats error: no such column: settled
+2026-02-16 10:15:10 [ERROR] Stats error: no such column: settled
+2026-02-16 10:20:11 [ERROR] Stats error: no such column: settled
+2026-02-16 10:25:11 [ERROR] Stats error: no such column: settled
+2026-02-16 10:30:12 [ERROR] Stats error: no such column: settled
+2026-02-16 10:35:12 [ERROR] Stats error: no such column: settled
+2026-02-16 10:40:13 [ERROR] Stats error: no such column: settled
+2026-02-16 10:45:13 [ERROR] Stats error: no such column: settled
+2026-02-16 10:50:14 [ERROR] Stats error: no such column: settled
+2026-02-16 10:55:14 [ERROR] Stats error: no such column: settled
+2026-02-16 11:00:15 [ERROR] Stats error: no such column: settled
+2026-02-16 11:05:15 [ERROR] Stats error: no such column: settled
+2026-02-16 11:10:16 [ERROR] Stats error: no such column: settled
+2026-02-16 11:15:16 [ERROR] Stats error: no such column: settled
+2026-02-16 11:20:17 [ERROR] Stats error: no such column: settled
+2026-02-16 11:25:17 [ERROR] Stats error: no such column: settled
+2026-02-16 11:30:18 [ERROR] Stats error: no such column: settled
+2026-02-16 11:35:19 [ERROR] Stats error: no such column: settled
+2026-02-16 11:40:19 [ERROR] Stats error: no such column: settled
+2026-02-16 11:45:20 [ERROR] Stats error: no such column: settled
+2026-02-16 11:50:20 [ERROR] Stats error: no such column: settled
+2026-02-16 11:55:21 [ERROR] Stats error: no such column: settled
+2026-02-16 12:00:21 [ERROR] Stats error: no such column: settled
+2026-02-16 12:05:22 [ERROR] Stats error: no such column: settled
+2026-02-16 12:10:22 [ERROR] Stats error: no such column: settled
+2026-02-16 12:15:23 [ERROR] Stats error: no such column: settled
+2026-02-16 12:20:23 [ERROR] Stats error: no such column: settled
+2026-02-16 12:25:24 [ERROR] Stats error: no such column: settled
+2026-02-16 12:30:24 [ERROR] Stats error: no such column: settled
+2026-02-16 12:35:25 [ERROR] Stats error: no such column: settled
+2026-02-16 12:40:26 [ERROR] Stats error: no such column: settled
+2026-02-16 12:45:26 [ERROR] Stats error: no such column: settled
+2026-02-16 12:50:27 [ERROR] Stats error: no such column: settled
+2026-02-16 12:55:27 [ERROR] Stats error: no such column: settled
+2026-02-16 13:00:28 [ERROR] Stats error: no such column: settled
+2026-02-16 13:05:28 [ERROR] Stats error: no such column: settled
+2026-02-16 13:10:29 [ERROR] Stats error: no such column: settled
+2026-02-16 13:15:29 [ERROR] Stats error: no such column: settled
+2026-02-16 13:19:30 [INFO] Auto-approved: Restart sharbel - process not found
+2026-02-16 13:19:34 [INFO] ✅ Successfully restarted sharbel
+2026-02-16 13:20:34 [ERROR] Stats error: no such column: settled
+2026-02-16 13:21:34 [INFO] Auto-approved: Restart sharbel - process not found
+2026-02-16 13:21:38 [INFO] ✅ Successfully restarted sharbel
+2026-02-16 13:23:36 [INFO] ============================================================
+2026-02-16 13:23:36 [INFO] JARVIS STARTING UP
+2026-02-16 13:23:36 [INFO] ============================================================
+2026-02-16 13:23:36 [INFO] Futures database initialized
+2026-02-16 13:23:36 [INFO] FuturesMonitor initialized: ES
+2026-02-16 13:23:36 [INFO] Futures monitor enabled
+2026-02-16 13:23:36 [INFO] Synced sharbel files to repo
+2026-02-16 13:23:36 [INFO] Synced hybrid files to repo
+2026-02-16 13:23:36 [INFO] No changes to commit
+2026-02-16 13:23:36 [INFO] All modules initialized
+2026-02-16 13:23:36 [INFO] Monitoring: sharbel, hybrid
+2026-02-16 13:23:36 [INFO] Main loop starting
+2026-02-16 13:23:36 [INFO] Dashboard on port 6001
+2026-02-16 13:23:36 [ERROR] Stats error: no such column: settled
+2026-02-16 13:23:36 [ERROR] Stats error: no such column: settled
+2026-02-16 13:23:36 [ERROR] Trade fetch error: no such column: side
+2026-02-16 13:23:36 [ERROR] Stats error: no such column: settled
+2026-02-16 13:23:58 [INFO] API call: 7015in/2048out = $0.0043
+2026-02-16 13:23:58 [INFO] Memory updated: 2/16 08:23 UTC: DUPLICATE LOGGING BUG CONFIRMED SEVENTH TIME. IDs 100-105 show i...
+2026-02-16 13:23:58 [INFO] Memory updated: 2/16 08:23 UTC: Stake hard-lock is OVERDUE. Soft reversion orders have failed 6 ...
+2026-02-16 13:23:58 [INFO] Memory updated: 2/16 08:23 UTC: Config update mechanism may be broken. 6 reversion orders issued...
+2026-02-16 13:23:58 [INFO] Memory updated: 2/16 08:23 UTC: Sharbel performance CONFIRMED STABLE: 82% win rate (41/50 settle...
+2026-02-16 13:23:58 [INFO] Memory updated: 2/16 08:23 UTC: Entry discipline HOLDING: 48 of 50 trades in 75-91% range. No en...
+2026-02-16 13:23:58 [INFO] Memory updated: 2/16 08:23 UTC: Movement filter VALIDATED: All 50 trades respect 0.2% minimum. N...
+2026-02-16 13:23:58 [INFO] Memory updated: 2/16 08:23 UTC: Hybrid bot status UNCHANGED: Zero trades in paper mode as of 2/1...
+2026-02-16 13:23:58 [INFO] Analysis complete: CRITICAL SYSTEM FAILURE: Duplicate trade logging persists across all recent trades (IDs 96-105). Sha
+2026-02-16 13:23:58 [INFO] Queued for approval: Stop all Sharbel executions until duplicate logging bug is fixed and stake hard-lock is deployed.
+2026-02-16 13:23:58 [INFO] Queued for approval: Implement technical constraint that prevents any trade execution with stakes >$2. Make this a code-level check, not a configuration rule.
+2026-02-16 13:23:58 [INFO] Queued for approval: Debug the trade logging pipeline. Check for: (1) race conditions in order submission, (2) duplicate writes to trade log, (3) timestamp precision issues, (4) async callback handlers firing twice.
+2026-02-16 13:23:58 [INFO] Queued for approval: Test that configuration changes (stake reductions, filter adjustments) are actually being read by the bot at execution time. Add logging to confirm config values at trade submission.
+2026-02-16 13:23:58 [INFO] Queued for approval: Verify that Hybrid's scout trigger times (13:10, 13:30, 13:45) and big-bet logic (14:00) are executing in paper mode. Add execution logs to confirm triggers are firing.
+2026-02-16 13:48:12 [INFO] ============================================================
+2026-02-16 13:48:12 [INFO] JARVIS STARTING UP
+2026-02-16 13:48:12 [INFO] ============================================================
+2026-02-16 13:48:12 [INFO] Futures database initialized
+2026-02-16 13:48:12 [INFO] FuturesMonitor initialized: ES
+2026-02-16 13:48:12 [INFO] Futures monitor enabled
+2026-02-16 13:48:12 [INFO] Synced sharbel files to repo
+2026-02-16 13:48:12 [INFO] Synced hybrid files to repo
+2026-02-16 13:48:12 [INFO] No changes to commit
+2026-02-16 13:48:12 [INFO] All modules initialized
+2026-02-16 13:48:12 [INFO] Monitoring: sharbel, hybrid
+2026-02-16 13:48:12 [INFO] Main loop starting
+2026-02-16 13:48:12 [INFO] Dashboard on port 6001
+2026-02-16 13:48:12 [INFO] Auto-approved: Restart sharbel - process not found
+2026-02-16 13:48:16 [INFO] ✅ Successfully restarted sharbel
+2026-02-16 13:48:16 [ERROR] Stats error: no such column: settled
+2026-02-16 13:48:17 [ERROR] Stats error: no such column: settled
+2026-02-16 13:48:17 [ERROR] Trade fetch error: no such column: side
+2026-02-16 13:48:17 [ERROR] Stats error: no such column: settled
+2026-02-16 13:48:37 [INFO] API call: 7557in/2032out = $0.0044
+2026-02-16 13:48:37 [INFO] Memory updated: 2/16 08:48 UTC: DUPLICATE LOGGING BUG CONFIRMED EIGHTH TIME. IDs 100-105 show ex...
+2026-02-16 13:48:37 [INFO] Memory updated: 2/16 08:48 UTC: Stake creep SEVENTH VIOLATION ONGOING. All 50 trades remain at $...
+2026-02-16 13:48:37 [INFO] Memory updated: 2/16 08:48 UTC: Sharbel performance CONFIRMED STABLE: 84% win rate (42/50) with ...
+2026-02-16 13:48:37 [INFO] Memory updated: 2/16 08:48 UTC: Movement filter VALIDATED: All 50 trades respect 0.2% minimum. L...
+2026-02-16 13:48:37 [INFO] Memory updated: 2/16 08:48 UTC: Entry discipline HOLDING: All 50 trades in 75-91% range. No entr...
+2026-02-16 13:48:37 [INFO] Memory updated: 2/16 08:48 UTC: Hybrid bot status UNCHANGED: Zero trades in paper mode as of 2/1...
+2026-02-16 13:48:37 [INFO] Analysis complete: Sharbel is operationally sound (84% win rate, solid entry discipline, movement filter working) but r
+2026-02-16 13:48:37 [INFO] Queued for approval: Hard-code maximum stake to $2.00 in bot executable. Bypass all config files and environment variables. Make this change non-revertible without code recompile.
+2026-02-16 13:48:37 [INFO] Queued for approval: Debug async trade logging pipeline. Check for race conditions in callback handlers, duplicate event firing, or transaction log write failures. Verify that each trade is logged exactly once.
+2026-02-16 13:48:37 [INFO] Queued for approval: Test whether config reversion orders are actually reaching the bot process. Check if bot is reading from stale startup cache instead of live config files. Verify file permissions and process reload behavior.
+2026-02-16 13:48:37 [INFO] Queued for approval: Verify that Hybrid bot's scout trigger logic is firing at expected times (13:10, 13:30, 13:45 UTC into window). Check logs for trigger conditions, order placement attempts, and fill status. Confirm big-bet logic at 14:00 UTC.
+2026-02-17 01:50:52 [INFO] ============================================================
+2026-02-17 01:50:52 [INFO] JARVIS STARTING UP
+2026-02-17 01:50:52 [INFO] ============================================================
+2026-02-17 01:50:52 [INFO] Futures database initialized
+2026-02-17 01:50:52 [INFO] FuturesMonitor initialized: ES
+2026-02-17 01:50:52 [INFO] Futures monitor enabled
+2026-02-17 01:50:52 [INFO] Synced sharbel files to repo
+2026-02-17 01:50:52 [INFO] Synced hybrid files to repo
+2026-02-17 01:50:53 [INFO] Committed: startup sync
+2026-02-17 01:50:53 [WARNING] Push failed: To https://github.com/megabyla/jarvis-system.git
+ ! [rejected]        main -> main (fetch first)
+error: failed to push some refs to 'https://github.com/megabyla/jarvis-system.git'
+hint: Updates were rejected because the remote contains work that you do not
+hint: have locally. This is usually caused by another repository pushing to
+hint: the same ref. If you want to integrate the remote changes, use
+hint: 'git pull' before pushing again.
+hint: See the 'Note about fast-forwards' in 'git push --help' for details.
+2026-02-17 01:50:53 [INFO] All modules initialized
+2026-02-17 01:50:53 [INFO] Monitoring: sharbel, hybrid
+2026-02-17 01:50:53 [INFO] Main loop starting
+2026-02-17 01:50:53 [INFO] Dashboard on port 6001
+2026-02-17 01:50:53 [INFO] Auto-approved: Restart sharbel - process not found
+2026-02-17 01:50:53 [INFO] sharbel crashed but auto_restart disabled (managed manually)
+2026-02-17 01:50:53 [ERROR] Stats error: no such column: settled
+2026-02-17 01:50:54 [INFO] Auto-approved: Restart sharbel - process not found
+2026-02-17 01:50:54 [INFO] sharbel crashed but auto_restart disabled (managed manually)
+2026-02-17 01:50:54 [ERROR] Stats error: no such column: settled
+2026-02-17 01:50:54 [ERROR] Trade fetch error: no such column: side
+2026-02-17 01:50:54 [ERROR] Stats error: no such column: settled
+2026-02-17 01:51:14 [INFO] API call: 7996in/2013out = $0.0045
+2026-02-17 01:51:14 [INFO] Memory updated: 2/16 20:50 UTC: Sharbel performance CONFIRMED STABLE (NINTH ANALYSIS): 82% win r...
+2026-02-17 01:51:14 [INFO] Memory updated: 2/16 20:50 UTC: Entry discipline VALIDATED (NINTH ANALYSIS): 48 of 50 trades in ...
+2026-02-17 01:51:14 [INFO] Memory updated: 2/16 20:50 UTC: Movement filter VALIDATED (NINTH ANALYSIS): All 50 trades respec...
+2026-02-17 01:51:14 [INFO] Memory updated: 2/16 20:50 UTC: Stake creep NINTH VIOLATION ONGOING. All 50 trades remain at $5 ...
+2026-02-17 01:51:14 [INFO] Memory updated: 2/16 20:50 UTC: DUPLICATE LOGGING BUG CONFIRMED NINTH TIME. IDs 100-105 show exa...
+2026-02-17 01:51:14 [INFO] Memory updated: 2/16 20:50 UTC: Hybrid bot status UNCHANGED: Zero trades in paper mode as of 2/1...
+2026-02-17 01:51:14 [INFO] Analysis complete: Sharbel is operationally stable (82% win rate, entry discipline solid, movement filter working) but 
+2026-02-17 01:51:14 [INFO] Queued for approval: Deploy hard technical lock: set max_stake = $2.00 in bot code with no override capability. Remove soft reversion order mechanism entirely.
+2026-02-17 01:51:14 [INFO] Queued for approval: Debug race condition causing exact byte-for-byte duplicate trades. Affected IDs: 100-101, 102-103, 104-105 (and 96-97, 98-99 from prior logs). Implement mutex/lock on trade logging callback or verify async execution is serialized.
+2026-02-17 01:51:14 [INFO] Queued for approval: Verify scout trigger times (13:10, 13:30, 13:45) and big-bet execution at 14:00. Add logging to confirm: (1) market window detection, (2) scout entry conditions, (3) big-bet placement. Run 5-10 paper trades to confirm logic before live deployment.
+2026-02-17 01:51:25 [INFO] Auto-approved: Restart sharbel - process not found
+2026-02-17 01:51:25 [INFO] sharbel crashed but auto_restart disabled (managed manually)
+2026-02-17 01:51:55 [INFO] Auto-approved: Restart sharbel - process not found
+2026-02-17 01:51:55 [INFO] sharbel crashed but auto_restart disabled (managed manually)
+2026-02-17 01:52:05 [INFO] API call: 132in/50out = $0.0001
+2026-02-17 01:52:25 [INFO] Auto-approved: Restart sharbel - process not found
+2026-02-17 01:52:25 [INFO] sharbel crashed but auto_restart disabled (managed manually)
+2026-02-17 01:52:55 [INFO] Auto-approved: Restart sharbel - process not found
+2026-02-17 01:52:55 [INFO] sharbel crashed but auto_restart disabled (managed manually)
+2026-02-17 01:53:25 [INFO] Auto-approved: Restart sharbel - process not found
+2026-02-17 01:53:25 [INFO] sharbel crashed but auto_restart disabled (managed manually)
+2026-02-17 01:53:55 [INFO] Auto-approved: Restart sharbel - process not found
+2026-02-17 01:53:55 [INFO] sharbel crashed but auto_restart disabled (managed manually)
+2026-02-17 01:54:17 [INFO] ============================================================
+2026-02-17 01:54:17 [INFO] JARVIS STARTING UP
+2026-02-17 01:54:17 [INFO] ============================================================
+2026-02-17 01:54:17 [INFO] Futures database initialized
+2026-02-17 01:54:17 [INFO] FuturesMonitor initialized: ES
+2026-02-17 01:54:17 [INFO] Futures monitor enabled
+2026-02-17 01:54:17 [INFO] Synced sharbel files to repo
+2026-02-17 01:54:17 [INFO] Synced hybrid files to repo
+2026-02-17 01:54:17 [INFO] No changes to commit
+2026-02-17 01:54:17 [INFO] All modules initialized
+2026-02-17 01:54:17 [INFO] Monitoring: sharbel, hybrid
+2026-02-17 01:54:17 [INFO] Main loop starting
+2026-02-17 01:54:17 [INFO] Dashboard on port 6001
+2026-02-17 01:54:17 [ERROR] Stats error: no such column: settled
+2026-02-17 01:54:17 [ERROR] Stats error: no such column: settled
+2026-02-17 01:54:17 [ERROR] Trade fetch error: no such column: side
+2026-02-17 01:54:17 [ERROR] Stats error: no such column: settled
+2026-02-17 01:54:38 [INFO] API call: 8483in/2048out = $0.0047
+2026-02-17 01:54:38 [INFO] Memory updated: 2/16 20:54 UTC: Sharbel performance CONFIRMED STABLE (TENTH ANALYSIS): 82% win r...
+2026-02-17 01:54:38 [INFO] Memory updated: 2/16 20:54 UTC: DUPLICATE LOGGING BUG CONFIRMED TENTH TIME. IDs 100-105 show exa...
+2026-02-17 01:54:38 [INFO] Memory updated: 2/16 20:54 UTC: Stake creep TENTH VIOLATION ONGOING. All 50 trades remain at $5 ...
+2026-02-17 01:54:38 [INFO] Memory updated: 2/16 20:54 UTC: Movement filter VALIDATED (TENTH ANALYSIS): All 50 trades respec...
+2026-02-17 01:54:38 [INFO] Memory updated: 2/16 20:54 UTC: Entry discipline VALIDATED (TENTH ANALYSIS): 48 of 50 trades in ...
+2026-02-17 01:54:38 [INFO] Memory updated: 2/16 20:54 UTC: Hybrid bot status UNCHANGED: Zero trades in paper mode as of 2/1...
+2026-02-17 01:54:38 [INFO] Analysis complete: Sharbel is operationally stable with 82% win rate (41/50 trades) but remains unprofitable due to $5 
+2026-02-17 01:54:38 [INFO] Queued for approval: Deploy hard technical lock on Sharbel stakes at $2 maximum. Bypass all soft config mechanisms. Lock at database/execution layer before trade submission.
+2026-02-17 01:54:38 [INFO] Queued for approval: Debug race condition causing exact byte-for-byte duplicate trades with 0.08-0.5s timestamp deltas. Affects IDs 96-105 (10 duplicates across 5 pairs). Check async callbacks, event listeners, and trade submission pipeline.
+2026-02-17 01:54:38 [INFO] Queued for approval: Audit configuration loading pipeline. Verify bot is reading current config on each trade, not cached startup config. Check for stale cache, file locking issues, or async timing bugs.
+2026-02-17 01:54:38 [INFO] Queued for approval: Hybrid bot has zero trades in paper mode over 71+ hours. Scout times (13:10, 13:30, 13:45) and big-bet time (14:00) are not triggering. Debug trigger logic, time window calculations, and paper mode execution path.
+2026-02-17 01:54:38 [INFO] Queued for approval: Do NOT issue any parameter change orders until config update mechanism is verified working. All soft reversion orders have been ignored.
+2026-02-17 01:59:19 [ERROR] Stats error: no such column: settled
+2026-02-17 02:02:29 [INFO] ============================================================
+2026-02-17 02:02:29 [INFO] JARVIS STARTING UP
+2026-02-17 02:02:29 [INFO] ============================================================
+2026-02-17 02:02:29 [INFO] Futures database initialized
+2026-02-17 02:02:29 [INFO] FuturesMonitor initialized: ES
+2026-02-17 02:02:29 [INFO] Futures monitor enabled
+2026-02-17 02:02:29 [INFO] Synced sharbel files to repo
+2026-02-17 02:02:29 [INFO] Synced hybrid files to repo
+2026-02-17 02:02:29 [INFO] No changes to commit
+2026-02-17 02:02:29 [INFO] All modules initialized
+2026-02-17 02:02:29 [INFO] Monitoring: sharbel, hybrid
+2026-02-17 02:02:29 [INFO] Main loop starting
+2026-02-17 02:02:29 [INFO] Dashboard on port 6001
+2026-02-17 02:02:29 [ERROR] Stats error: no such column: settled
+2026-02-17 02:02:29 [ERROR] Stats error: no such column: settled
+2026-02-17 02:02:29 [ERROR] Trade fetch error: no such column: side
+2026-02-17 02:02:29 [ERROR] Stats error: no such column: settled
+2026-02-17 02:02:49 [INFO] API call: 8983in/2048out = $0.0048
+2026-02-17 02:02:49 [WARNING] Could not parse Haiku JSON response, storing raw
+2026-02-17 02:07:30 [ERROR] Stats error: no such column: settled
+2026-02-17 02:08:07 [INFO] ============================================================
+2026-02-17 02:08:07 [INFO] JARVIS STARTING UP
+2026-02-17 02:08:07 [INFO] ============================================================
+2026-02-17 02:08:07 [INFO] Futures database initialized
+2026-02-17 02:08:07 [INFO] FuturesMonitor initialized: ES
+2026-02-17 02:08:07 [INFO] Futures monitor enabled
+2026-02-17 02:08:07 [INFO] Synced sharbel files to repo
+2026-02-17 02:08:07 [INFO] Synced hybrid files to repo
+2026-02-17 02:08:07 [INFO] No changes to commit
+2026-02-17 02:08:07 [INFO] All modules initialized
+2026-02-17 02:08:07 [INFO] Monitoring: sharbel, hybrid
+2026-02-17 02:08:07 [INFO] Main loop starting
+2026-02-17 02:08:07 [INFO] Dashboard on port 6001
+2026-02-17 02:08:07 [ERROR] Stats error: no such column: settled
+2026-02-17 02:08:07 [ERROR] Stats error: no such column: settled
+2026-02-17 02:08:07 [ERROR] Trade fetch error: no such column: side
+2026-02-17 02:08:07 [ERROR] Stats error: no such column: settled
+2026-02-17 02:08:28 [INFO] User rejected: Do NOT issue any parameter change orders until config update mechanism is verified working. All soft reversion orders have been ignored.
+2026-02-17 02:08:28 [INFO] API call: 8983in/2048out = $0.0048
+2026-02-17 02:08:28 [WARNING] Could not parse Haiku JSON response, storing raw
+2026-02-17 02:08:33 [INFO] User rejected: Hybrid bot has zero trades in paper mode over 71+ hours. Scout times (13:10, 13:30, 13:45) and big-bet time (14:00) are not triggering. Debug trigger logic, time window calculations, and paper mode execution path.
+2026-02-17 02:08:47 [INFO] User rejected: Audit configuration loading pipeline. Verify bot is reading current config on each trade, not cached startup config. Check for stale cache, file locking issues, or async timing bugs.
+2026-02-17 02:08:55 [INFO] User rejected: Debug race condition causing exact byte-for-byte duplicate trades with 0.08-0.5s timestamp deltas. Affects IDs 96-105 (10 duplicates across 5 pairs). Check async callbacks, event listeners, and trade submission pipeline.
+2026-02-17 02:08:57 [INFO] User rejected: Deploy hard technical lock on Sharbel stakes at $2 maximum. Bypass all soft config mechanisms. Lock at database/execution layer before trade submission.
+2026-02-17 02:08:59 [INFO] User rejected: Verify scout trigger times (13:10, 13:30, 13:45) and big-bet execution at 14:00. Add logging to confirm: (1) market window detection, (2) scout entry conditions, (3) big-bet placement. Run 5-10 paper trades to confirm logic before live deployment.
+2026-02-17 02:09:04 [INFO] User rejected: Debug race condition causing exact byte-for-byte duplicate trades. Affected IDs: 100-101, 102-103, 104-105 (and 96-97, 98-99 from prior logs). Implement mutex/lock on trade logging callback or verify async execution is serialized.
+2026-02-17 02:09:06 [INFO] User rejected: Deploy hard technical lock: set max_stake = $2.00 in bot code with no override capability. Remove soft reversion order mechanism entirely.
+2026-02-17 02:09:07 [INFO] User rejected: Verify that Hybrid bot's scout trigger logic is firing at expected times (13:10, 13:30, 13:45 UTC into window). Check logs for trigger conditions, order placement attempts, and fill status. Confirm big-bet logic at 14:00 UTC.
+2026-02-17 02:09:10 [INFO] User rejected: Debug async trade logging pipeline. Check for race conditions in callback handlers, duplicate event firing, or transaction log write failures. Verify that each trade is logged exactly once.
+2026-02-17 02:09:28 [INFO] User rejected: Test whether config reversion orders are actually reaching the bot process. Check if bot is reading from stale startup cache instead of live config files. Verify file permissions and process reload behavior.
+2026-02-17 02:09:32 [INFO] User rejected: Hard-code maximum stake to $2.00 in bot executable. Bypass all config files and environment variables. Make this change non-revertible without code recompile.
+2026-02-17 02:09:33 [INFO] User rejected: Test that configuration changes (stake reductions, filter adjustments) are actually being read by the bot at execution time. Add logging to confirm config values at trade submission.
+2026-02-17 02:09:36 [INFO] User rejected: Verify that Hybrid's scout trigger times (13:10, 13:30, 13:45) and big-bet logic (14:00) are executing in paper mode. Add execution logs to confirm triggers are firing.
+2026-02-17 02:09:38 [INFO] User rejected: Debug the trade logging pipeline. Check for: (1) race conditions in order submission, (2) duplicate writes to trade log, (3) timestamp precision issues, (4) async callback handlers firing twice.
+2026-02-17 02:09:42 [INFO] User rejected: Stop all Sharbel executions until duplicate logging bug is fixed and stake hard-lock is deployed.
+2026-02-17 02:09:44 [INFO] User rejected: Implement technical constraint that prevents any trade execution with stakes >$2. Make this a code-level check, not a configuration rule.
+2026-02-17 02:09:53 [ERROR] Failed to load daily data: No module named 'pandas'
+2026-02-17 02:13:09 [ERROR] Stats error: no such column: settled
+2026-02-17 02:15:46 [INFO] ============================================================
+2026-02-17 02:15:46 [INFO] JARVIS STARTING UP
+2026-02-17 02:15:46 [INFO] ============================================================
+2026-02-17 02:15:46 [INFO] Futures database initialized
+2026-02-17 02:15:46 [INFO] FuturesMonitor initialized: ES
+2026-02-17 02:15:46 [INFO] Futures monitor enabled
+2026-02-17 02:15:46 [INFO] Synced sharbel files to repo
+2026-02-17 02:15:46 [INFO] Synced hybrid files to repo
+2026-02-17 02:15:46 [INFO] No changes to commit
+2026-02-17 02:15:46 [INFO] All modules initialized
+2026-02-17 02:15:46 [INFO] Monitoring: sharbel, hybrid
+2026-02-17 02:15:46 [INFO] Main loop starting
+2026-02-17 02:15:46 [INFO] Dashboard on port 6001
+2026-02-17 02:15:46 [ERROR] Stats error: no such column: settled
+2026-02-17 02:15:46 [ERROR] Stats error: no such column: settled
+2026-02-17 02:15:46 [ERROR] Trade fetch error: no such column: side
+2026-02-17 02:15:46 [ERROR] Stats error: no such column: settled
+2026-02-17 02:16:07 [INFO] API call: 8983in/2048out = $0.0048
+2026-02-17 02:16:07 [INFO] Memory updated: 2/16 21:15 UTC: Sharbel performance CONFIRMED STABLE (ELEVENTH ANALYSIS): 84% wi...
+2026-02-17 02:16:07 [INFO] Memory updated: 2/16 21:15 UTC: DUPLICATE LOGGING BUG CONFIRMED ELEVENTH TIME. IDs 100-101, 102-...
+2026-02-17 02:16:07 [INFO] Memory updated: 2/16 21:15 UTC: Stake creep ELEVENTH VIOLATION ONGOING. All 50 trades remain at ...
+2026-02-17 02:16:07 [INFO] Memory updated: 2/16 21:15 UTC: Hybrid bot status UNCHANGED: Zero trades in paper mode as of 2/1...
+2026-02-17 02:16:07 [INFO] Memory updated: 2/16 21:15 UTC: Entry discipline VALIDATED (ELEVENTH ANALYSIS): 48 of 50 trades ...
+2026-02-17 02:16:07 [INFO] Memory updated: 2/16 21:15 UTC: Movement filter VALIDATED (ELEVENTH ANALYSIS): All 50 trades res...
+2026-02-17 02:16:07 [INFO] Analysis complete: Sharbel is operationally stable with 84% win rate but remains unprofitable due to $5 stakes destroyi
+2026-02-17 02:16:07 [INFO] Queued for approval: Hard-code maximum stake to $2.00 in Sharbel config file. Remove all soft reversion logic. Add runtime validation that rejects any trade execution with stake > $2.00
+2026-02-17 02:16:07 [INFO] Queued for approval: Audit trade logging pipeline for race conditions. IDs 100-101, 102-103, 104-105 are identical byte-for-byte with 0.08-0.15s timestamp deltas. This is the 11th occurrence. Check for async callback firing twice, queue duplication, or database insert race condition
+2026-02-17 02:16:07 [INFO] Queued for approval: Hybrid bot has executed zero trades in paper mode for 71+ hours. Scout/big-bet trigger logic is non-functional. Debug: (1) verify scout times (13:10, 13:30, 13:45) are firing, (2) check big-bet logic at 14:00, (3) verify order placement is working, (4) check for silent failures in log
+2026-02-17 02:16:07 [INFO] Queued for approval: Test that configuration changes are actually being read by the bot at runtime. Issue a test reversion order and verify it takes effect within 2 trades. Check if bot is reading from cache, startup config, or environment variables instead of live config file
+2026-02-17 02:16:44 [ERROR] Failed to load daily data: No module named 'pandas'
+2026-02-17 02:20:47 [ERROR] Stats error: no such column: settled
+2026-02-17 02:21:54 [INFO] ============================================================
+2026-02-17 02:21:54 [INFO] JARVIS STARTING UP
+2026-02-17 02:21:54 [INFO] ============================================================
+2026-02-17 02:21:54 [INFO] Futures database initialized
+2026-02-17 02:21:54 [INFO] FuturesMonitor initialized: ES
+2026-02-17 02:21:54 [INFO] Futures monitor enabled
+2026-02-17 02:21:54 [INFO] Synced sharbel files to repo
+2026-02-17 02:21:54 [INFO] Synced hybrid files to repo
+2026-02-17 02:21:54 [INFO] No changes to commit
+2026-02-17 02:21:54 [INFO] All modules initialized
+2026-02-17 02:21:54 [INFO] Monitoring: sharbel, hybrid
+2026-02-17 02:21:54 [INFO] Main loop starting
+2026-02-17 02:21:54 [INFO] Dashboard on port 6001
+2026-02-17 02:21:54 [ERROR] Stats error: no such column: settled
+2026-02-17 02:21:54 [ERROR] Stats error: no such column: settled
+2026-02-17 02:21:54 [ERROR] Trade fetch error: no such column: side
+2026-02-17 02:21:54 [ERROR] Stats error: no such column: settled
+2026-02-17 02:22:07 [ERROR] Failed to load daily data: No module named 'pandas'
+2026-02-17 02:22:15 [INFO] API call: 9483in/2048out = $0.0049
+2026-02-17 02:22:15 [INFO] Memory updated: 2/16 21:21 UTC: TWELFTH ANALYSIS - Sharbel performance CONFIRMED STABLE: 84% win...
+2026-02-17 02:22:15 [INFO] Memory updated: 2/16 21:21 UTC: Movement filter VALIDATED (TWELFTH ANALYSIS): All 50 trades resp...
+2026-02-17 02:22:15 [INFO] Memory updated: 2/16 21:21 UTC: Entry discipline VALIDATED (TWELFTH ANALYSIS): 48 of 50 trades i...
+2026-02-17 02:22:15 [INFO] Memory updated: 2/16 21:21 UTC: Stake creep TWELFTH VIOLATION ONGOING. All 50 trades remain at $...
+2026-02-17 02:22:15 [INFO] Memory updated: 2/16 21:21 UTC: DUPLICATE LOGGING BUG CONFIRMED TWELFTH TIME. IDs 100-105 show e...
+2026-02-17 02:22:15 [INFO] Memory updated: 2/16 21:21 UTC: Hybrid bot status UNCHANGED: Zero trades in paper mode as of 2/1...
+2026-02-17 02:22:15 [INFO] Analysis complete: Sharbel is operationally sound (84% win rate, solid entry discipline, movement filter working) but r
+2026-02-17 02:22:15 [INFO] Queued for approval: Deploy hard technical lock on Sharbel stake parameter. Set max_stake = $2 in code (not config file). Remove soft reversion logic entirely
+2026-02-17 02:22:15 [INFO] Queued for approval: Debug race condition causing IDs 100-105 to log as exact byte-for-byte duplicates with 0.08-0.15s timestamp deltas. Check async callbacks, event emitters, and trade submission pipeline
+2026-02-17 02:22:15 [INFO] Queued for approval: Verify bot is reading config from correct source. Check if bot is caching startup config in memory and ignoring runtime updates. Add logging to confirm config reads on each trade
+2026-02-17 02:22:15 [INFO] Queued for approval: Do not deploy Hybrid bot to live trading until scout/big-bet trigger logic produces at least 10 trades in paper mode
+2026-02-17 02:23:25 [INFO] ============================================================
+2026-02-17 02:23:25 [INFO] JARVIS STARTING UP
+2026-02-17 02:23:25 [INFO] ============================================================
+2026-02-17 02:23:25 [INFO] Futures database initialized
+2026-02-17 02:23:25 [INFO] FuturesMonitor initialized: ES
+2026-02-17 02:23:25 [INFO] Futures monitor enabled
+2026-02-17 02:23:25 [INFO] Synced sharbel files to repo
+2026-02-17 02:23:25 [INFO] Synced hybrid files to repo
+2026-02-17 02:23:25 [INFO] No changes to commit
+2026-02-17 02:23:25 [INFO] All modules initialized
+2026-02-17 02:23:25 [INFO] Monitoring: sharbel, hybrid
+2026-02-17 02:23:25 [INFO] Main loop starting
+2026-02-17 02:23:25 [INFO] Dashboard on port 6001
+2026-02-17 02:23:25 [ERROR] Stats error: no such column: settled
+2026-02-17 02:23:25 [ERROR] Stats error: no such column: settled
+2026-02-17 02:23:25 [ERROR] Trade fetch error: no such column: side
+2026-02-17 02:23:25 [ERROR] Stats error: no such column: settled
+2026-02-17 02:23:33 [ERROR] Failed to load daily data: No module named 'pandas'
+2026-02-17 02:23:45 [INFO] API call: 9995in/2048out = $0.0051
+2026-02-17 02:23:45 [INFO] Memory updated: 2/16 21:23 UTC: CRITICAL INFRASTRUCTURE FAILURE - Config update mechanism comple...
+2026-02-17 02:23:45 [INFO] Memory updated: 2/16 21:23 UTC: DUPLICATE LOGGING BUG CONFIRMED TWELFTH TIME. IDs 100-105 show e...
+2026-02-17 02:23:45 [INFO] Memory updated: 2/16 21:23 UTC: Sharbel performance CONFIRMED STABLE (TWELFTH ANALYSIS): 84% win...
+2026-02-17 02:23:45 [INFO] Memory updated: 2/16 21:23 UTC: Entry discipline VALIDATED (TWELFTH ANALYSIS): 48 of 50 trades i...
+2026-02-17 02:23:45 [INFO] Memory updated: 2/16 21:23 UTC: Movement filter VALIDATED (TWELFTH ANALYSIS): All 50 trades resp...
+2026-02-17 02:23:45 [INFO] Memory updated: 2/16 21:23 UTC: Hybrid bot status UNCHANGED: Zero trades in paper mode as of 2/1...
+2026-02-17 02:23:45 [INFO] Memory updated: 2/16 21:23 UTC: RECOMMENDATION: Halt Sharbel trading immediately. Fix infrastruc...
+2026-02-17 02:23:45 [INFO] Analysis complete: Sharbel is operationally sound (84% win rate, clean entry/movement discipline) but remains unprofita
+2026-02-17 02:23:45 [INFO] Queued for approval: Immediately pause Sharbel trading until infrastructure issues are resolved
+2026-02-17 02:23:45 [INFO] Queued for approval: Deploy hard technical lock on stake parameter. Set max_stake = $2 in bot code (not config file). Verify lock is enforced before resuming trading
+2026-02-17 02:23:45 [INFO] Queued for approval: Investigate why bot is ignoring 12+ reversion orders. Check: (1) Config file read timing, (2) Cache invalidation, (3) Startup config override, (4) Environment variable conflicts
+2026-02-17 02:23:45 [INFO] Queued for approval: Investigate race condition in trade logging. IDs 100-105 show exact byte-for-byte duplicates in pairs with 0.08-0.15s timestamp deltas. Check: (1) Async callback firing twice, (2) Race condition in settlement handler, (3) Double-submission in API layer
+2026-02-17 02:23:45 [INFO] Queued for approval: Hybrid bot has zero trades in paper mode over 71+ hours. Scout/big-bet trigger logic is not executing. Check: (1) Scout time conditions (13:10, 13:30, 13:45), (2) Big-bet condition at 14:00, (3) Market data feed, (4) Entry conviction thresholds
+2026-02-17 02:24:50 [INFO] ============================================================
+2026-02-17 02:24:50 [INFO] JARVIS STARTING UP
+2026-02-17 02:24:50 [INFO] ============================================================
+2026-02-17 02:25:00 [INFO] ============================================================
+2026-02-17 02:25:00 [INFO] JARVIS STARTING UP
+2026-02-17 02:25:00 [INFO] ============================================================
+2026-02-17 02:25:10 [INFO] ============================================================
+2026-02-17 02:25:10 [INFO] JARVIS STARTING UP
+2026-02-17 02:25:10 [INFO] ============================================================
+2026-02-17 02:25:21 [INFO] ============================================================
+2026-02-17 02:25:21 [INFO] JARVIS STARTING UP
+2026-02-17 02:25:21 [INFO] ============================================================
+2026-02-17 02:25:31 [INFO] ============================================================
+2026-02-17 02:25:31 [INFO] JARVIS STARTING UP
+2026-02-17 02:25:31 [INFO] ============================================================
+2026-02-17 02:25:41 [INFO] ============================================================
+2026-02-17 02:25:41 [INFO] JARVIS STARTING UP
+2026-02-17 02:25:41 [INFO] ============================================================
+2026-02-17 02:25:51 [INFO] ============================================================
+2026-02-17 02:25:51 [INFO] JARVIS STARTING UP
+2026-02-17 02:25:51 [INFO] ============================================================
+2026-02-17 02:25:54 [INFO] ============================================================
+2026-02-17 02:25:54 [INFO] JARVIS STARTING UP
+2026-02-17 02:25:54 [INFO] ============================================================
+2026-02-17 02:26:04 [INFO] ============================================================
+2026-02-17 02:26:04 [INFO] JARVIS STARTING UP
+2026-02-17 02:26:04 [INFO] ============================================================
+2026-02-17 02:26:15 [INFO] ============================================================
+2026-02-17 02:26:15 [INFO] JARVIS STARTING UP
+2026-02-17 02:26:15 [INFO] ============================================================
+2026-02-17 02:26:25 [INFO] ============================================================
+2026-02-17 02:26:25 [INFO] JARVIS STARTING UP
+2026-02-17 02:26:25 [INFO] ============================================================
+2026-02-17 02:26:35 [INFO] ============================================================
+2026-02-17 02:26:35 [INFO] JARVIS STARTING UP
+2026-02-17 02:26:35 [INFO] ============================================================
+2026-02-17 02:26:45 [INFO] ============================================================
+2026-02-17 02:26:45 [INFO] JARVIS STARTING UP
+2026-02-17 02:26:45 [INFO] ============================================================
+2026-02-17 02:26:56 [INFO] ============================================================
+2026-02-17 02:26:56 [INFO] JARVIS STARTING UP
+2026-02-17 02:26:56 [INFO] ============================================================
+2026-02-17 02:27:06 [INFO] ============================================================
+2026-02-17 02:27:06 [INFO] JARVIS STARTING UP
+2026-02-17 02:27:06 [INFO] ============================================================
+2026-02-17 02:27:16 [INFO] ============================================================
+2026-02-17 02:27:16 [INFO] JARVIS STARTING UP
+2026-02-17 02:27:16 [INFO] ============================================================
+2026-02-17 02:27:26 [INFO] ============================================================
+2026-02-17 02:27:26 [INFO] JARVIS STARTING UP
+2026-02-17 02:27:26 [INFO] ============================================================
+2026-02-17 02:27:37 [INFO] ============================================================
+2026-02-17 02:27:37 [INFO] JARVIS STARTING UP
+2026-02-17 02:27:37 [INFO] ============================================================
+2026-02-17 02:27:47 [INFO] ============================================================
+2026-02-17 02:27:47 [INFO] JARVIS STARTING UP
+2026-02-17 02:27:47 [INFO] ============================================================
+2026-02-17 02:27:57 [INFO] ============================================================
+2026-02-17 02:27:57 [INFO] JARVIS STARTING UP
+2026-02-17 02:27:57 [INFO] ============================================================
+2026-02-17 02:28:07 [INFO] ============================================================
+2026-02-17 02:28:07 [INFO] JARVIS STARTING UP
+2026-02-17 02:28:07 [INFO] ============================================================
+2026-02-17 02:28:18 [INFO] ============================================================
+2026-02-17 02:28:18 [INFO] JARVIS STARTING UP
+2026-02-17 02:28:18 [INFO] ============================================================
+2026-02-17 02:28:28 [INFO] ============================================================
+2026-02-17 02:28:28 [INFO] JARVIS STARTING UP
+2026-02-17 02:28:28 [INFO] ============================================================
+2026-02-17 02:28:38 [INFO] ============================================================
+2026-02-17 02:28:38 [INFO] JARVIS STARTING UP
+2026-02-17 02:28:38 [INFO] ============================================================
+2026-02-17 02:28:48 [INFO] ============================================================
+2026-02-17 02:28:48 [INFO] JARVIS STARTING UP
+2026-02-17 02:28:48 [INFO] ============================================================
+2026-02-17 02:28:59 [INFO] ============================================================
+2026-02-17 02:28:59 [INFO] JARVIS STARTING UP
+2026-02-17 02:28:59 [INFO] ============================================================
+2026-02-17 02:29:09 [INFO] ============================================================
+2026-02-17 02:29:09 [INFO] JARVIS STARTING UP
+2026-02-17 02:29:09 [INFO] ============================================================
+2026-02-17 02:29:19 [INFO] ============================================================
+2026-02-17 02:29:19 [INFO] JARVIS STARTING UP
+2026-02-17 02:29:19 [INFO] ============================================================
+2026-02-17 02:29:29 [INFO] ============================================================
+2026-02-17 02:29:29 [INFO] JARVIS STARTING UP
+2026-02-17 02:29:29 [INFO] ============================================================
+2026-02-17 02:29:40 [INFO] ============================================================
+2026-02-17 02:29:40 [INFO] JARVIS STARTING UP
+2026-02-17 02:29:40 [INFO] ============================================================
+2026-02-17 02:29:50 [INFO] ============================================================
+2026-02-17 02:29:50 [INFO] JARVIS STARTING UP
+2026-02-17 02:29:50 [INFO] ============================================================
+2026-02-17 02:30:00 [INFO] ============================================================
+2026-02-17 02:30:00 [INFO] JARVIS STARTING UP
+2026-02-17 02:30:00 [INFO] ============================================================
+2026-02-17 02:30:10 [INFO] ============================================================
+2026-02-17 02:30:10 [INFO] JARVIS STARTING UP
+2026-02-17 02:30:10 [INFO] ============================================================
+2026-02-17 02:30:10 [INFO] Futures database initialized
+2026-02-17 02:30:10 [INFO] FuturesMonitor initialized: ES
+2026-02-17 02:30:10 [INFO] Futures monitor enabled
+2026-02-17 02:30:10 [INFO] Synced sharbel files to repo
+2026-02-17 02:30:10 [INFO] Synced hybrid files to repo
+2026-02-17 02:30:10 [INFO] No changes to commit
+2026-02-17 02:30:10 [INFO] All modules initialized
+2026-02-17 02:30:10 [INFO] Monitoring: sharbel, hybrid
+2026-02-17 02:30:10 [INFO] Main loop starting
+2026-02-17 02:30:11 [INFO] Dashboard on port 6001
+2026-02-17 02:30:11 [ERROR] Stats error: no such column: settled
+2026-02-17 02:30:11 [ERROR] Stats error: no such column: settled
+2026-02-17 02:30:11 [ERROR] Trade fetch error: no such column: side
+2026-02-17 02:30:11 [ERROR] Stats error: no such column: settled
+2026-02-17 02:30:16 [INFO] ============================================================
+2026-02-17 02:30:16 [INFO] JARVIS STARTING UP
+2026-02-17 02:30:16 [INFO] ============================================================
+2026-02-17 02:30:16 [INFO] Futures database initialized
+2026-02-17 02:30:16 [INFO] FuturesMonitor initialized: ES
+2026-02-17 02:30:16 [INFO] Futures monitor enabled
+2026-02-17 02:30:16 [INFO] Synced sharbel files to repo
+2026-02-17 02:30:16 [INFO] Synced hybrid files to repo
+2026-02-17 02:30:16 [INFO] No changes to commit
+2026-02-17 02:30:16 [INFO] All modules initialized
+2026-02-17 02:30:16 [INFO] Monitoring: sharbel, hybrid
+2026-02-17 02:30:16 [INFO] Main loop starting
+2026-02-17 02:30:16 [INFO] Dashboard on port 6001
+2026-02-17 02:30:16 [ERROR] Stats error: no such column: settled
+2026-02-17 02:30:16 [ERROR] Stats error: no such column: settled
+2026-02-17 02:30:16 [ERROR] Trade fetch error: no such column: side
+2026-02-17 02:30:16 [ERROR] Stats error: no such column: settled
+2026-02-17 02:30:35 [INFO] API call: 10567in/2048out = $0.0052
+2026-02-17 02:30:35 [WARNING] Could not parse Haiku JSON response, storing raw

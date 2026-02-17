@@ -57,9 +57,21 @@ class Watchdog:
             last_trade_str = result[0]
             # Handle both ISO formats
             try:
-                last_trade = datetime.fromisoformat(last_trade_str.replace('Z', '+00:00'))
-            except:
-                last_trade = datetime.fromisoformat(last_trade_str)
+                # Handle ISO format timestamps (with or without timezone)
+                if 'Z' in last_trade_str:
+                    last_trade = datetime.fromisoformat(last_trade_str.replace('Z', '+00:00'))
+                elif '+' in last_trade_str or last_trade_str.endswith('00:00'):
+                    last_trade = datetime.fromisoformat(last_trade_str)
+                else:
+                    # No timezone info - assume UTC
+                    last_trade = datetime.fromisoformat(last_trade_str).replace(tzinfo=timezone.utc)
+            except Exception as e:
+                # Fallback - try without timezone then add UTC
+                try:
+                    last_trade = datetime.fromisoformat(last_trade_str.split('+')[0].split('Z')[0])
+                    last_trade = last_trade.replace(tzinfo=timezone.utc)
+                except:
+                    return {"fresh": False, "last_trade": None, "stale_seconds": None}
 
             if last_trade.tzinfo is None:
                 last_trade = last_trade.replace(tzinfo=timezone.utc)
@@ -79,6 +91,15 @@ class Watchdog:
 
     def restart_bot(self, bot_name, bot_config):
         """Restart a crashed bot via screen session"""
+        # Check if auto_restart is enabled for this bot
+        if not bot_config.get("auto_restart", True):
+            self.logger.info(f"{bot_name} crashed but auto_restart disabled (managed manually)")
+            return {
+                "success": False,
+                "reason": "auto_restart_disabled",
+                "message": "Bot is managed manually"
+            }
+
         max_attempts = self.config["watchdog"]["max_restart_attempts"]
         cooldown = self.config["watchdog"]["restart_cooldown"]
 

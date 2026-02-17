@@ -110,6 +110,14 @@ class ApprovalSystem:
 
         else:
             # Requires user approval
+            # Check for duplicate pending actions with same description
+            for existing in self.queue:
+                if (existing["type"] == action_type and 
+                    existing["status"] == "pending" and
+                    existing["description"] == description):
+                    self.logger.info(f"Duplicate approval already pending: {description}")
+                    return {"status": "duplicate", "action": existing}
+            
             self.queue.append(action)
             self._save_queue()
             self.logger.info(f"Queued for approval: {description}")

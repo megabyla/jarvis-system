@@ -89,6 +89,78 @@
       "input_tokens": 118,
       "output_tokens": 87,
       "cost": 0.000138
+    },
+    {
+      "timestamp": "2026-02-16T08:00:16.362088+00:00",
+      "input_tokens": 6564,
+      "output_tokens": 2048,
+      "cost": 0.004201
+    },
+    {
+      "timestamp": "2026-02-16T13:23:58.315587+00:00",
+      "input_tokens": 7015,
+      "output_tokens": 2048,
+      "cost": 0.004314
+    },
+    {
+      "timestamp": "2026-02-16T13:48:37.861293+00:00",
+      "input_tokens": 7557,
+      "output_tokens": 2032,
+      "cost": 0.004429
+    },
+    {
+      "timestamp": "2026-02-17T01:51:14.974710+00:00",
+      "input_tokens": 7996,
+      "output_tokens": 2013,
+      "cost": 0.004515
+    },
+    {
+      "timestamp": "2026-02-17T01:52:05.801420+00:00",
+      "input_tokens": 132,
+      "output_tokens": 50,
+      "cost": 9.6e-05
+    },
+    {
+      "timestamp": "2026-02-17T01:54:38.456872+00:00",
+      "input_tokens": 8483,
+      "output_tokens": 2048,
+      "cost": 0.004681
+    },
+    {
+      "timestamp": "2026-02-17T02:02:49.631369+00:00",
+      "input_tokens": 8983,
+      "output_tokens": 2048,
+      "cost": 0.004806
+    },
+    {
+      "timestamp": "2026-02-17T02:08:28.985717+00:00",
+      "input_tokens": 8983,
+      "output_tokens": 2048,
+      "cost": 0.004806
+    },
+    {
+      "timestamp": "2026-02-17T02:16:07.139656+00:00",
+      "input_tokens": 8983,
+      "output_tokens": 2048,
+      "cost": 0.004806
+    },
+    {
+      "timestamp": "2026-02-17T02:22:15.331423+00:00",
+      "input_tokens": 9483,
+      "output_tokens": 2048,
+      "cost": 0.004931
+    },
+    {
+      "timestamp": "2026-02-17T02:23:45.582691+00:00",
+      "input_tokens": 9995,
+      "output_tokens": 2048,
+      "cost": 0.005059
+    },
+    {
+      "timestamp": "2026-02-17T02:30:35.799692+00:00",
+      "input_tokens": 10567,
+      "output_tokens": 2048,
+      "cost": 0.005202
     }
   ],
   "daily_totals": {
@@ -98,16 +170,21 @@
       "tokens": 46010
     },
     "2026-02-16": {
-      "calls": 3,
-      "cost": 0.008017,
-      "tokens": 15644
+      "calls": 6,
+      "cost": 0.020960999999999997,
+      "tokens": 42908
+    },
+    "2026-02-17": {
+      "calls": 9,
+      "cost": 0.038902,
+      "tokens": 90004
     }
   },
   "monthly_totals": {
     "2026-02": {
-      "calls": 15,
-      "cost": 0.032712,
-      "tokens": 61654
+      "calls": 27,
+      "cost": 0.084558,
+      "tokens": 178922
     }
   }
 }

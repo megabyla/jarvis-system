@@ -260,12 +260,12 @@ class FuturesMonitor:
     # PRE-MARKET BRIEF (run at 9:00 AM ET)
     # ================================================================
 
-    def run_premarket(self):
+    def run_premarket(self, force=False):
         """Generate and send pre-market brief."""
         now = datetime.now(ET)
         today_str = now.strftime("%Y-%m-%d")
 
-        if self.last_premarket_date == today_str:
+        if self.last_premarket_date == today_str and not force:
             return None  # Already sent today
 
         daily_df = self._load_daily_data()
@@ -718,12 +718,25 @@ class FuturesMonitor:
 
     def get_dashboard_data(self):
         """Return data for the Jarvis web dashboard."""
+        # Extract bias confidence from sequence lookup
+        bias_conf = 0
+        if self.today_sequence:
+            _, conf = self._lookup_bias(self.today_sequence)
+            bias_conf = conf
+        
         return {
             "enabled": self.enabled,
             "instrument": self.instrument,
-            "sequence": self.today_sequence,
+            "strat_sequence": self.today_sequence,  # Match frontend
+            "sequence": self.today_sequence,  # Keep for compatibility
             "bias": self.today_bias,
+            "bias_confidence": bias_conf,
+            "pdh": self.today_levels.get('pdh') if self.today_levels else None,
+            "pdl": self.today_levels.get('pdl') if self.today_levels else None,
+            "eq": self.today_levels.get('pd_eq') if self.today_levels else None,
             "levels": self.today_levels,
             "signal_today": self.signal_fired_today,
+            "signals_today": 1 if self.signal_fired_today else 0,
             "stats": self.get_stats(),
+            "last_update": "Pre-market" if self.today_sequence else "N/A"
         }
