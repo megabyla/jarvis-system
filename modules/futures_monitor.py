@@ -61,6 +61,10 @@ class FuturesMonitor:
     # DATABASE
     # ================================================================
 
+        # Load most recent premarket data from DB
+        self._load_latest_from_db()
+
+
     def _init_db(self):
         """Create futures tracking database."""
         try:
@@ -740,3 +744,34 @@ class FuturesMonitor:
             "stats": self.get_stats(),
             "last_update": "Pre-market" if self.today_sequence else "N/A"
         }
+
+    def _load_latest_from_db(self):
+        """Load the most recent premarket analysis from database on startup."""
+        try:
+            conn = sqlite3.connect(self.db_path)
+            c = conn.cursor()
+            c.execute("""
+                SELECT sequence, bias, bias_pct, pdh, pdl, pd_eq, pd_range
+                FROM strat_log ORDER BY date DESC LIMIT 1
+            """)
+            result = c.fetchone()
+            conn.close()
+            
+            if result:
+                seq, bias, pct, pdh, pdl, eq, rng = result
+                self.today_sequence = seq
+                self.today_bias = bias
+                self.today_levels = {
+                    'pdh': float(pdh), 
+                    'pdl': float(pdl), 
+                    'pd_eq': float(eq), 
+                    'pd_range': float(rng),
+                    'premium': float(pdl) + (float(rng) * 0.75), 
+                    'discount': float(pdl) + (float(rng) * 0.25)
+                }
+                self.logger.info(f"Loaded from DB: {seq} → {bias} {pct}%")
+            else:
+                self.logger.info("No premarket data in DB yet")
+        except Exception as e:
+            self.logger.error(f"Failed to load from DB: {e}")
+

@@ -1192,3 +1192,35 @@ hint: See the 'Note about fast-forwards' in 'git push --help' for details.
 2026-02-17 02:34:32 [INFO] User rejected: Trace IDs 100-105 (and all prior duplicates). Check for: (1) race condition in trade execution, (2) async callback firing twice, (3) logging middleware double-writing, (4) timestamp precision issues
 2026-02-17 02:34:34 [INFO] User rejected: Hybrid bot has zero trades in paper mode over 71+ hours. Verify scout trigger times (13:10, 13:30, 13:45) and big-bet logic (14:00) are firing. Check market hours alignment and order submission.
 2026-02-17 02:37:33 [ERROR] Stats error: no such column: settled
+2026-02-17 02:39:19 [INFO] ============================================================
+2026-02-17 02:39:19 [INFO] JARVIS STARTING UP
+2026-02-17 02:39:19 [INFO] ============================================================
+2026-02-17 02:39:19 [INFO] Futures database initialized
+2026-02-17 02:39:19 [INFO] FuturesMonitor initialized: ES
+2026-02-17 02:39:19 [INFO] Loaded from DB: 2D-2D-1 → BULL 80%
+2026-02-17 02:39:19 [INFO] Futures monitor enabled
+2026-02-17 02:39:19 [INFO] Synced sharbel files to repo
+2026-02-17 02:39:19 [INFO] Synced hybrid files to repo
+2026-02-17 02:39:19 [INFO] No changes to commit
+2026-02-17 02:39:19 [INFO] All modules initialized
+2026-02-17 02:39:19 [INFO] Monitoring: sharbel, hybrid
+2026-02-17 02:39:19 [INFO] Main loop starting
+2026-02-17 02:39:19 [INFO] Dashboard on port 6001
+2026-02-17 02:39:19 [ERROR] Stats error: no such column: settled
+2026-02-17 02:39:19 [ERROR] Stats error: no such column: settled
+2026-02-17 02:39:19 [ERROR] Trade fetch error: no such column: side
+2026-02-17 02:39:19 [ERROR] Stats error: no such column: settled
+2026-02-17 02:39:39 [INFO] API call: 11161in/2048out = $0.0053
+2026-02-17 02:39:39 [INFO] Memory updated: 2/16 21:39 UTC: THIRTEENTH ANALYSIS - Sharbel performance CONFIRMED STABLE: 84% ...
+2026-02-17 02:39:39 [INFO] Memory updated: 2/16 21:39 UTC: Entry discipline VALIDATED (THIRTEENTH ANALYSIS): 48 of 50 trade...
+2026-02-17 02:39:39 [INFO] Memory updated: 2/16 21:39 UTC: Movement filter VALIDATED (THIRTEENTH ANALYSIS): All 50 trades r...
+2026-02-17 02:39:39 [INFO] Memory updated: 2/16 21:39 UTC: DUPLICATE LOGGING BUG CONFIRMED THIRTEENTH TIME. IDs 100-105 sho...
+2026-02-17 02:39:39 [INFO] Memory updated: 2/16 21:39 UTC: CRITICAL INFRASTRUCTURE FAILURE - Config update mechanism comple...
+2026-02-17 02:39:39 [INFO] Memory updated: 2/16 21:39 UTC: Stake creep THIRTEENTH VIOLATION ONGOING. All 50 trades remain a...
+2026-02-17 02:39:39 [INFO] Memory updated: 2/16 21:39 UTC: Hybrid bot status UNCHANGED: Zero trades in paper mode as of 2/1...
+2026-02-17 02:39:39 [INFO] Analysis complete: Sharbel is operationally stable with 84% win rate but remains unprofitable due to $5 stakes destroyi
+2026-02-17 02:39:39 [INFO] Queued for approval: Immediately halt Sharbel trading until infrastructure issues are resolved
+2026-02-17 02:39:39 [INFO] Queued for approval: Implement hard technical lock in code to cap stakes at $2 maximum. Do NOT use config-based soft rules
+2026-02-17 02:39:39 [INFO] Queued for approval: Debug and fix the configuration update mechanism. Bot is reading stale configuration from cache or startup
+2026-02-17 02:39:39 [INFO] Queued for approval: Investigate race condition causing duplicate trades. IDs 100-105 show exact byte-for-byte duplicates in pairs with 0.08-0.15s timestamp deltas
+2026-02-17 02:39:39 [INFO] Queued for approval: Debug Hybrid bot scout/big-bet trigger logic. Zero trades in paper mode over 71+ hours indicates logic is not firing
