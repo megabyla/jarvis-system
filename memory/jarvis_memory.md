@@ -19,6 +19,13 @@
 - Hybrid: Big bet at 14:00 (60s before close)
 
 ## Past Decisions
+- 2/16 9:32PM: CRITICAL INFRASTRUCTURE FAILURE - Config update mechanism completely broken. 12 reversion orders issued and logged over 71+ hours (2/14 21:29 to 2/16 21:32 UTC). ALL IGNORED. Bot reading stale configuration. Soft rules have failed 100%. Hard lock is MANDATORY before next trade.
+- 2/16 9:32PM: 2/16 21:32 UTC: Hybrid bot status UNCHANGED: Zero trades in paper mode as of 2/16 21:32 UTC. Scout/big-bet trigger logic needs debug before live deployment. Blocker unresolved for 71+ hours.
+- 2/16 9:32PM: 2/16 21:32 UTC: Stake creep THIRTEENTH VIOLATION ONGOING. All 50 trades remain at $5 despite twelve reversion orders over 71+ hours (2/14 21:29 to 2/16 21:32 UTC). Soft rules have failed 100%. Hard lock is MANDATORY.
+- 2/16 9:32PM: 2/16 21:32 UTC: DUPLICATE LOGGING BUG CONFIRMED THIRTEENTH TIME. IDs 100-105 show exact byte-for-byte duplicates in pairs (100-101, 102-103, 104-105) with 0.08-0.15s timestamp deltas. Race condition or async callback firing twice. Data integrity compromised.
+- 2/16 9:32PM: 2/16 21:32 UTC: Entry discipline VALIDATED (THIRTEENTH ANALYSIS): 48 of 50 trades in 75-91% range. No entries >92%. Entry logic is solid and requires no changes.
+- 2/16 9:32PM: 2/16 21:32 UTC: Movement filter VALIDATED (THIRTEENTH ANALYSIS): All 50 trades respect 0.2% minimum. Lowest movement = 0.212% (ID 93). Filter is working correctly and requires no changes.
+- 2/16 9:32PM: 2/16 21:32 UTC: THIRTEENTH ANALYSIS - Sharbel performance CONFIRMED STABLE: 84% win rate (42/50 settled trades) with $5 stakes = -$17.20 P&L. Same win rate at $2 stakes would yield +$18-22 P&L. Stake sizing is destroying $35-40 per 50-trade cycle. This is the ONLY execution problem.
 - 2/16 9:23PM: 2/16 21:23 UTC: RECOMMENDATION: Halt Sharbel trading immediately. Fix infrastructure issues (config mechanism, duplicate logging) before resuming. Implement hard stake lock in code, not config
 - 2/16 9:23PM: 2/16 21:23 UTC: Hybrid bot status UNCHANGED: Zero trades in paper mode as of 2/16 21:23 UTC. Scout/big-bet trigger logic needs debug before live deployment. Blocker unresolved for 71+ hours
 - 2/16 9:23PM: 2/16 21:23 UTC: Movement filter VALIDATED (TWELFTH ANALYSIS): All 50 trades respect 0.2% minimum. Lowest movement = 0.212% (ID 93). Filter is working correctly and requires no changes

@@ -161,6 +161,12 @@
       "input_tokens": 10567,
       "output_tokens": 2048,
       "cost": 0.005202
+    },
+    {
+      "timestamp": "2026-02-17T02:32:53.437251+00:00",
+      "input_tokens": 10567,
+      "output_tokens": 2048,
+      "cost": 0.005202
     }
   ],
   "daily_totals": {
@@ -175,16 +181,16 @@
       "tokens": 42908
     },
     "2026-02-17": {
-      "calls": 9,
-      "cost": 0.038902,
-      "tokens": 90004
+      "calls": 10,
+      "cost": 0.044104,
+      "tokens": 102619
     }
   },
   "monthly_totals": {
     "2026-02": {
-      "calls": 27,
-      "cost": 0.084558,
-      "tokens": 178922
+      "calls": 28,
+      "cost": 0.08975999999999999,
+      "tokens": 191537
     }
   }
 }

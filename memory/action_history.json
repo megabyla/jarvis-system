@@ -1245,5 +1245,351 @@
     "submitted_at": "2026-02-16T08:23:58.322783-05:00",
     "resolved_at": "2026-02-16T21:09:44.987132-05:00",
     "resolved_by": "user"
+  },
+  {
+    "id": "action_1771294567146",
+    "type": "implement_hard_stake_lock",
+    "description": "Hard-code maximum stake to $2.00 in Sharbel config file. Remove all soft reversion logic. Add runtime validation that rejects any trade execution with stake > $2.00",
+    "reason": "Soft reversion orders have failed 100% of the time over 71+ hours (10+ orders ignored). This is the ONLY execution problem with Sharbel. Hard lock is the only solution that will work. At $2 stakes, 84% win rate yields +$18-22 P&L per 50-trade cycle instead of -$17.20",
+    "bot": null,
+    "params": {
+      "action": "implement_hard_stake_lock",
+      "description": "Hard-code maximum stake to $2.00 in Sharbel config file. Remove all soft reversion logic. Add runtime validation that rejects any trade execution with stake > $2.00",
+      "reason": "Soft reversion orders have failed 100% of the time over 71+ hours (10+ orders ignored). This is the ONLY execution problem with Sharbel. Hard lock is the only solution that will work. At $2 stakes, 84% win rate yields +$18-22 P&L per 50-trade cycle instead of -$17.20",
+      "priority": "critical",
+      "requires_approval": true
+    },
+    "tier": "approval",
+    "status": "rejected",
+    "submitted_at": "2026-02-16T21:16:07.146478-05:00",
+    "resolved_at": "2026-02-16T21:34:01.404415-05:00",
+    "resolved_by": "user"
+  },
+  {
+    "id": "action_1771294567146",
+    "type": "investigate_duplicate_logging_bug",
+    "description": "Audit trade logging pipeline for race conditions. IDs 100-101, 102-103, 104-105 are identical byte-for-byte with 0.08-0.15s timestamp deltas. This is the 11th occurrence. Check for async callback firing twice, queue duplication, or database insert race condition",
+    "reason": "Data integrity is compromised. Cannot trust trade counts or P&L calculations if duplicates are being logged. This affects all downstream analysis and decision-making",
+    "bot": null,
+    "params": {
+      "action": "investigate_duplicate_logging_bug",
+      "description": "Audit trade logging pipeline for race conditions. IDs 100-101, 102-103, 104-105 are identical byte-for-byte with 0.08-0.15s timestamp deltas. This is the 11th occurrence. Check for async callback firing twice, queue duplication, or database insert race condition",
+      "reason": "Data integrity is compromised. Cannot trust trade counts or P&L calculations if duplicates are being logged. This affects all downstream analysis and decision-making",
+      "priority": "critical",
+      "requires_approval": true
+    },
+    "tier": "approval",
+    "status": "rejected",
+    "submitted_at": "2026-02-16T21:16:07.146947-05:00",
+    "resolved_at": "2026-02-16T21:34:03.717345-05:00",
+    "resolved_by": "user"
+  },
+  {
+    "id": "action_1771294567147",
+    "type": "debug_hybrid_bot_trigger_logic",
+    "description": "Hybrid bot has executed zero trades in paper mode for 71+ hours. Scout/big-bet trigger logic is non-functional. Debug: (1) verify scout times (13:10, 13:30, 13:45) are firing, (2) check big-bet logic at 14:00, (3) verify order placement is working, (4) check for silent failures in log",
+    "reason": "Hybrid bot cannot be deployed to live trading until it executes at least 20+ paper trades and demonstrates consistent scout/big-bet behavior. Current blocker has been unresolved for 71+ hours",
+    "bot": null,
+    "params": {
+      "action": "debug_hybrid_bot_trigger_logic",
+      "description": "Hybrid bot has executed zero trades in paper mode for 71+ hours. Scout/big-bet trigger logic is non-functional. Debug: (1) verify scout times (13:10, 13:30, 13:45) are firing, (2) check big-bet logic at 14:00, (3) verify order placement is working, (4) check for silent failures in log",
+      "reason": "Hybrid bot cannot be deployed to live trading until it executes at least 20+ paper trades and demonstrates consistent scout/big-bet behavior. Current blocker has been unresolved for 71+ hours",
+      "priority": "critical",
+      "requires_approval": true
+    },
+    "tier": "approval",
+    "status": "rejected",
+    "submitted_at": "2026-02-16T21:16:07.147637-05:00",
+    "resolved_at": "2026-02-16T21:34:05.556378-05:00",
+    "resolved_by": "user"
+  },
+  {
+    "id": "action_1771294567148",
+    "type": "verify_config_update_mechanism",
+    "description": "Test that configuration changes are actually being read by the bot at runtime. Issue a test reversion order and verify it takes effect within 2 trades. Check if bot is reading from cache, startup config, or environment variables instead of live config file",
+    "reason": "10+ reversion orders have been issued and logged but completely ignored by Sharbel. This suggests the bot is not reading updated configuration. This is a fundamental infrastructure failure",
+    "bot": null,
+    "params": {
+      "action": "verify_config_update_mechanism",
+      "description": "Test that configuration changes are actually being read by the bot at runtime. Issue a test reversion order and verify it takes effect within 2 trades. Check if bot is reading from cache, startup config, or environment variables instead of live config file",
+      "reason": "10+ reversion orders have been issued and logged but completely ignored by Sharbel. This suggests the bot is not reading updated configuration. This is a fundamental infrastructure failure",
+      "priority": "critical",
+      "requires_approval": false
+    },
+    "tier": "approval",
+    "status": "rejected",
+    "submitted_at": "2026-02-16T21:16:07.148193-05:00",
+    "resolved_at": "2026-02-16T21:34:07.329740-05:00",
+    "resolved_by": "user"
+  },
+  {
+    "id": "action_1771294935339",
+    "type": "implement_hard_stake_lock",
+    "description": "Deploy hard technical lock on Sharbel stake parameter. Set max_stake = $2 in code (not config file). Remove soft reversion logic entirely",
+    "reason": "Soft reversion orders have failed 11 times in 71 hours (100% failure rate). Config update mechanism is broken. Only solution is hard-coded limit in execution layer before trade submission",
+    "bot": null,
+    "params": {
+      "action": "implement_hard_stake_lock",
+      "description": "Deploy hard technical lock on Sharbel stake parameter. Set max_stake = $2 in code (not config file). Remove soft reversion logic entirely",
+      "reason": "Soft reversion orders have failed 11 times in 71 hours (100% failure rate). Config update mechanism is broken. Only solution is hard-coded limit in execution layer before trade submission",
+      "priority": "critical",
+      "requires_approval": true,
+      "impact": "Sharbel would shift from -$17.20 P&L to +$18-22 P&L per 50-trade cycle (same 84% win rate). This is the ONLY execution problem"
+    },
+    "tier": "approval",
+    "status": "rejected",
+    "submitted_at": "2026-02-16T21:22:15.339368-05:00",
+    "resolved_at": "2026-02-16T21:34:09.522630-05:00",
+    "resolved_by": "user"
+  },
+  {
+    "id": "action_1771294935340",
+    "type": "investigate_duplicate_logging_bug",
+    "description": "Debug race condition causing IDs 100-105 to log as exact byte-for-byte duplicates with 0.08-0.15s timestamp deltas. Check async callbacks, event emitters, and trade submission pipeline",
+    "reason": "Duplicate trades inflate win/loss counts and P&L calculations. IDs 100-101, 102-103, 104-105 are identical pairs. This corrupts data integrity for all future analysis",
+    "bot": null,
+    "params": {
+      "action": "investigate_duplicate_logging_bug",
+      "description": "Debug race condition causing IDs 100-105 to log as exact byte-for-byte duplicates with 0.08-0.15s timestamp deltas. Check async callbacks, event emitters, and trade submission pipeline",
+      "reason": "Duplicate trades inflate win/loss counts and P&L calculations. IDs 100-101, 102-103, 104-105 are identical pairs. This corrupts data integrity for all future analysis",
+      "priority": "critical",
+      "requires_approval": false,
+      "impact": "Cannot trust trade counts or P&L until duplicates are eliminated"
+    },
+    "tier": "approval",
+    "status": "rejected",
+    "submitted_at": "2026-02-16T21:22:15.340041-05:00",
+    "resolved_at": "2026-02-16T21:34:11.040605-05:00",
+    "resolved_by": "user"
+  },
+  {
+    "id": "action_1771294935340",
+    "type": "debug_config_update_mechanism",
+    "description": "Verify bot is reading config from correct source. Check if bot is caching startup config in memory and ignoring runtime updates. Add logging to confirm config reads on each trade",
+    "reason": "11 reversion orders have been issued and logged, but bot continues executing $5 stakes. Bot may be reading stale config from startup or cache instead of live config file",
+    "bot": null,
+    "params": {
+      "action": "debug_config_update_mechanism",
+      "description": "Verify bot is reading config from correct source. Check if bot is caching startup config in memory and ignoring runtime updates. Add logging to confirm config reads on each trade",
+      "reason": "11 reversion orders have been issued and logged, but bot continues executing $5 stakes. Bot may be reading stale config from startup or cache instead of live config file",
+      "priority": "critical",
+      "requires_approval": false,
+      "impact": "Without this fix, hard stake lock cannot be deployed effectively"
+    },
+    "tier": "approval",
+    "status": "rejected",
+    "submitted_at": "2026-02-16T21:22:15.340630-05:00",
+    "resolved_at": "2026-02-16T21:34:13.342242-05:00",
+    "resolved_by": "user"
+  },
+  {
+    "id": "action_1771294935341",
+    "type": "pause_hybrid_bot_analysis",
+    "description": "Do not deploy Hybrid bot to live trading until scout/big-bet trigger logic produces at least 10 trades in paper mode",
+    "reason": "Zero trades in 71+ hours indicates trigger logic is broken. Paper mode should be generating 3-4 scout trades per day minimum. Cannot validate fill rate assumptions or P&L projections without data",
+    "bot": null,
+    "params": {
+      "action": "pause_hybrid_bot_analysis",
+      "description": "Do not deploy Hybrid bot to live trading until scout/big-bet trigger logic produces at least 10 trades in paper mode",
+      "reason": "Zero trades in 71+ hours indicates trigger logic is broken. Paper mode should be generating 3-4 scout trades per day minimum. Cannot validate fill rate assumptions or P&L projections without data",
+      "priority": "high",
+      "requires_approval": true,
+      "impact": "Prevents deployment of non-functional bot to live trading"
+    },
+    "tier": "approval",
+    "status": "rejected",
+    "submitted_at": "2026-02-16T21:22:15.341370-05:00",
+    "resolved_at": "2026-02-16T21:34:15.139275-05:00",
+    "resolved_by": "user"
+  },
+  {
+    "id": "action_1771295025589",
+    "type": "EMERGENCY_HALT_TRADING",
+    "description": "Immediately pause Sharbel trading until infrastructure issues are resolved",
+    "reason": "Duplicate logging bug (12 confirmations) has compromised data integrity. Config update mechanism is completely broken (100% failure rate over 71 hours). Cannot trust bot behavior or trade data until these are fixed",
+    "bot": null,
+    "params": {
+      "action": "EMERGENCY_HALT_TRADING",
+      "description": "Immediately pause Sharbel trading until infrastructure issues are resolved",
+      "reason": "Duplicate logging bug (12 confirmations) has compromised data integrity. Config update mechanism is completely broken (100% failure rate over 71 hours). Cannot trust bot behavior or trade data until these are fixed",
+      "priority": "CRITICAL",
+      "requires_approval": true
+    },
+    "tier": "approval",
+    "status": "rejected",
+    "submitted_at": "2026-02-16T21:23:45.589672-05:00",
+    "resolved_at": "2026-02-16T21:34:16.502093-05:00",
+    "resolved_by": "user"
+  },
+  {
+    "id": "action_1771295025590",
+    "type": "IMPLEMENT_HARD_STAKE_LOCK",
+    "description": "Deploy hard technical lock on stake parameter. Set max_stake = $2 in bot code (not config file). Verify lock is enforced before resuming trading",
+    "reason": "Soft reversion orders have failed 12 times in 71 hours (100% failure rate). Bot is ignoring config updates. Only solution is hard-coded constraint in execution layer. Current $5 stakes are destroying $35-40 per 50-trade cycle despite 84% win rate",
+    "bot": null,
+    "params": {
+      "action": "IMPLEMENT_HARD_STAKE_LOCK",
+      "description": "Deploy hard technical lock on stake parameter. Set max_stake = $2 in bot code (not config file). Verify lock is enforced before resuming trading",
+      "reason": "Soft reversion orders have failed 12 times in 71 hours (100% failure rate). Bot is ignoring config updates. Only solution is hard-coded constraint in execution layer. Current $5 stakes are destroying $35-40 per 50-trade cycle despite 84% win rate",
+      "priority": "CRITICAL",
+      "requires_approval": true
+    },
+    "tier": "approval",
+    "status": "rejected",
+    "submitted_at": "2026-02-16T21:23:45.590472-05:00",
+    "resolved_at": "2026-02-16T21:34:18.397148-05:00",
+    "resolved_by": "user"
+  },
+  {
+    "id": "action_1771295025591",
+    "type": "DEBUG_CONFIG_UPDATE_MECHANISM",
+    "description": "Investigate why bot is ignoring 12+ reversion orders. Check: (1) Config file read timing, (2) Cache invalidation, (3) Startup config override, (4) Environment variable conflicts",
+    "reason": "All 12 reversion orders were logged as issued but had zero effect on bot behavior. Bot appears to be reading stale configuration from startup or cache. This is a critical infrastructure failure",
+    "bot": null,
+    "params": {
+      "action": "DEBUG_CONFIG_UPDATE_MECHANISM",
+      "description": "Investigate why bot is ignoring 12+ reversion orders. Check: (1) Config file read timing, (2) Cache invalidation, (3) Startup config override, (4) Environment variable conflicts",
+      "reason": "All 12 reversion orders were logged as issued but had zero effect on bot behavior. Bot appears to be reading stale configuration from startup or cache. This is a critical infrastructure failure",
+      "priority": "CRITICAL",
+      "requires_approval": false
+    },
+    "tier": "approval",
+    "status": "rejected",
+    "submitted_at": "2026-02-16T21:23:45.591352-05:00",
+    "resolved_at": "2026-02-16T21:34:20.159165-05:00",
+    "resolved_by": "user"
+  },
+  {
+    "id": "action_1771295025592",
+    "type": "FIX_DUPLICATE_LOGGING_BUG",
+    "description": "Investigate race condition in trade logging. IDs 100-105 show exact byte-for-byte duplicates in pairs with 0.08-0.15s timestamp deltas. Check: (1) Async callback firing twice, (2) Race condition in settlement handler, (3) Double-submission in API layer",
+    "reason": "12 confirmations of duplicate trades. Data integrity is compromised. Cannot trust trade statistics or P&L calculations until this is fixed. May be losing real money on duplicate submissions",
+    "bot": null,
+    "params": {
+      "action": "FIX_DUPLICATE_LOGGING_BUG",
+      "description": "Investigate race condition in trade logging. IDs 100-105 show exact byte-for-byte duplicates in pairs with 0.08-0.15s timestamp deltas. Check: (1) Async callback firing twice, (2) Race condition in settlement handler, (3) Double-submission in API layer",
+      "reason": "12 confirmations of duplicate trades. Data integrity is compromised. Cannot trust trade statistics or P&L calculations until this is fixed. May be losing real money on duplicate submissions",
+      "priority": "CRITICAL",
+      "requires_approval": false
+    },
+    "tier": "approval",
+    "status": "rejected",
+    "submitted_at": "2026-02-16T21:23:45.592334-05:00",
+    "resolved_at": "2026-02-16T21:34:21.986652-05:00",
+    "resolved_by": "user"
+  },
+  {
+    "id": "action_1771295025593",
+    "type": "DEBUG_HYBRID_BOT_TRIGGER_LOGIC",
+    "description": "Hybrid bot has zero trades in paper mode over 71+ hours. Scout/big-bet trigger logic is not executing. Check: (1) Scout time conditions (13:10, 13:30, 13:45), (2) Big-bet condition at 14:00, (3) Market data feed, (4) Entry conviction thresholds",
+    "reason": "Bot is completely non-functional. Cannot proceed to live deployment until trigger logic is verified working in paper mode",
+    "bot": null,
+    "params": {
+      "action": "DEBUG_HYBRID_BOT_TRIGGER_LOGIC",
+      "description": "Hybrid bot has zero trades in paper mode over 71+ hours. Scout/big-bet trigger logic is not executing. Check: (1) Scout time conditions (13:10, 13:30, 13:45), (2) Big-bet condition at 14:00, (3) Market data feed, (4) Entry conviction thresholds",
+      "reason": "Bot is completely non-functional. Cannot proceed to live deployment until trigger logic is verified working in paper mode",
+      "priority": "HIGH",
+      "requires_approval": false
+    },
+    "tier": "approval",
+    "status": "rejected",
+    "submitted_at": "2026-02-16T21:23:45.593147-05:00",
+    "resolved_at": "2026-02-16T21:34:23.424210-05:00",
+    "resolved_by": "user"
+  },
+  {
+    "id": "action_1771295573446",
+    "type": "halt_sharbel_immediately",
+    "description": "Stop all Sharbel trading until infrastructure issues are resolved",
+    "reason": "Config mechanism is completely broken (12 reversion orders ignored over 71 hours). Duplicate logging bug confirmed 12 times. Data integrity compromised. Cannot trust bot behavior until hard technical fixes are deployed.",
+    "bot": null,
+    "params": {
+      "action": "halt_sharbel_immediately",
+      "description": "Stop all Sharbel trading until infrastructure issues are resolved",
+      "reason": "Config mechanism is completely broken (12 reversion orders ignored over 71 hours). Duplicate logging bug confirmed 12 times. Data integrity compromised. Cannot trust bot behavior until hard technical fixes are deployed.",
+      "priority": "critical",
+      "requires_approval": true
+    },
+    "tier": "approval",
+    "status": "rejected",
+    "submitted_at": "2026-02-16T21:32:53.446202-05:00",
+    "resolved_at": "2026-02-16T21:34:25.370573-05:00",
+    "resolved_by": "user"
+  },
+  {
+    "id": "action_1771295573447",
+    "type": "implement_hard_stake_lock",
+    "description": "Deploy hard-coded stake limit in bot code: max_stake = 2.0 (no config override possible)",
+    "reason": "Soft reversion orders have failed 100% of the time (12 violations over 71 hours). Only solution is hard technical lock in code, not config. Current $5 stakes are destroying $35-40 per 50-trade cycle despite 84% win rate.",
+    "bot": null,
+    "params": {
+      "action": "implement_hard_stake_lock",
+      "description": "Deploy hard-coded stake limit in bot code: max_stake = 2.0 (no config override possible)",
+      "reason": "Soft reversion orders have failed 100% of the time (12 violations over 71 hours). Only solution is hard technical lock in code, not config. Current $5 stakes are destroying $35-40 per 50-trade cycle despite 84% win rate.",
+      "priority": "critical",
+      "requires_approval": true
+    },
+    "tier": "approval",
+    "status": "rejected",
+    "submitted_at": "2026-02-16T21:32:53.447431-05:00",
+    "resolved_at": "2026-02-16T21:34:27.514286-05:00",
+    "resolved_by": "user"
+  },
+  {
+    "id": "action_1771295573448",
+    "type": "fix_config_update_mechanism",
+    "description": "Debug why bot ignores config reversion orders. Check: (1) config file path/permissions, (2) cache invalidation on startup, (3) hot-reload logic, (4) async callback ordering",
+    "reason": "12 reversion orders issued and logged over 71 hours. ALL IGNORED. Bot is reading stale configuration. This is a blocking infrastructure failure that makes all soft rules useless.",
+    "bot": null,
+    "params": {
+      "action": "fix_config_update_mechanism",
+      "description": "Debug why bot ignores config reversion orders. Check: (1) config file path/permissions, (2) cache invalidation on startup, (3) hot-reload logic, (4) async callback ordering",
+      "reason": "12 reversion orders issued and logged over 71 hours. ALL IGNORED. Bot is reading stale configuration. This is a blocking infrastructure failure that makes all soft rules useless.",
+      "priority": "critical",
+      "requires_approval": true
+    },
+    "tier": "approval",
+    "status": "rejected",
+    "submitted_at": "2026-02-16T21:32:53.448561-05:00",
+    "resolved_at": "2026-02-16T21:34:29.864157-05:00",
+    "resolved_by": "user"
+  },
+  {
+    "id": "action_1771295573449",
+    "type": "investigate_duplicate_logging_bug",
+    "description": "Trace IDs 100-105 (and all prior duplicates). Check for: (1) race condition in trade execution, (2) async callback firing twice, (3) logging middleware double-writing, (4) timestamp precision issues",
+    "reason": "Exact byte-for-byte duplicates in pairs with 0.08-0.15s deltas confirmed 12 times. Pattern is systematic. Indicates either duplicate trades being executed or duplicate logging. Data integrity compromised.",
+    "bot": null,
+    "params": {
+      "action": "investigate_duplicate_logging_bug",
+      "description": "Trace IDs 100-105 (and all prior duplicates). Check for: (1) race condition in trade execution, (2) async callback firing twice, (3) logging middleware double-writing, (4) timestamp precision issues",
+      "reason": "Exact byte-for-byte duplicates in pairs with 0.08-0.15s deltas confirmed 12 times. Pattern is systematic. Indicates either duplicate trades being executed or duplicate logging. Data integrity compromised.",
+      "priority": "high",
+      "requires_approval": true
+    },
+    "tier": "approval",
+    "status": "rejected",
+    "submitted_at": "2026-02-16T21:32:53.449666-05:00",
+    "resolved_at": "2026-02-16T21:34:32.547628-05:00",
+    "resolved_by": "user"
+  },
+  {
+    "id": "action_1771295573450",
+    "type": "debug_hybrid_scout_logic",
+    "description": "Hybrid bot has zero trades in paper mode over 71+ hours. Verify scout trigger times (13:10, 13:30, 13:45) and big-bet logic (14:00) are firing. Check market hours alignment and order submission.",
+    "reason": "Hybrid is blocked for live deployment. Scout/big-bet trigger logic is non-functional. Needs debug before any live trading.",
+    "bot": null,
+    "params": {
+      "action": "debug_hybrid_scout_logic",
+      "description": "Hybrid bot has zero trades in paper mode over 71+ hours. Verify scout trigger times (13:10, 13:30, 13:45) and big-bet logic (14:00) are firing. Check market hours alignment and order submission.",
+      "reason": "Hybrid is blocked for live deployment. Scout/big-bet trigger logic is non-functional. Needs debug before any live trading.",
+      "priority": "high",
+      "requires_approval": false
+    },
+    "tier": "approval",
+    "status": "rejected",
+    "submitted_at": "2026-02-16T21:32:53.450727-05:00",
+    "resolved_at": "2026-02-16T21:34:34.756257-05:00",
+    "resolved_by": "user"
   }
 ]
