@@ -6,6 +6,8 @@ venv/
 *.db
 *.log
 logs/
+config.yaml
+*.backup
 memory/api_usage.json
 memory/approval_queue.json
 memory/action_history.json

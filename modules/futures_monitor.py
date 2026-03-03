@@ -52,6 +52,9 @@ class FuturesMonitor:
         self.last_premarket_date = None
         self.last_postsession_date = None
 
+        # Bias table cache (populated by _load_bias_table)
+        self._bias_table_cache = {}
+
         # Initialize database
         self._init_db()
 
@@ -156,6 +159,36 @@ class FuturesMonitor:
             self.logger.error(f"Failed to load daily data: {e}")
             return None
 
+    def _refresh_daily_data(self):
+        """Pull fresh daily OHLCV from yfinance before premarket analysis."""
+        try:
+            import yfinance as yf
+            import pandas as pd
+            ticker_map = {"ES": "ES=F", "NQ": "NQ=F", "MES": "MES=F", "MNQ": "MNQ=F"}
+            ticker = ticker_map.get(self.instrument, f"{self.instrument}=F")
+
+            df = yf.download(ticker, period="2y", interval="1d",
+                             auto_adjust=False, progress=False)
+            if df.empty:
+                self.logger.warning(f"yfinance returned empty data for {ticker}")
+                return
+
+            # Flatten MultiIndex columns if present (yfinance v0.2+)
+            if isinstance(df.columns, pd.MultiIndex):
+                df.columns = df.columns.get_level_values(0)
+
+            df = df[['Open', 'High', 'Low', 'Close', 'Volume']].copy()
+            df.index.name = 'Datetime'
+
+            filepath = os.path.join(self.data_dir, f"{self.instrument}_daily.csv")
+            df.to_csv(filepath)
+            self.logger.info(
+                f"Daily data refreshed: {ticker} → {len(df)} bars, "
+                f"last={df.index[-1].date()}"
+            )
+        except Exception as e:
+            self.logger.error(f"Daily data refresh failed: {e}")
+
     def _load_5m_data(self):
         """Load 5-minute candle data from CSV."""
         try:
@@ -213,32 +246,31 @@ class FuturesMonitor:
 
         return sequence, bias, pct
 
+    def _load_bias_table(self):
+        """Load bias table from strat_bias_lookup.json (source of truth)."""
+        try:
+            json_path = os.path.join(os.path.dirname(self.data_dir), 'strat_bias_lookup.json')
+            with open(json_path) as f:
+                self._bias_table_cache = json.load(f)
+            self.logger.info(f"Bias table loaded: {len(self._bias_table_cache)} sequences from JSON")
+        except Exception as e:
+            self.logger.error(f"Failed to load bias table JSON: {e}")
+            self._bias_table_cache = {}
+
     def _lookup_bias(self, sequence):
-        """Lookup directional bias from backtested patterns."""
-        bias_table = {
-            # 100% patterns
-            "1-2U-2U":  ("BULL", 100),
-            "2D-1-2D":  ("BEAR", 100),
-            "2D-3-2D":  ("BEAR", 100),
-            "1-2U-1":   ("BEAR", 100),
-            "1-2D-2U":  ("BULL", 100),
-            "2D-3-2U":  ("BULL", 100),
-            "3-2D-2U":  ("BULL", 100),
-            # 90%+
-            "2U-2U-2D": ("BEAR", 93),
-            # 80%+
-            "2U-2D-2U": ("BULL", 86),
-            "2U-1-2D":  ("BEAR", 83),
-            "2D-1-2U":  ("BULL", 83),
-            "1-3-2U":   ("BULL", 80),
-            "3-2U-2D":  ("BEAR", 80),
-            "2D-2D-1":  ("BULL", 80),
-            # 75%+
-            "2U-2U-2U": ("BULL", 77),
-            "2D-2D-2D": ("BEAR", 75),
-            "2D-2D-2U": ("BULL", 73),
-        }
-        return bias_table.get(sequence, ("NEUTRAL", 0))
+        """Lookup directional bias from strat_bias_lookup.json.
+        Returns NEUTRAL for sequences with < 60% confidence (near-random noise).
+        """
+        if not self._bias_table_cache:
+            self._load_bias_table()
+        entry = self._bias_table_cache.get(sequence)
+        if entry is None:
+            return ("NEUTRAL", 0)
+        confidence = entry['confidence']
+        if confidence < 60:
+            return ("NEUTRAL", 0)
+        direction = "BULL" if entry['is_bullish'] else "BEAR"
+        return (direction, confidence)
 
     def _get_key_levels(self, daily_df):
         """Calculate PDH, PDL, EQ from the previous day."""
@@ -271,6 +303,10 @@ class FuturesMonitor:
 
         if self.last_premarket_date == today_str and not force:
             return None  # Already sent today
+
+        # Refresh daily data and bias table before computing anything
+        self._refresh_daily_data()
+        self._load_bias_table()
 
         daily_df = self._load_daily_data()
         if daily_df is None:

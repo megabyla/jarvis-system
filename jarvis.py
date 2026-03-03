@@ -35,6 +35,7 @@ from modules.approvals import ApprovalSystem
 from modules.git_manager import GitManager
 from modules.executor import ActionExecutor
 from modules.futures_monitor import FuturesMonitor
+from modules.trade_logger import TradeLogger
 
 from dotenv import load_dotenv
 load_dotenv()
@@ -86,6 +87,13 @@ class Jarvis:
             self.logger.info('Futures monitor enabled')
         else:
             self.futures = None
+
+        # Trade logger
+        if self.config.get('trade_logger', {}).get('enabled', False):
+            self.trade_logger = TradeLogger(self.config, self.logger)
+            self.logger.info('TradeLogger enabled')
+        else:
+            self.trade_logger = None
 
         # State
         self.running = True
@@ -273,15 +281,15 @@ class Jarvis:
         current_time = et_now.time()
 
         ft_config = self.config.get("futures", {})
-        premarket = dt_time(9, 0)
+        premarket = dt_time(9, 25)
         session_start = dt_time(9, 30)
         session_end = dt_time(11, 0)
         postsession = dt_time(11, 15)
         monitor_interval = ft_config.get("monitor_interval", 300)
 
-        # Pre-market brief (9:00 AM ET)
+        # Pre-market brief (9:25 AM ET — fires once per day)
         if current_time >= premarket and current_time < session_start:
-            brief = self.futures.run_premarket(force=True)
+            brief = self.futures.run_premarket()
             if brief:
                 self._log_chat("futures", brief["message"], "info")
 

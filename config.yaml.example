@@ -1,0 +1,102 @@
+jarvis_port: 6001
+log_level: INFO
+timezone: America/New_York
+bots:
+  sharbel:
+    name: Sharbel Bot
+    directory: /path/to/sharbel-bot
+    main_file: sharbel_bot.py
+    db_path: /path/to/sharbel-bot/sharbel_trades.db
+    dashboard_port: 5000
+    screen_name: sharbel
+    venv_path: /path/to/sharbel-bot/venv
+    enabled: true
+    auto_restart: false
+  hybrid:
+    name: Hybrid Bot
+    directory: /path/to/hybrid-bot
+    main_file: FINAL_HYBRID_BOT.py
+    db_path: /path/to/hybrid-bot/hybrid_bot_trades.db
+    dashboard_port: 5555
+    screen_name: hybrid_bot
+    venv_path: /path/to/hybrid-bot/venv
+    enabled: true
+    auto_restart: true
+watchdog:
+  heartbeat_interval: 30
+  process_check_interval: 30
+  settlement_check_interval: 60
+  stats_interval: 300
+  stale_threshold: 600
+  max_restart_attempts: 3
+  restart_cooldown: 300
+haiku:
+  model: claude-haiku-4-5-20251001
+  analysis_interval: 21600
+  max_tokens: 2048
+  temperature: 0.3
+  triggered_analysis: true
+budget:
+  daily_limit: 2.0
+  monthly_limit: 30.0
+  max_calls_per_day: 12
+  cost_per_1k_input: 0.00025
+  cost_per_1k_output: 0.00125
+  fallback_on_limit: true
+permissions:
+  auto_approve:
+  - restart_crashed_bot
+  - redeem_settlements
+  - pause_on_loss_streak
+  - resume_after_cooldown
+  - log_observation
+  - log_eq_rejection
+  require_approval:
+  - change_movement_filter
+  - change_stake_size
+  - change_entry_timing
+  - enable_disable_rsi
+  - change_conviction_range
+  - switch_paper_to_live
+  - eq_rejection_signal
+  never_touch:
+  - modify_api_keys
+  - change_wallet
+  - delete_database
+  - modify_core_strategy
+safety:
+  max_consecutive_losses: 3
+  loss_streak_cooldown: 1800
+  max_daily_loss: 20.0
+  min_balance_threshold: 10.0
+git:
+  enabled: true
+  repo_path: /path/to/jarvis-trading-system
+  remote: origin
+  branch: main
+  auto_push: true
+  commit_prefix: 'jarvis:'
+telegram:
+  enabled: true
+  bot_token: 'YOUR_TELEGRAM_BOT_TOKEN'   # Get from @BotFather
+  chat_id: 'YOUR_TELEGRAM_CHAT_ID'        # Your personal chat ID
+futures:
+  enabled: true
+  instrument: ES
+  data_dir: /path/to/futures_data
+  db_path: /path/to/futures_trades.db
+  eq_buffer: 2.0
+  min_stop: 2.0
+  max_stop: 15.0
+  stop_buffer: 0.5
+  premarket_time: 09:25
+  session_start: 09:30
+  session_end: '11:00'
+  postsession_time: '11:15'
+  monitor_interval: 300
+
+trade_logger:
+  enabled: true
+  db_path: /path/to/trader_log.db
+  webhook_port: 6001
+  monitor_interval: 60
