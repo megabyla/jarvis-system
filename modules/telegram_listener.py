@@ -36,6 +36,10 @@ HELP_TEXT = (
     "/weekly — weekly bias accuracy\n"
     "/stats  — EQ Rejection trade stats\n"
     "━━━━━━━━━━━━━━━━━━━━\n"
+    "*Quant strategies:*\n"
+    "/ghost — Ghost (RSI2 bull-gate) current state\n"
+    "/surge — Surge (compression breakout) current state\n"
+    "━━━━━━━━━━━━━━━━━━━━\n"
     "*Manual trade logging:*\n"
     "/log LONG 6875.50 8.5 — log entry (direction, price, stop dist)\n"
     "/win   — close current trade as winner\n"
@@ -136,6 +140,10 @@ class TelegramListener:
             self._cmd_weekly()
         elif cmd in ("stats", "futures stats"):
             self._cmd_stats()
+        elif cmd == "ghost":
+            self._cmd_ghost()
+        elif cmd == "surge":
+            self._cmd_surge()
         elif cmd.startswith("log") or cmd.startswith("trade"):
             self._cmd_log_trade(cmd)
         elif cmd == "win":
@@ -236,6 +244,17 @@ class TelegramListener:
                 lines.append(f"━━━━━━━━━━━━━━━━━━━━")
                 lines.append(f"ES: {seq} → {bias}")
 
+            # Ghost + Surge state
+            if getattr(self.jarvis, 'strategies', None):
+                sd = self.jarvis.strategies.get_dashboard_data()
+                g_state = sd.get("ghost", {}).get("state", "idle")
+                s_state = sd.get("surge", {}).get("state", "idle")
+                g_icon = "🟣" if g_state == "in_trade" else "⬜"
+                s_icon = "🟦" if s_state == "comp_pending" else "⬜"
+                lines.append(f"━━━━━━━━━━━━━━━━━━━━")
+                lines.append(f"{g_icon} Ghost: {g_state}")
+                lines.append(f"{s_icon} Surge: {s_state}")
+
             self.send("\n".join(lines))
         except Exception as e:
             self.send(f"⚠️ Status error: {e}")
@@ -280,6 +299,98 @@ class TelegramListener:
             self.send(msg)
         except Exception as e:
             self.send(f"⚠️ Stats error: {e}")
+
+    def _cmd_ghost(self):
+        if not getattr(self.jarvis, 'strategies', None):
+            self.send("Ghost module not enabled.")
+            return
+        try:
+            d = self.jarvis.strategies.get_dashboard_data()
+            g = d.get("ghost", {})
+            state = g.get("state", "idle")
+
+            if state == "in_trade":
+                ep = g.get("entry_price") or 0
+                days = g.get("days_held", 0)
+                # get current close estimate from DB state (no live fetch needed)
+                running_note = f"Entry: {ep:.2f}  |  Day {days}/7"
+                msg = (
+                    f"GHOST — In Trade\n"
+                    f"━━━━━━━━━━━━━━━━━━━━\n"
+                    f"LONG 1 MES active\n"
+                    f"{running_note}\n"
+                    f"Signal: {g.get('signal_date', 'N/A')}\n"
+                    f"Entered: {g.get('entry_date', 'N/A')}\n"
+                    f"Exit watch: RSI(2) > 65 or day 7"
+                )
+            elif state == "signal_pending":
+                msg = (
+                    f"GHOST — Signal Pending\n"
+                    f"━━━━━━━━━━━━━━━━━━━━\n"
+                    f"Signal fired: {g.get('signal_date', 'N/A')}\n"
+                    f"Entering LONG at tomorrow's open."
+                )
+            elif state == "exit_pending":
+                ep = g.get("entry_price") or 0
+                msg = (
+                    f"GHOST — Exit Pending\n"
+                    f"━━━━━━━━━━━━━━━━━━━━\n"
+                    f"Exit trigger fired. Exiting at tomorrow's open.\n"
+                    f"Entry was: {ep:.2f}  |  Day {g.get('days_held', 0)}/7"
+                )
+            else:
+                trades = g.get("trades", 0)
+                wr = g.get("win_rate")
+                pnl = g.get("total_pnl") or 0
+                wr_str = f"{wr:.1f}%" if wr is not None else "N/A"
+                msg = (
+                    f"GHOST — Idle\n"
+                    f"━━━━━━━━━━━━━━━━━━━━\n"
+                    f"Watching for RSI(2) < 10 above SMA200.\n"
+                    f"All-time: {trades} trades  |  WR {wr_str}  |  ${pnl:+.2f} MES"
+                )
+            self.send(msg)
+        except Exception as e:
+            self.send(f"Ghost error: {e}")
+
+    def _cmd_surge(self):
+        if not getattr(self.jarvis, 'strategies', None):
+            self.send("Surge module not enabled.")
+            return
+        try:
+            d = self.jarvis.strategies.get_dashboard_data()
+            s = d.get("surge", {})
+            state = s.get("state", "idle")
+
+            if state == "comp_pending":
+                ch = s.get("comp_high") or 0
+                cl = s.get("comp_low") or 0
+                ratio = s.get("atr_ratio") or 0
+                msg = (
+                    f"SURGE — Watching\n"
+                    f"━━━━━━━━━━━━━━━━━━━━\n"
+                    f"Compression bar: {s.get('comp_date', 'N/A')}\n"
+                    f"ATR ratio: {ratio:.3f}  (< 0.50 threshold)\n"
+                    f"━━━━━━━━━━━━━━━━━━━━\n"
+                    f"Long above:  {ch:.2f}\n"
+                    f"Short below: {cl:.2f}\n"
+                    f"Resolves at today's close (4:15 PM ET check)."
+                )
+            else:
+                trades = s.get("trades", 0)
+                wr = s.get("win_rate")
+                pnl = s.get("total_pnl") or 0
+                wr_str = f"{wr:.1f}%" if wr is not None else "N/A"
+                msg = (
+                    f"SURGE — Idle\n"
+                    f"━━━━━━━━━━━━━━━━━━━━\n"
+                    f"No compression bar active.\n"
+                    f"Watching for daily range < 50% of 20d avg.\n"
+                    f"All-time: {trades} trades  |  WR {wr_str}  |  ${pnl:+.2f} MES"
+                )
+            self.send(msg)
+        except Exception as e:
+            self.send(f"Surge error: {e}")
 
     def _cmd_log_trade(self, cmd):
         if not self.jarvis.trade_logger:

@@ -33,6 +33,7 @@ def create_dashboard_app(jarvis_instance):
             --yellow: #d29922;
             --orange: #db6d28;
             --purple: #bc8cff;
+            --cyan: #39d0d0;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -276,6 +277,60 @@ def create_dashboard_app(jarvis_instance):
         .chat-msg .src-watchdog { color: var(--yellow); }
         .chat-msg .src-haiku { color: var(--purple); }
         .chat-msg .src-user { color: var(--green); }
+        .chat-msg .src-strategies { color: var(--cyan); }
+
+        /* --- STRATEGY PILLS --- */
+        .pill {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 10px;
+            font-size: 0.75em;
+            font-weight: 700;
+            font-family: 'JetBrains Mono', monospace;
+            letter-spacing: 0.5px;
+        }
+        .pill-ghost { background: rgba(188,140,255,0.15); color: var(--purple); border: 1px solid rgba(188,140,255,0.3); }
+        .pill-surge { background: rgba(57,208,208,0.15); color: var(--cyan);   border: 1px solid rgba(57,208,208,0.3); }
+        .pill-active  { background: rgba(63,185,80,0.15);  color: var(--green); }
+        .pill-pending { background: rgba(210,153,34,0.15); color: var(--yellow); }
+        .pill-idle    { background: rgba(125,133,144,0.12); color: var(--text-dim); }
+
+        /* --- STRATEGY CARDS --- */
+        .strat-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+        .strat-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 14px;
+        }
+        .strat-card-title {
+            font-weight: 700;
+            font-size: 1em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .strat-metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 10px;
+            margin-bottom: 14px;
+        }
+        .strat-metric {
+            background: var(--bg-panel);
+            border-radius: 6px;
+            padding: 10px 12px;
+        }
+        .strat-metric .lbl { font-size: 0.72em; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 4px; }
+        .strat-metric .val { font-family: 'JetBrains Mono', monospace; font-size: 1.1em; font-weight: 600; }
+        .trade-row { display: flex; gap: 8px; align-items: center; padding: 5px 0; border-bottom: 1px solid var(--border); font-size: 0.8em; font-family: 'JetBrains Mono', monospace; }
+        .trade-row:last-child { border-bottom: none; }
         .chat-msg.level-error .msg { color: var(--red); }
         .chat-msg.level-warning .msg { color: var(--yellow); }
         .chat-msg.level-success .msg { color: var(--green); }
@@ -452,7 +507,57 @@ function renderPolymarket(state) {
                 <div class="health-badge health-${status}">${status}</div>
             </div>`;
     }
-    html += '</div>';
+    // Ghost + Surge strategy cards (same grid, appended before closing div)
+    const q = state.strategies || {};
+    const gh = q.ghost  || {};
+    const su = q.surge  || {};
+
+    function ghostStatePill(st) {
+        const map = {
+            'in_trade':       ['IN TRADE',  'var(--purple)', 'rgba(188,140,255,0.18)'],
+            'signal_pending': ['ENTERING',  'var(--yellow)', 'rgba(210,153,34,0.15)'],
+            'exit_pending':   ['EXITING',   'var(--orange)', 'rgba(219,109,40,0.15)'],
+            'idle':           ['IDLE',      'var(--text-dim)', 'rgba(125,133,144,0.1)'],
+        };
+        const [label, color, bg] = map[st] || map['idle'];
+        return `<span class="health-badge" style="background:${bg};color:${color}">${label}</span>`;
+    }
+    function surgeStatePill(st) {
+        const map = {
+            'comp_pending': ['WATCHING', 'var(--cyan)',     'rgba(57,208,208,0.15)'],
+            'idle':         ['IDLE',     'var(--text-dim)', 'rgba(125,133,144,0.1)'],
+        };
+        const [label, color, bg] = map[st] || map['idle'];
+        return `<span class="health-badge" style="background:${bg};color:${color}">${label}</span>`;
+    }
+
+    const ghostDetail = gh.state === 'in_trade'
+        ? `Day ${gh.days_held}/7  ·  entry ${gh.entry_price?.toFixed(2) || '—'}`
+        : gh.state === 'signal_pending' ? `Signal fired ${gh.signal_date || ''} · entering tomorrow`
+        : gh.state === 'exit_pending'   ? `Exit signal fired · exiting tomorrow`
+        : gh.trades ? `${gh.trades} trades · WR ${gh.win_rate || '—'}%` : 'Watching daily RSI(2)';
+
+    const surgeDetail = su.state === 'comp_pending'
+        ? `🟢 ${su.comp_high?.toFixed(2)}  ·  🔴 ${su.comp_low?.toFixed(2)}`
+        : su.trades ? `${su.trades} trades · WR ${su.win_rate || '—'}%` : 'Watching daily compression';
+
+    html += `
+        <div class="health-card" style="border-left: 2px solid var(--purple)">
+            <div>
+                <div class="name" style="color:var(--purple)">👻 Ghost</div>
+                <div class="detail">${ghostDetail}</div>
+            </div>
+            ${ghostStatePill(gh.state || 'idle')}
+        </div>
+        <div class="health-card" style="border-left: 2px solid var(--cyan)">
+            <div>
+                <div class="name" style="color:var(--cyan)">📡 Surge</div>
+                <div class="detail">${surgeDetail}</div>
+            </div>
+            ${surgeStatePill(su.state || 'idle')}
+        </div>
+    </div>
+    </div>`;
 
     // Stats
     html += '<div class="section-title">Performance (Last 50 Trades)</div><div class="stats-grid">';
@@ -757,3 +862,50 @@ setInterval(refresh, 5000);
         return jsonify({"ok": True})
 
     return app
+
+    @app.route('/webhook/tv', methods=['POST'])
+    def webhook_tradingview():
+        """TradingView webhook endpoint"""
+        try:
+            data = request.get_json()
+            if jarvis.trade_logger and jarvis.trade_logger.enabled:
+                jarvis.trade_logger.handle_webhook(data)
+                return jsonify({"ok": True})
+            return jsonify({"error": "trade_logger not enabled"}), 400
+        except Exception as e:
+            jarvis.logger.error(f"Webhook error: {e}")
+            return jsonify({"error": str(e)}), 500
+    
+    @app.route('/api/telegram_callback', methods=['POST'])
+    def telegram_callback():
+        """Handle Telegram button callbacks"""
+        try:
+            data = request.get_json()
+            callback_data = data.get('callback_query', {}).get('data', '')
+            
+            if not jarvis.trade_logger:
+                return jsonify({"ok": False})
+            
+            # Parse callback: confirm_123, skip_123, win_123, loss_123, manual_123
+            parts = callback_data.split('_')
+            if len(parts) != 2:
+                return jsonify({"ok": False})
+            
+            action, id_str = parts
+            item_id = int(id_str)
+            
+            if action == 'confirm':
+                jarvis.trade_logger.confirm_trade(item_id)
+            elif action == 'skip':
+                jarvis.trade_logger.skip_trade(item_id)
+            elif action == 'win':
+                jarvis.trade_logger.close_trade('WIN')
+            elif action == 'loss':
+                jarvis.trade_logger.close_trade('LOSS')
+            elif action == 'manual':
+                jarvis.trade_logger.close_trade('MANUAL')
+            
+            return jsonify({"ok": True})
+        except Exception as e:
+            jarvis.logger.error(f"Telegram callback error: {e}")
+            return jsonify({"ok": False})

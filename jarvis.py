@@ -36,6 +36,8 @@ from modules.git_manager import GitManager
 from modules.executor import ActionExecutor
 from modules.futures_monitor import FuturesMonitor
 from modules.trade_logger import TradeLogger
+from modules.strategies_monitor import StrategiesMonitor
+from modules.telegram_listener import TelegramListener
 
 from dotenv import load_dotenv
 load_dotenv()
@@ -95,6 +97,16 @@ class Jarvis:
         else:
             self.trade_logger = None
 
+        # Strategies monitor (Ghost + Surge)
+        if self.config.get('strategies', {}).get('enabled', False):
+            self.strategies = StrategiesMonitor(self.config, self.logger)
+            self.logger.info('StrategiesMonitor enabled (Ghost + Surge)')
+        else:
+            self.strategies = None
+
+        # Telegram command listener
+        self.listener = TelegramListener(self, self.config, self.logger)
+
         # State
         self.running = True
         self.last_analysis_time = 0
@@ -106,6 +118,7 @@ class Jarvis:
         self.chat_log = []
         self.last_stale_alert = {}  # bot_name -> timestamp (prevent spam)
         self.last_futures_check = 0
+        self._last_strategies_check_date = None
 
         # Initialize git repo
         self.git.init_repo()
@@ -318,6 +331,20 @@ class Jarvis:
                     f"📋 Session complete: {summary['sequence']} | {summary['bias']} | {fired}",
                     "info")
 
+    def _run_strategies_checks(self, now):
+        """Run Ghost + Surge daily check once after 4:15 PM ET."""
+        from datetime import time as dt_time
+        et_now = datetime.now(timezone(timedelta(hours=-5)))
+        current_time = et_now.time()
+        today_str = et_now.strftime("%Y-%m-%d")
+
+        if dt_time(16, 15) <= current_time < dt_time(16, 30):
+            if self._last_strategies_check_date != today_str:
+                msgs = self.strategies.run_daily_check()
+                for m in msgs:
+                    self._log_chat("strategies", m[:200], "info")
+                self._last_strategies_check_date = today_str
+
     def get_dashboard_state(self):
         return {
             "health": self.bot_health,
@@ -327,6 +354,7 @@ class Jarvis:
             "chat_log": self.chat_log[-50:],
             "git_commits": self.git.get_recent_commits(10),
             "futures": self.futures.get_dashboard_data() if self.futures else None,
+            "strategies": self.strategies.get_dashboard_data() if self.strategies else None,
             "config": {
                 "bots": {k: {
                     "name": v["name"],
@@ -419,6 +447,10 @@ class Jarvis:
         dash_thread.start()
         self.logger.info(f"Dashboard on port {self.config.get('jarvis_port', 6000)}")
 
+        import os as _os
+        if _os.environ.get("WERKZEUG_RUN_MAIN") != "true":
+            self.listener.start()
+
         self.check_health()
         self.calculate_stats()
 
@@ -446,6 +478,10 @@ class Jarvis:
                 # Futures monitoring
                 if self.futures and self.futures.enabled:
                     self._run_futures_checks(now)
+
+                # Strategies monitoring (Ghost + Surge)
+                if self.strategies and self.strategies.enabled:
+                    self._run_strategies_checks(now)
 
                 self.process_approved_actions()
                 time.sleep(5)
