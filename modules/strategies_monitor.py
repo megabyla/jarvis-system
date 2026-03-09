@@ -16,8 +16,9 @@ Surge state machine:
 import os
 import sqlite3
 from datetime import datetime, timezone, timedelta
+from zoneinfo import ZoneInfo
 
-ET = timezone(timedelta(hours=-5))
+ET = ZoneInfo("America/New_York")
 
 GHOST_RSI_ENTRY  = 10.0
 GHOST_RSI_EXIT   = 65.0
@@ -248,6 +249,9 @@ class StrategiesMonitor:
 
     def run_daily_check(self, force=False):
         now      = datetime.now(ET)
+        # Only run on weekdays — market is closed Sat/Sun, counts would inflate days_held
+        if now.weekday() >= 5 and not force:
+            return []
         today    = now.strftime("%Y-%m-%d")
         if self.last_check_date == today and not force:
             return []
