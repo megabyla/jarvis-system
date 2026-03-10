@@ -1,27 +1,7 @@
 jarvis_port: 6001
 log_level: INFO
 timezone: America/New_York
-bots:
-  sharbel:
-    name: Sharbel Bot
-    directory: /root/sharbel-bot
-    main_file: sharbel_bot.py
-    db_path: /root/sharbel-bot/sharbel_trades.db
-    dashboard_port: 5000
-    screen_name: sharbel
-    venv_path: /root/sharbel-bot/venv
-    enabled: true
-    auto_restart: false
-  hybrid:
-    name: Hybrid Bot
-    directory: /root/hybrid-bot
-    main_file: FINAL_HYBRID_BOT.py
-    db_path: /root/hybrid-bot/hybrid_bot_trades.db
-    dashboard_port: 5555
-    screen_name: hybrid_bot
-    venv_path: /root/hybrid-bot/venv
-    enabled: true
-    auto_restart: true
+bots: {}
 watchdog:
   heartbeat_interval: 30
   process_check_interval: 30
@@ -32,10 +12,10 @@ watchdog:
   restart_cooldown: 300
 haiku:
   model: claude-haiku-4-5-20251001
-  analysis_interval: 21600
+  analysis_interval: 99999999
   max_tokens: 2048
   temperature: 0.3
-  triggered_analysis: true
+  triggered_analysis: false
 budget:
   daily_limit: 2.0
   monthly_limit: 30.0
@@ -77,9 +57,10 @@ git:
   auto_push: true
   commit_prefix: 'jarvis:'
 telegram:
-  enabled: false
-  bot_token: ''
-  chat_id: ''
+  enabled: true
+  listen: false
+  bot_token: '8380603828:AAH-D9mUOY7WypfxsGkR0U-dsYl-Qaxw1yk'
+  chat_id: '7372609159'
 futures:
   enabled: true
   instrument: ES
@@ -89,8 +70,19 @@ futures:
   min_stop: 2.0
   max_stop: 15.0
   stop_buffer: 0.5
-  premarket_time: 09:00
+  premarket_time: 09:25
   session_start: 09:30
   session_end: '11:00'
   postsession_time: '11:15'
   monitor_interval: 300
+
+strategies:
+  enabled: true
+  db_path: /root/jarvis/strategies.db
+  check_time: '16:15'
+
+trade_logger:
+  enabled: true
+  db_path: /root/3dpo3/trader_log.db
+  webhook_port: 6001
+  monitor_interval: 60
