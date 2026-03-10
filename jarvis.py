@@ -25,6 +25,7 @@ import threading
 import yaml
 import sqlite3
 from datetime import datetime, timezone, timedelta
+from zoneinfo import ZoneInfo
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
@@ -38,6 +39,7 @@ from modules.futures_monitor import FuturesMonitor
 from modules.trade_logger import TradeLogger
 from modules.strategies_monitor import StrategiesMonitor
 from modules.telegram_listener import TelegramListener
+from modules.korean_tracker import morning_brief_line, weekly_summary as korean_weekly
 
 from dotenv import load_dotenv
 load_dotenv()
@@ -119,6 +121,7 @@ class Jarvis:
         self.last_stale_alert = {}  # bot_name -> timestamp (prevent spam)
         self.last_futures_check = 0
         self._last_strategies_check_date = None
+        self._last_korean_check_date = None
 
         # Initialize git repo
         self.git.init_repo()
@@ -331,10 +334,23 @@ class Jarvis:
                     f"📋 Session complete: {summary['sequence']} | {summary['bias']} | {fired}",
                     "info")
 
+    def _run_korean_check(self):
+        """Fire once per day in morning — nudge if 언니 hasn't practiced."""
+        from datetime import time as dt_time
+        et_now = datetime.now(timezone(timedelta(hours=-5)))
+        today_str = et_now.strftime("%Y-%m-%d")
+        if dt_time(9, 0) <= et_now.time() < dt_time(9, 30):
+            if self._last_korean_check_date != today_str:
+                msg = morning_brief_line()
+                if msg:
+                    self._log_chat("seoyeon", msg, "warning")
+                    self.listener.send(msg)
+                self._last_korean_check_date = today_str
+
     def _run_strategies_checks(self, now):
         """Run Ghost + Surge daily check once after 4:15 PM ET."""
         from datetime import time as dt_time
-        et_now = datetime.now(timezone(timedelta(hours=-5)))
+        et_now = datetime.now(ZoneInfo("America/New_York"))
         current_time = et_now.time()
         today_str = et_now.strftime("%Y-%m-%d")
 
@@ -414,6 +430,9 @@ class Jarvis:
                 summary = self.futures.get_weekly_summary()
                 if summary:
                     self._log_chat("futures", summary, "info")
+            kr = korean_weekly()
+            self._log_chat("seoyeon", kr, "info")
+            self.listener.send(kr)
         else:
             if self.budget.can_make_call():
                 self._log_chat("jarvis", "Asking Haiku...", "info")
@@ -448,8 +467,11 @@ class Jarvis:
         self.logger.info(f"Dashboard on port {self.config.get('jarvis_port', 6000)}")
 
         import os as _os
-        if _os.environ.get("WERKZEUG_RUN_MAIN") != "true":
+        _tg_listen = self.config.get("telegram", {}).get("listen", True)
+        if _tg_listen and _os.environ.get("WERKZEUG_RUN_MAIN") != "true":
             self.listener.start()
+        elif not _tg_listen:
+            self.logger.info("TelegramListener polling disabled (listen: false) — send-only mode")
 
         self.check_health()
         self.calculate_stats()
@@ -482,6 +504,9 @@ class Jarvis:
                 # Strategies monitoring (Ghost + Surge)
                 if self.strategies and self.strategies.enabled:
                     self._run_strategies_checks(now)
+
+                # Korean learning check (morning nudge)
+                self._run_korean_check()
 
                 self.process_approved_actions()
                 time.sleep(5)
