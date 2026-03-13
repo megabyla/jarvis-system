@@ -432,33 +432,26 @@ class StrategiesMonitor:
                 reason = f"RSI(2) = {rsi2:.1f}" if rsi2 > GHOST_RSI_EXIT else f"Day {GHOST_MAX_DAYS} max reached"
                 self.ghost_state = GS_EXIT_PENDING
                 self._save_ghost()
-                msg = (
-                    f"👻 GHOST — Exit Signal Fired\n"
-                    f"━━━━━━━━━━━━━━━━━━━━\n"
-                    f"Trigger:   {reason}\n"
-                    f"Day:       {self.ghost_days_held} of {GHOST_MAX_DAYS}\n"
-                    f"Entry:     {ep:.2f}\n"
-                    f"Close est: {close:.2f}\n"
-                    f"Running:   {running:+.2f} pts  (${r_mes:+.2f} MES)\n"
-                    f"━━━━━━━━━━━━━━━━━━━━\n"
-                    f"Exiting at tomorrow's open."
-                )
-                self._alert(msg)
-                msgs.append(msg)
-            else:
-                days_left = GHOST_MAX_DAYS - self.ghost_days_held
-                msg = (
-                    f"👻 GHOST — Daily Update\n"
-                    f"━━━━━━━━━━━━━━━━━━━━\n"
-                    f"{icon} Day {self.ghost_days_held}/{GHOST_MAX_DAYS}  ({days_left} left)\n"
-                    f"RSI(2):   {rsi2:.2f}  (exit > {GHOST_RSI_EXIT})\n"
-                    f"Entry:    {ep:.2f}\n"
-                    f"Close:    {close:.2f}\n"
-                    f"Running:  {running:+.2f} pts  (${r_mes:+.2f} MES)\n"
-                    f"Status:   Holding — no exit trigger."
-                )
-                self._alert(msg)
-                msgs.append(msg)
+
+            days_left = GHOST_MAX_DAYS - self.ghost_days_held
+            status_line = (
+                f"⚠️ EXIT TRIGGERED — {reason}\nExiting at tomorrow's open."
+                if should_exit else
+                f"Holding — {days_left} day(s) left. No exit trigger."
+            )
+            msg = (
+                f"👻 GHOST — Daily Update\n"
+                f"━━━━━━━━━━━━━━━━━━━━\n"
+                f"{icon} Day {self.ghost_days_held}/{GHOST_MAX_DAYS}\n"
+                f"RSI(2):   {rsi2:.2f}  (exit > {GHOST_RSI_EXIT})\n"
+                f"Entry:    {ep:.2f}\n"
+                f"Close:    {close:.2f}\n"
+                f"Running:  {running:+.2f} pts  (${r_mes:+.2f} MES)\n"
+                f"━━━━━━━━━━━━━━━━━━━━\n"
+                f"{status_line}"
+            )
+            self._alert(msg)
+            msgs.append(msg)
 
         # idle: check for new entry signal
         if self.ghost_state == GS_IDLE:
