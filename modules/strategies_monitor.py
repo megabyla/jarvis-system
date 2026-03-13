@@ -285,6 +285,35 @@ class StrategiesMonitor:
 
         # exit_pending: today is the exit bar — record at today's open
         if self.ghost_state == GS_EXIT_PENDING:
+            # Check if a NEW entry signal also fires today (same-day rollover).
+            # If yes: don't close — stay long, keep original entry price, reset days_held to 1.
+            # Financially identical to closing and re-entering at the same open price.
+            new_signal_today = (rsi2 < GHOST_RSI_ENTRY and g['above_sma'])
+            if new_signal_today:
+                ep           = self.ghost_entry_price or bar_open
+                running      = close - ep - COST_RT
+                r_mes        = round(running * MES_MULT, 2)
+                old_days     = self.ghost_days_held
+                self.ghost_days_held  = 1
+                self.ghost_entry_date = today   # reset entry date so in_trade counter works
+                self.ghost_state      = GS_IN_TRADE
+                self._save_ghost()
+                msg = (
+                    f"👻 GHOST — Day-Max + New Signal: Staying Long\n"
+                    f"━━━━━━━━━━━━━━━━━━━━\n"
+                    f"Would have exited (day {old_days} max) but RSI(2)={rsi2:.2f} fired a new entry.\n"
+                    f"Holding position — counter reset to Day 1.\n"
+                    f"Original entry: {ep:.2f}  (unchanged)\n"
+                    f"Running P&L:    {running:+.2f} pts  (${r_mes:+.2f} MES)\n"
+                    f"━━━━━━━━━━━━━━━━━━━━\n"
+                    f"Exit watch: RSI(2) > {GHOST_RSI_EXIT} or day {GHOST_MAX_DAYS}"
+                )
+                self._alert(msg)
+                msgs.append(msg)
+                self.logger.info(f"GHOST rollover: day-max + new signal, staying long from {ep:.2f}, days reset to 1")
+                return msgs
+
+            # Normal exit — no new signal today
             exit_px = bar_open
             ep      = self.ghost_entry_price or exit_px
             net     = exit_px - ep - COST_RT
