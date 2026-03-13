@@ -38,7 +38,7 @@ def get_stats() -> dict | None:
         # Also check messages table — if user talked to 서연 today, that counts as active
         talked_today = False
         try:
-            c.execute("SELECT COUNT(*) FROM messages WHERE role='user' AND created_at >= ?",
+            c.execute("SELECT COUNT(*) FROM messages WHERE role='user' AND timestamp >= ?",
                       (today.isoformat(),))
             talked_today = c.fetchone()[0] > 0
         except Exception:
