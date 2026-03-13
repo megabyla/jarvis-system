@@ -254,6 +254,7 @@ RULES:
 - Only recommend changes backed by data (10+ trade sample minimum)
 - Distinguish between normal variance and real signal
 - If everything looks fine, say so. Don't invent problems.
+- NEVER recommend increasing stake size while total cumulative PnL is negative — win rate alone does not justify it, EV and total profitability must both be positive first.
 
 RESPONSE FORMAT (JSON):
 {

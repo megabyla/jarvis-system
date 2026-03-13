@@ -293,7 +293,7 @@ class Jarvis:
     def _run_futures_checks(self, now):
         """Run futures-related checks based on time of day."""
         from datetime import time as dt_time
-        et_now = datetime.now(timezone(timedelta(hours=-5)))
+        et_now = datetime.now(ZoneInfo("America/New_York"))
         current_time = et_now.time()
 
         ft_config = self.config.get("futures", {})
@@ -337,7 +337,7 @@ class Jarvis:
     def _run_korean_check(self):
         """Fire once per day in morning — nudge if 언니 hasn't practiced."""
         from datetime import time as dt_time
-        et_now = datetime.now(timezone(timedelta(hours=-5)))
+        et_now = datetime.now(ZoneInfo("America/New_York"))
         today_str = et_now.strftime("%Y-%m-%d")
         if dt_time(9, 0) <= et_now.time() < dt_time(9, 30):
             if self._last_korean_check_date != today_str:
