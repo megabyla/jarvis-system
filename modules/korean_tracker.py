@@ -4,7 +4,7 @@ Fires in the morning brief if 언니 hasn't practiced yet.
 """
 
 import sqlite3
-from datetime import date, timedelta
+from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 
 SEOYEON_DB = Path("/root/seoyeon/word_bank.db")
@@ -35,11 +35,13 @@ def get_stats() -> dict | None:
                   (today.isoformat(),))
         today_row = c.fetchone()
 
-        # Also check messages table — if user talked to 서연 today, that counts as active
+        # Also check messages table — use a 24h rolling window so evening sessions
+        # (stored as UTC timestamps) aren't missed by next morning's ET-based check.
         talked_today = False
         try:
+            cutoff = (datetime.now(timezone.utc) - timedelta(hours=24)).strftime("%Y-%m-%dT%H:%M:%S")
             c.execute("SELECT COUNT(*) FROM messages WHERE role='user' AND timestamp >= ?",
-                      (today.isoformat(),))
+                      (cutoff,))
             talked_today = c.fetchone()[0] > 0
         except Exception:
             pass
@@ -49,7 +51,7 @@ def get_stats() -> dict | None:
         last_row = c.fetchone()
         days_absent = (today - date.fromisoformat(last_row[0])).days if last_row else None
 
-        # If talked today via messages but no formal session recorded, treat as day 0
+        # If talked in the last 24h via messages but no formal session, treat as active
         if talked_today:
             days_absent = 0
 

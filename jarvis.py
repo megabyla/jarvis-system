@@ -294,6 +294,8 @@ class Jarvis:
         """Run futures-related checks based on time of day."""
         from datetime import time as dt_time
         et_now = datetime.now(ZoneInfo("America/New_York"))
+        if et_now.weekday() >= 5:
+            return
         current_time = et_now.time()
 
         ft_config = self.config.get("futures", {})
@@ -338,6 +340,8 @@ class Jarvis:
         """Fire once per day in morning — nudge if 언니 hasn't practiced."""
         from datetime import time as dt_time
         et_now = datetime.now(ZoneInfo("America/New_York"))
+        if et_now.weekday() >= 5:
+            return
         today_str = et_now.strftime("%Y-%m-%d")
         if dt_time(9, 0) <= et_now.time() < dt_time(9, 30):
             if self._last_korean_check_date != today_str:

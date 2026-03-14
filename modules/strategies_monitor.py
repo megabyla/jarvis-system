@@ -15,10 +15,27 @@ Surge state machine:
 
 import os
 import sqlite3
-from datetime import datetime, timezone, timedelta
+from datetime import datetime, timezone, timedelta, date as _date
 from zoneinfo import ZoneInfo
 
 ET = ZoneInfo("America/New_York")
+
+
+def _next_market_open(from_date_str: str) -> str:
+    """Return 'Monday' or 'tomorrow' depending on whether from_date is Fri/Sat."""
+    try:
+        d = _date.fromisoformat(from_date_str)
+    except Exception:
+        d = datetime.now(ET).date()
+    # weekday(): 0=Mon … 4=Fri, 5=Sat, 6=Sun
+    if d.weekday() == 4:   # Friday → next is Monday
+        return "Monday"
+    elif d.weekday() == 5:  # Saturday → next is Monday
+        return "Monday"
+    elif d.weekday() == 6:  # Sunday → next is Monday
+        return "Monday"
+    else:
+        return "tomorrow"
 
 GHOST_RSI_ENTRY  = 10.0
 GHOST_RSI_EXIT   = 65.0
@@ -288,7 +305,7 @@ class StrategiesMonitor:
             # Check if a NEW entry signal also fires today (same-day rollover).
             # If yes: don't close — stay long, keep original entry price, reset days_held to 1.
             # Financially identical to closing and re-entering at the same open price.
-            new_signal_today = (rsi2 < GHOST_RSI_ENTRY and g['above_sma'])
+            new_signal_today = rsi2 < GHOST_RSI_ENTRY
             if new_signal_today:
                 ep           = self.ghost_entry_price or bar_open
                 running      = close - ep - COST_RT
@@ -393,7 +410,7 @@ class StrategiesMonitor:
                     f"Entered LONG at open: {bar_open:.2f}\n"
                     f"Exit trigger already: {reason}\n"
                     f"Running today: {running:+.2f} pts\n"
-                    f"Exiting at tomorrow's open."
+                    f"Exiting at {_next_market_open(today)}'s open."
                 )
                 self._alert(msg)
                 msgs.append(msg)
@@ -435,7 +452,7 @@ class StrategiesMonitor:
 
             days_left = GHOST_MAX_DAYS - self.ghost_days_held
             status_line = (
-                f"⚠️ EXIT TRIGGERED — {reason}\nExiting at tomorrow's open."
+                f"⚠️ EXIT TRIGGERED — {reason}\nExiting at {_next_market_open(today)}'s open."
                 if should_exit else
                 f"Holding — {days_left} day(s) left. No exit trigger."
             )
@@ -482,7 +499,7 @@ class StrategiesMonitor:
                     f"Close:   {close:.2f}\n"
                     f"SMA200:  {sma200:.2f}  (above ✅)\n"
                     f"━━━━━━━━━━━━━━━━━━━━\n"
-                    f"Entering LONG 1 MES at tomorrow's open.\n"
+                    f"Entering LONG 1 MES at {_next_market_open(today)}'s open.\n"
                     f"Exit: RSI(2) > {GHOST_RSI_EXIT} or {GHOST_MAX_DAYS} days."
                 )
                 self._alert(msg)
