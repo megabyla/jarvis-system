@@ -17,8 +17,9 @@ import sqlite3
 import logging
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
+from zoneinfo import ZoneInfo
 
-ET = timezone(timedelta(hours=-5))
+ET = ZoneInfo("America/New_York")
 
 
 class FuturesMonitor:
@@ -51,6 +52,7 @@ class FuturesMonitor:
         self.signal_fired_today = False
         self.last_premarket_date = None
         self.last_postsession_date = None
+        self.last_5m_refresh_date = None
 
         # Bias table cache (populated by _load_bias_table)
         self._bias_table_cache = {}
@@ -188,6 +190,34 @@ class FuturesMonitor:
             )
         except Exception as e:
             self.logger.error(f"Daily data refresh failed: {e}")
+
+    def _refresh_5m_data(self):
+        """Pull fresh 5m OHLCV from yfinance (called once per session day)."""
+        try:
+            import yfinance as yf
+            import pandas as pd
+            ticker_map = {"ES": "ES=F", "NQ": "NQ=F", "MES": "MES=F", "MNQ": "MNQ=F"}
+            ticker = ticker_map.get(self.instrument, f"{self.instrument}=F")
+
+            df = yf.download(ticker, period="5d", interval="5m",
+                             auto_adjust=False, progress=False)
+            if df.empty:
+                self.logger.warning(f"yfinance returned empty 5m data for {ticker}")
+                return
+
+            if isinstance(df.columns, pd.MultiIndex):
+                df.columns = df.columns.get_level_values(0)
+
+            df = df[['Open', 'High', 'Low', 'Close', 'Volume']].copy()
+            df.index.name = 'Datetime'
+
+            filepath = os.path.join(self.data_dir, f"{self.instrument}_5m.csv")
+            df.to_csv(filepath)
+            self.logger.info(
+                f"5m data refreshed: {ticker} → {len(df)} bars, last={df.index[-1]}"
+            )
+        except Exception as e:
+            self.logger.error(f"5m data refresh failed: {e}")
 
     def _load_5m_data(self):
         """Load 5-minute candle data from CSV."""
@@ -394,12 +424,12 @@ class FuturesMonitor:
             return None
 
         now = datetime.now(ET)
+        today_str = now.strftime("%Y-%m-%d")
 
-        # Only check during NY session
-        if now.hour < 9 or (now.hour == 9 and now.minute < 30):
-            return None
-        if now.hour >= 11:
-            return None
+        # Refresh 5m data once per session day so today's candles are available
+        if self.last_5m_refresh_date != today_str:
+            self._refresh_5m_data()
+            self.last_5m_refresh_date = today_str
 
         pd_eq = self.today_levels['pd_eq']
         eq_upper = pd_eq + self.eq_buffer

@@ -226,7 +226,7 @@ class StrategiesMonitor:
         d    = close.diff()
         gain = d.clip(lower=0).ewm(alpha=0.5, min_periods=2, adjust=False).mean()
         loss = (-d.clip(upper=0)).ewm(alpha=0.5, min_periods=2, adjust=False).mean()
-        rs   = gain / loss.replace(0, float('nan'))
+        rs   = gain / loss.clip(lower=1e-10)   # clip prevents float underflow → NaN
         return 100 - (100 / (1 + rs))
 
     def _ghost_indicators(self, df):
@@ -305,7 +305,9 @@ class StrategiesMonitor:
             # Check if a NEW entry signal also fires today (same-day rollover).
             # If yes: don't close — stay long, keep original entry price, reset days_held to 1.
             # Financially identical to closing and re-entering at the same open price.
-            new_signal_today = rsi2 < GHOST_RSI_ENTRY
+            import math as _math
+            new_signal_today = not _math.isnan(rsi2) and rsi2 < GHOST_RSI_ENTRY
+            self.logger.info(f"GHOST exit_pending: rsi2={rsi2:.4f}, rollover={new_signal_today}")
             if new_signal_today:
                 ep           = self.ghost_entry_price or bar_open
                 running      = close - ep - COST_RT

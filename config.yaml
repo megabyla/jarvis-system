@@ -77,7 +77,7 @@ futures:
   monitor_interval: 300
 
 strategies:
-  enabled: true
+  enabled: false
   db_path: /root/jarvis/strategies.db
   check_time: '16:15'
 

@@ -23,6 +23,8 @@ import threading
 
 import requests
 
+from modules.lab_tracker import LabTracker
+
 
 POLL_INTERVAL  = 2      # seconds between getUpdates calls
 REQUEST_TIMEOUT = 8     # seconds for each API call
@@ -46,6 +48,10 @@ HELP_TEXT = (
     "/loss  — close current trade as stopped out\n"
     "/be    — close current trade at breakeven\n"
     "━━━━━━━━━━━━━━━━━━━━\n"
+    "━━━━━━━━━━━━━━━━━━━━\n"
+    "*° Lab:*\n"
+    "/lab Brand Name — your note  → add/update perfume target\n"
+    "━━━━━━━━━━━━━━━━━━━━\n"
     "/help  — this list\n"
     "Anything else → ask Haiku ✨"
 )
@@ -63,6 +69,8 @@ class TelegramListener:
 
         if not self.token:
             self.logger.warning("TelegramListener: no bot_token — listener disabled")
+
+        self.lab = LabTracker(jarvis.analyst, logger)
 
     # ─── PUBLIC ───────────────────────────────────────────────────────────────
 
@@ -152,6 +160,8 @@ class TelegramListener:
             self._cmd_close_trade("LOSS")
         elif cmd == "be":
             self._cmd_close_trade("MANUAL")
+        elif cmd.startswith("lab"):
+            self._cmd_lab(text)
         elif cmd == "help":
             self.send(HELP_TEXT, markdown=True)
         else:
@@ -428,6 +438,11 @@ class TelegramListener:
             return
         self.jarvis.trade_logger.close_trade(outcome)
         # close_trade() sends its own Telegram confirmation
+
+    def _cmd_lab(self, text):
+        self.send("⏳ Parsing...")
+        result = self.lab.handle(text)
+        self.send(result)
 
     def _cmd_haiku(self, text):
         if not self.jarvis.budget.can_make_call():

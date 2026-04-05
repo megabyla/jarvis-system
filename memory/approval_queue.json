@@ -777,5 +777,461 @@
     "submitted_at": "2026-02-19T21:40:06.133111-05:00",
     "resolved_at": null,
     "resolved_by": null
+  },
+  {
+    "id": "action_1771567196265",
+    "type": "halt_sharbel_trading_immediately",
+    "description": "Stop all Sharbel trading until infrastructure issues are resolved",
+    "reason": "Data integrity is critically compromised. Duplicate logging bug (17+ confirmed instances) and broken config mechanism (13+ ignored orders over 144+ hours) make the 94% win rate figure unreliable. Cannot make informed decisions on corrupted data.",
+    "bot": null,
+    "params": {
+      "action": "halt_sharbel_trading_immediately",
+      "description": "Stop all Sharbel trading until infrastructure issues are resolved",
+      "reason": "Data integrity is critically compromised. Duplicate logging bug (17+ confirmed instances) and broken config mechanism (13+ ignored orders over 144+ hours) make the 94% win rate figure unreliable. Cannot make informed decisions on corrupted data.",
+      "priority": "critical",
+      "requires_approval": true
+    },
+    "tier": "approval",
+    "status": "pending",
+    "submitted_at": "2026-02-20T00:59:56.265870-05:00",
+    "resolved_at": null,
+    "resolved_by": null
+  },
+  {
+    "id": "action_1771567196267",
+    "type": "fix_duplicate_logging_bug",
+    "description": "Investigate and fix race condition causing byte-for-byte duplicate trades (IDs 100-105 pattern: 0.08-0.15s timestamp deltas between duplicates)",
+    "reason": "17+ confirmed instances of identical trades logged with millisecond-level timestamp deltas. Indicates async callback firing twice or race condition in logging layer. Corrupts all performance metrics.",
+    "bot": null,
+    "params": {
+      "action": "fix_duplicate_logging_bug",
+      "description": "Investigate and fix race condition causing byte-for-byte duplicate trades (IDs 100-105 pattern: 0.08-0.15s timestamp deltas between duplicates)",
+      "reason": "17+ confirmed instances of identical trades logged with millisecond-level timestamp deltas. Indicates async callback firing twice or race condition in logging layer. Corrupts all performance metrics.",
+      "priority": "critical",
+      "requires_approval": true
+    },
+    "tier": "approval",
+    "status": "pending",
+    "submitted_at": "2026-02-20T00:59:56.267770-05:00",
+    "resolved_at": null,
+    "resolved_by": null
+  },
+  {
+    "id": "action_1771567196270",
+    "type": "fix_config_update_mechanism",
+    "description": "Debug why bot is ignoring 13+ reversion orders issued over 144+ hours (2/14 21:29 to 2/19 21:39 UTC). Bot may be reading stale configuration from cache or startup.",
+    "reason": "All reversion orders have been logged but ignored by bot. Bot continues reading old configuration. Soft rules have failed 100% of the time. This is a critical infrastructure failure.",
+    "bot": null,
+    "params": {
+      "action": "fix_config_update_mechanism",
+      "description": "Debug why bot is ignoring 13+ reversion orders issued over 144+ hours (2/14 21:29 to 2/19 21:39 UTC). Bot may be reading stale configuration from cache or startup.",
+      "reason": "All reversion orders have been logged but ignored by bot. Bot continues reading old configuration. Soft rules have failed 100% of the time. This is a critical infrastructure failure.",
+      "priority": "critical",
+      "requires_approval": true
+    },
+    "tier": "approval",
+    "status": "pending",
+    "submitted_at": "2026-02-20T00:59:56.270627-05:00",
+    "resolved_at": null,
+    "resolved_by": null
+  },
+  {
+    "id": "action_1771567196276",
+    "type": "implement_hard_stake_lock",
+    "description": "Add hard technical lock in code to enforce $2 baseline stakes. Do not rely on config mechanism or soft rules.",
+    "reason": "Soft reversion rules have failed 100% of the time over 144+ hours. Hard technical lock is the only solution. Current $5 stakes are suboptimal (destroying $12-23 per 50-trade cycle vs $2 stakes).",
+    "bot": null,
+    "params": {
+      "action": "implement_hard_stake_lock",
+      "description": "Add hard technical lock in code to enforce $2 baseline stakes. Do not rely on config mechanism or soft rules.",
+      "reason": "Soft reversion rules have failed 100% of the time over 144+ hours. Hard technical lock is the only solution. Current $5 stakes are suboptimal (destroying $12-23 per 50-trade cycle vs $2 stakes).",
+      "priority": "critical",
+      "requires_approval": true
+    },
+    "tier": "approval",
+    "status": "pending",
+    "submitted_at": "2026-02-20T00:59:56.276492-05:00",
+    "resolved_at": null,
+    "resolved_by": null
+  },
+  {
+    "id": "action_1771567196281",
+    "type": "debug_hybrid_scout_logic",
+    "description": "Investigate why Hybrid bot has zero trades in paper mode after 144+ hours. Scout/big-bet trigger logic is non-functional.",
+    "reason": "Hybrid bot has been in paper mode with zero trades since 2/14. Scout times (13:10, 13:30, 13:45) and big-bet logic (14:00) are not triggering. Blocker for live deployment.",
+    "bot": null,
+    "params": {
+      "action": "debug_hybrid_scout_logic",
+      "description": "Investigate why Hybrid bot has zero trades in paper mode after 144+ hours. Scout/big-bet trigger logic is non-functional.",
+      "reason": "Hybrid bot has been in paper mode with zero trades since 2/14. Scout times (13:10, 13:30, 13:45) and big-bet logic (14:00) are not triggering. Blocker for live deployment.",
+      "priority": "high",
+      "requires_approval": true
+    },
+    "tier": "approval",
+    "status": "pending",
+    "submitted_at": "2026-02-20T00:59:56.281224-05:00",
+    "resolved_at": null,
+    "resolved_by": null
+  },
+  {
+    "id": "action_1771567196283",
+    "type": "clean_historical_data",
+    "description": "Remove all duplicate trades from historical dataset (IDs 100-105 and other confirmed duplicates). Recalculate all performance metrics on cleaned data.",
+    "reason": "Cannot trust any performance metrics until duplicates are removed. Win rate, P&L, and all derived statistics are corrupted.",
+    "bot": null,
+    "params": {
+      "action": "clean_historical_data",
+      "description": "Remove all duplicate trades from historical dataset (IDs 100-105 and other confirmed duplicates). Recalculate all performance metrics on cleaned data.",
+      "reason": "Cannot trust any performance metrics until duplicates are removed. Win rate, P&L, and all derived statistics are corrupted.",
+      "priority": "high",
+      "requires_approval": true
+    },
+    "tier": "approval",
+    "status": "pending",
+    "submitted_at": "2026-02-20T00:59:56.283233-05:00",
+    "resolved_at": null,
+    "resolved_by": null
+  },
+  {
+    "id": "action_1771567399272",
+    "type": "halt_trading_sharbel",
+    "description": "Immediately halt all Sharbel trading until infrastructure issues are resolved",
+    "reason": "Duplicate logging bug (21+ confirmed instances) and broken config mechanism (13+ ignored orders over 144 hours) make all performance metrics unreliable. Data integrity is critically compromised. Cannot trust 94% win rate or any derived decisions.",
+    "bot": null,
+    "params": {
+      "action": "halt_trading_sharbel",
+      "description": "Immediately halt all Sharbel trading until infrastructure issues are resolved",
+      "reason": "Duplicate logging bug (21+ confirmed instances) and broken config mechanism (13+ ignored orders over 144 hours) make all performance metrics unreliable. Data integrity is critically compromised. Cannot trust 94% win rate or any derived decisions.",
+      "priority": "critical",
+      "requires_approval": true
+    },
+    "tier": "approval",
+    "status": "pending",
+    "submitted_at": "2026-02-20T01:03:19.272630-05:00",
+    "resolved_at": null,
+    "resolved_by": null
+  },
+  {
+    "id": "action_1771567399274",
+    "type": "fix_duplicate_logging_bug",
+    "description": "Investigate and fix race condition causing byte-for-byte duplicate trades. IDs 100-105, 102-103, 104-105 show identical pairs with 0.08-0.15s timestamp deltas.",
+    "reason": "Systematic pattern indicates async callback firing twice or race condition in trade logging. This corrupts all historical data and makes win rate calculations unreliable.",
+    "bot": null,
+    "params": {
+      "action": "fix_duplicate_logging_bug",
+      "description": "Investigate and fix race condition causing byte-for-byte duplicate trades. IDs 100-105, 102-103, 104-105 show identical pairs with 0.08-0.15s timestamp deltas.",
+      "reason": "Systematic pattern indicates async callback firing twice or race condition in trade logging. This corrupts all historical data and makes win rate calculations unreliable.",
+      "priority": "critical",
+      "requires_approval": true
+    },
+    "tier": "approval",
+    "status": "pending",
+    "submitted_at": "2026-02-20T01:03:19.274555-05:00",
+    "resolved_at": null,
+    "resolved_by": null
+  },
+  {
+    "id": "action_1771567399276",
+    "type": "fix_config_update_mechanism",
+    "description": "Debug and fix config update mechanism. 13+ reversion orders issued and logged but ALL IGNORED by bot over 144 hours.",
+    "reason": "Bot appears to be reading stale configuration from cache or startup. Soft rules have failed 100% of the time. This prevents any parameter adjustments from taking effect.",
+    "bot": null,
+    "params": {
+      "action": "fix_config_update_mechanism",
+      "description": "Debug and fix config update mechanism. 13+ reversion orders issued and logged but ALL IGNORED by bot over 144 hours.",
+      "reason": "Bot appears to be reading stale configuration from cache or startup. Soft rules have failed 100% of the time. This prevents any parameter adjustments from taking effect.",
+      "priority": "critical",
+      "requires_approval": true
+    },
+    "tier": "approval",
+    "status": "pending",
+    "submitted_at": "2026-02-20T01:03:19.276739-05:00",
+    "resolved_at": null,
+    "resolved_by": null
+  },
+  {
+    "id": "action_1771567399278",
+    "type": "implement_hard_stake_lock",
+    "description": "Implement hard technical lock on stake sizing in code (not config). Current soft rules have failed 100% of the time.",
+    "reason": "Soft reversion rules have been ignored 13+ times over 144 hours. Hard technical lock is the only solution to prevent stake creep.",
+    "bot": null,
+    "params": {
+      "action": "implement_hard_stake_lock",
+      "description": "Implement hard technical lock on stake sizing in code (not config). Current soft rules have failed 100% of the time.",
+      "reason": "Soft reversion rules have been ignored 13+ times over 144 hours. Hard technical lock is the only solution to prevent stake creep.",
+      "priority": "critical",
+      "requires_approval": true
+    },
+    "tier": "approval",
+    "status": "pending",
+    "submitted_at": "2026-02-20T01:03:19.278840-05:00",
+    "resolved_at": null,
+    "resolved_by": null
+  },
+  {
+    "id": "action_1771567399281",
+    "type": "clean_historical_data",
+    "description": "Once duplicate logging bug is fixed, remove all duplicate trade records from database and recalculate win rate, P&L, and all statistics.",
+    "reason": "Current 94% win rate and +$27.91 P&L figures are unreliable due to duplicate trades. True performance cannot be assessed until data is cleaned.",
+    "bot": null,
+    "params": {
+      "action": "clean_historical_data",
+      "description": "Once duplicate logging bug is fixed, remove all duplicate trade records from database and recalculate win rate, P&L, and all statistics.",
+      "reason": "Current 94% win rate and +$27.91 P&L figures are unreliable due to duplicate trades. True performance cannot be assessed until data is cleaned.",
+      "priority": "critical",
+      "requires_approval": true
+    },
+    "tier": "approval",
+    "status": "pending",
+    "submitted_at": "2026-02-20T01:03:19.281075-05:00",
+    "resolved_at": null,
+    "resolved_by": null
+  },
+  {
+    "id": "action_1771567399283",
+    "type": "debug_hybrid_scout_logic",
+    "description": "Debug Hybrid bot scout/big-bet trigger logic. Zero trades in paper mode for 144+ hours indicates logic is not firing.",
+    "reason": "Hybrid bot has been non-functional in paper mode since 2/19 15:39 UTC. Scout times (13:10, 13:30, 13:45) and big-bet logic (14:00) are not triggering any trades.",
+    "bot": null,
+    "params": {
+      "action": "debug_hybrid_scout_logic",
+      "description": "Debug Hybrid bot scout/big-bet trigger logic. Zero trades in paper mode for 144+ hours indicates logic is not firing.",
+      "reason": "Hybrid bot has been non-functional in paper mode since 2/19 15:39 UTC. Scout times (13:10, 13:30, 13:45) and big-bet logic (14:00) are not triggering any trades.",
+      "priority": "high",
+      "requires_approval": true
+    },
+    "tier": "approval",
+    "status": "pending",
+    "submitted_at": "2026-02-20T01:03:19.283207-05:00",
+    "resolved_at": null,
+    "resolved_by": null
+  },
+  {
+    "id": "action_1771567987389",
+    "type": "halt_sharbel_trading",
+    "description": "Stop all Sharbel trading immediately until infrastructure is fixed",
+    "reason": "Data integrity is critically compromised by 21+ confirmed duplicate logging instances and broken config mechanism. Cannot trust any performance metrics. True win rate unknown. Continuing to trade on corrupted data is reckless.",
+    "bot": null,
+    "params": {
+      "action": "halt_sharbel_trading",
+      "description": "Stop all Sharbel trading immediately until infrastructure is fixed",
+      "reason": "Data integrity is critically compromised by 21+ confirmed duplicate logging instances and broken config mechanism. Cannot trust any performance metrics. True win rate unknown. Continuing to trade on corrupted data is reckless.",
+      "priority": "critical",
+      "requires_approval": true
+    },
+    "tier": "approval",
+    "status": "pending",
+    "submitted_at": "2026-02-20T01:13:07.389400-05:00",
+    "resolved_at": null,
+    "resolved_by": null
+  },
+  {
+    "id": "action_1771567987391",
+    "type": "fix_duplicate_logging_bug",
+    "description": "Investigate and fix the race condition causing byte-for-byte duplicate trades. Likely async callback firing twice or duplicate event handler.",
+    "reason": "21+ confirmed instances of identical trades with 0.08-0.5s timestamp deltas. Pattern is systematic and reproducible. This corrupts all performance analysis and P&L calculations.",
+    "bot": null,
+    "params": {
+      "action": "fix_duplicate_logging_bug",
+      "description": "Investigate and fix the race condition causing byte-for-byte duplicate trades. Likely async callback firing twice or duplicate event handler.",
+      "reason": "21+ confirmed instances of identical trades with 0.08-0.5s timestamp deltas. Pattern is systematic and reproducible. This corrupts all performance analysis and P&L calculations.",
+      "priority": "critical",
+      "requires_approval": true
+    },
+    "tier": "approval",
+    "status": "pending",
+    "submitted_at": "2026-02-20T01:13:07.391589-05:00",
+    "resolved_at": null,
+    "resolved_by": null
+  },
+  {
+    "id": "action_1771567987393",
+    "type": "fix_config_mechanism",
+    "description": "Debug why bot is ignoring config updates. Likely reading from stale cache or startup config instead of live config endpoint. Implement config version check and forced reload.",
+    "reason": "13+ reversion orders issued and logged over 144+ hours - ALL IGNORED. Bot continues using old configuration. This is a critical infrastructure failure that makes parameter changes impossible.",
+    "bot": null,
+    "params": {
+      "action": "fix_config_mechanism",
+      "description": "Debug why bot is ignoring config updates. Likely reading from stale cache or startup config instead of live config endpoint. Implement config version check and forced reload.",
+      "reason": "13+ reversion orders issued and logged over 144+ hours - ALL IGNORED. Bot continues using old configuration. This is a critical infrastructure failure that makes parameter changes impossible.",
+      "priority": "critical",
+      "requires_approval": true
+    },
+    "tier": "approval",
+    "status": "pending",
+    "submitted_at": "2026-02-20T01:13:07.393881-05:00",
+    "resolved_at": null,
+    "resolved_by": null
+  },
+  {
+    "id": "action_1771567987396",
+    "type": "implement_hard_stake_lock",
+    "description": "Add hard technical lock in code to enforce $2 stake baseline. Do NOT rely on config-based soft rules. Lock should be in trade execution function, not configuration.",
+    "reason": "Soft reversion rules have failed 100% of the time over 144+ hours. $5 stakes are destroying profitability (at 94% win rate, $5 stakes = -$17 to -$28 P&L per 50 trades vs +$18-22 at $2 stakes). Hard lock is the only solution.",
+    "bot": null,
+    "params": {
+      "action": "implement_hard_stake_lock",
+      "description": "Add hard technical lock in code to enforce $2 stake baseline. Do NOT rely on config-based soft rules. Lock should be in trade execution function, not configuration.",
+      "reason": "Soft reversion rules have failed 100% of the time over 144+ hours. $5 stakes are destroying profitability (at 94% win rate, $5 stakes = -$17 to -$28 P&L per 50 trades vs +$18-22 at $2 stakes). Hard lock is the only solution.",
+      "priority": "critical",
+      "requires_approval": true
+    },
+    "tier": "approval",
+    "status": "pending",
+    "submitted_at": "2026-02-20T01:13:07.396257-05:00",
+    "resolved_at": null,
+    "resolved_by": null
+  },
+  {
+    "id": "action_1771567987398",
+    "type": "clean_trade_history",
+    "description": "After fixing duplicate logging bug, audit entire trade history and remove confirmed duplicates. Recalculate all statistics from cleaned dataset.",
+    "reason": "Current 94% win rate figure is unreliable. Need to establish true baseline before resuming trading.",
+    "bot": null,
+    "params": {
+      "action": "clean_trade_history",
+      "description": "After fixing duplicate logging bug, audit entire trade history and remove confirmed duplicates. Recalculate all statistics from cleaned dataset.",
+      "reason": "Current 94% win rate figure is unreliable. Need to establish true baseline before resuming trading.",
+      "priority": "high",
+      "requires_approval": true
+    },
+    "tier": "approval",
+    "status": "pending",
+    "submitted_at": "2026-02-20T01:13:07.398745-05:00",
+    "resolved_at": null,
+    "resolved_by": null
+  },
+  {
+    "id": "action_1771567987401",
+    "type": "debug_hybrid_bot",
+    "description": "Investigate why Hybrid bot has zero trades in paper mode after 144+ hours. Scout/big-bet trigger logic is not functioning.",
+    "reason": "Hybrid bot is completely non-functional. Scout times (13:10, 13:30, 13:45) and big-bet logic (14:00) are not triggering. Blocker unresolved for 144+ hours.",
+    "bot": null,
+    "params": {
+      "action": "debug_hybrid_bot",
+      "description": "Investigate why Hybrid bot has zero trades in paper mode after 144+ hours. Scout/big-bet trigger logic is not functioning.",
+      "reason": "Hybrid bot is completely non-functional. Scout times (13:10, 13:30, 13:45) and big-bet logic (14:00) are not triggering. Blocker unresolved for 144+ hours.",
+      "priority": "high",
+      "requires_approval": true
+    },
+    "tier": "approval",
+    "status": "pending",
+    "submitted_at": "2026-02-20T01:13:07.401296-05:00",
+    "resolved_at": null,
+    "resolved_by": null
+  },
+  {
+    "id": "action_1771568912715",
+    "type": "halt_trading",
+    "description": "HALT Sharbel trading immediately until infrastructure is fixed",
+    "reason": "Data integrity is critically compromised by unresolved duplicate logging bug (21+ instances) and broken config mechanism (13+ ignored orders over 144 hours). The 94% win rate cannot be trusted. True performance is unknown until data is cleaned.",
+    "bot": null,
+    "params": {
+      "action": "halt_trading",
+      "description": "HALT Sharbel trading immediately until infrastructure is fixed",
+      "reason": "Data integrity is critically compromised by unresolved duplicate logging bug (21+ instances) and broken config mechanism (13+ ignored orders over 144 hours). The 94% win rate cannot be trusted. True performance is unknown until data is cleaned.",
+      "priority": "critical",
+      "requires_approval": true
+    },
+    "tier": "approval",
+    "status": "pending",
+    "submitted_at": "2026-02-20T01:28:32.715693-05:00",
+    "resolved_at": null,
+    "resolved_by": null
+  },
+  {
+    "id": "action_1771568912718",
+    "type": "fix_duplicate_logging_bug",
+    "description": "Investigate and fix race condition causing byte-for-byte duplicate trades. IDs 100-105 show identical pairs with 0.08-0.5s timestamp deltas.",
+    "reason": "Systematic pattern indicates async callback firing twice or race condition in trade logging. This corrupts performance metrics and makes all historical data unreliable.",
+    "bot": null,
+    "params": {
+      "action": "fix_duplicate_logging_bug",
+      "description": "Investigate and fix race condition causing byte-for-byte duplicate trades. IDs 100-105 show identical pairs with 0.08-0.5s timestamp deltas.",
+      "reason": "Systematic pattern indicates async callback firing twice or race condition in trade logging. This corrupts performance metrics and makes all historical data unreliable.",
+      "priority": "critical",
+      "requires_approval": false
+    },
+    "tier": "approval",
+    "status": "pending",
+    "submitted_at": "2026-02-20T01:28:32.718065-05:00",
+    "resolved_at": null,
+    "resolved_by": null
+  },
+  {
+    "id": "action_1771568912720",
+    "type": "fix_config_mechanism",
+    "description": "Debug why 13+ reversion orders (2/14 21:29 to 2/20 01:28 UTC) are being logged but completely ignored by bot. Bot appears to be reading stale configuration from cache or startup.",
+    "reason": "Config updates are not propagating to running bot. All 50 recent trades remain at $5 despite explicit reversion orders. This is a critical infrastructure failure.",
+    "bot": null,
+    "params": {
+      "action": "fix_config_mechanism",
+      "description": "Debug why 13+ reversion orders (2/14 21:29 to 2/20 01:28 UTC) are being logged but completely ignored by bot. Bot appears to be reading stale configuration from cache or startup.",
+      "reason": "Config updates are not propagating to running bot. All 50 recent trades remain at $5 despite explicit reversion orders. This is a critical infrastructure failure.",
+      "priority": "critical",
+      "requires_approval": false
+    },
+    "tier": "approval",
+    "status": "pending",
+    "submitted_at": "2026-02-20T01:28:32.720588-05:00",
+    "resolved_at": null,
+    "resolved_by": null
+  },
+  {
+    "id": "action_1771568912723",
+    "type": "implement_hard_stake_lock",
+    "description": "Add hard technical lock in code to enforce $2 baseline stakes. Do NOT rely on config mechanism or soft reversion rules.",
+    "reason": "Soft rules have failed 100% of the time over 144 hours. Hard lock is the only solution to prevent stake creep from destroying profitability.",
+    "bot": null,
+    "params": {
+      "action": "implement_hard_stake_lock",
+      "description": "Add hard technical lock in code to enforce $2 baseline stakes. Do NOT rely on config mechanism or soft reversion rules.",
+      "reason": "Soft rules have failed 100% of the time over 144 hours. Hard lock is the only solution to prevent stake creep from destroying profitability.",
+      "priority": "critical",
+      "requires_approval": false
+    },
+    "tier": "approval",
+    "status": "pending",
+    "submitted_at": "2026-02-20T01:28:32.723330-05:00",
+    "resolved_at": null,
+    "resolved_by": null
+  },
+  {
+    "id": "action_1771568912726",
+    "type": "clean_trade_data",
+    "description": "Remove all duplicate trades from database. Rebuild performance metrics from cleaned data.",
+    "reason": "21+ confirmed duplicate trades corrupt win rate, P&L, and all statistical analysis. Cannot trust any metrics until duplicates are removed.",
+    "bot": null,
+    "params": {
+      "action": "clean_trade_data",
+      "description": "Remove all duplicate trades from database. Rebuild performance metrics from cleaned data.",
+      "reason": "21+ confirmed duplicate trades corrupt win rate, P&L, and all statistical analysis. Cannot trust any metrics until duplicates are removed.",
+      "priority": "critical",
+      "requires_approval": true
+    },
+    "tier": "approval",
+    "status": "pending",
+    "submitted_at": "2026-02-20T01:28:32.726592-05:00",
+    "resolved_at": null,
+    "resolved_by": null
+  },
+  {
+    "id": "action_1771568912729",
+    "type": "debug_hybrid_scout_logic",
+    "description": "Investigate why Hybrid bot has zero trades in paper mode after 144+ hours. Scout/big-bet trigger logic is not functioning.",
+    "reason": "Hybrid is blocked from live deployment. Scout times (13:10, 13:30, 13:45) and big-bet logic (14:00) should have triggered multiple times in 144 hours.",
+    "bot": null,
+    "params": {
+      "action": "debug_hybrid_scout_logic",
+      "description": "Investigate why Hybrid bot has zero trades in paper mode after 144+ hours. Scout/big-bet trigger logic is not functioning.",
+      "reason": "Hybrid is blocked from live deployment. Scout times (13:10, 13:30, 13:45) and big-bet logic (14:00) should have triggered multiple times in 144 hours.",
+      "priority": "high",
+      "requires_approval": false
+    },
+    "tier": "approval",
+    "status": "pending",
+    "submitted_at": "2026-02-20T01:28:32.729975-05:00",
+    "resolved_at": null,
+    "resolved_by": null
   }
 ]
